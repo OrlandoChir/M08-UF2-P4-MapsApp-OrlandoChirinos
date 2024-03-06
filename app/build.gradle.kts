@@ -56,6 +56,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:21.1.0")
 
+    // = = = = = = = = = = = NAVEGAÇAO = = = = = = = = = = =
+    implementation ("androidx.navigation:navigation-compose:2.7.5")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")

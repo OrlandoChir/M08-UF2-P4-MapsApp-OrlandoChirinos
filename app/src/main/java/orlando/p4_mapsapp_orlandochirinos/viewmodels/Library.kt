@@ -8,3 +8,8 @@ val UBICACIONES : List<Ubicacion> = listOf(
                 latLng = LatLng(41.4534265, 2.1837151) )
 
     )
+
+fun CreateNewMarker(){
+
+
+}

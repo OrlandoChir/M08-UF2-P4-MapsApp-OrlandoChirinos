@@ -5,3 +5,5 @@ data class Ubicacion(
     val nombre: String,
     val latLng: LatLng
 )
+
+val listOfUbicacion : MutableList<Ubicacion> = mutableListOf()

@@ -48,7 +48,6 @@ fun MapScreen() { //EQUIVALENTE DE MyDrawer(myViewModel:APIViewModel)
     val navigationController = rememberNavController() ; val scope = rememberCoroutineScope()
     val state: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
-
     ModalNavigationDrawer(drawerState = state, gesturesEnabled = true, drawerContent = {
         ModalDrawerSheet {
             Text("MIS UBICACIONES", modifier = Modifier.padding(16.dp))
@@ -89,6 +88,7 @@ fun MapScreen() { //EQUIVALENTE DE MyDrawer(myViewModel:APIViewModel)
 
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyTopAppBar (state: DrawerState) {
@@ -121,18 +121,26 @@ fun Map(){
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
             onMapClick = { /*TODO*/ },
-            onMapLongClick = { /*TODO*/ } ) {
-
-            Marker(
-                state = MarkerState(position = itb),
-                title = "ITB",
-                snippet = "Marker at ITB" )
-        }
+            onMapLongClick = { /*TODO*/ } ) {  }
 
     }
 
 }
 
+@Composable
+fun Markers(){
+
+    val itb = LatLng(41.4534265, 2.1837151)
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(itb, 10f) }
+
+    Marker(
+        state = MarkerState(position = itb),
+        title = "ITB",
+        snippet = "Marker at ITB" )
+
+
+}
 
 
 @Preview(showBackground = true)

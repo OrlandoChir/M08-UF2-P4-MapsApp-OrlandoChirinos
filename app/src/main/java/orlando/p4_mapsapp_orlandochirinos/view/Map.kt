@@ -1,18 +1,27 @@
 package orlando.p4_mapsapp_orlandochirinos.view
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 
 
@@ -25,11 +34,18 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import kotlinx.coroutines.launch
 import orlando.p4_mapsapp_orlandochirinos.viewmodels.MapViewmodel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun MapScreen(mapViewModel: MapViewmodel) {
+    MyDrawer(mapViewModel = mapViewModel)
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@Composable
+fun MapGoogle(mapViewModel: MapViewmodel){
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(5.dp) )
@@ -53,9 +69,7 @@ fun MapScreen(mapViewModel: MapViewmodel) {
             }
 
         }
-
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,9 +83,15 @@ fun MyDrawer(mapViewModel : MapViewmodel) {
         drawerState = state, gesturesEnabled = false,
         drawerContent = {
             ModalDrawerSheet {
-                Text("Drawer title", modifier = Modifier.padding(16.dp) )
+                Row {
+                    Text("MENU TO WAPO", modifier = Modifier.padding(16.dp) )
+                    Icon(imageVector = Icons.Filled.Map, contentDescription = "MAP" )
+                }
                 Divider ()
-                //Drawer items
+                /* Drawer items:
+
+                LogOut
+                 */
             }
         }) {
         MyScaffold(mapViewModel, state)
@@ -83,8 +103,37 @@ fun MyDrawer(mapViewModel : MapViewmodel) {
 @Composable
 fun MyScaffold(mapViewModel: MapViewmodel, state: DrawerState) {
 
+    Scaffold(
+        topBar = { TopBar(mapViewModel = mapViewModel, state = state) }
+    ) { paddingValues ->
+
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues) ) {
+            MapGoogle(mapViewModel = mapViewModel)
+        }
+
+    }
+
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBar(mapViewModel: MapViewmodel, state: DrawerState) {
+    val scope = rememberCoroutineScope()
+    TopAppBar(
+        title = { Text(text = "My SuperApp") },
+        navigationIcon = {
+            IconButton(onClick = {
+                scope.launch {
+                    state.open()
+                }
+            }) {
+                Icon(imageVector = Icons.Filled.Menu, contentDescription = "Menu")
+            }
+        }
+    )
+}
 
 /*@Preview(showBackground = true)
 @Composable

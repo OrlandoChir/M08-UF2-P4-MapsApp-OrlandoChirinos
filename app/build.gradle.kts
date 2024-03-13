@@ -61,6 +61,11 @@ dependencies {
 
 
     implementation("androidx.compose.material3:material3:1.0.0-alpha10")
+
+
+    //implementation("com.google.accompanist:accompanist-permissions:0.28.0")
+
+
     implementation ("androidx.compose.ui:ui:1.1.1")
     implementation ("androidx.compose.material:material:1.1.1")
     implementation ("androidx.compose.ui:ui-tooling-preview:1.1.1")

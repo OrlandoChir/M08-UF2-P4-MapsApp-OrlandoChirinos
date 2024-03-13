@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import orlando.p4_mapsapp_orlandochirinos.ui.theme.P4MapsAppOrlandoChirinosTheme
+import orlando.p4_mapsapp_orlandochirinos.viewmodels.MapViewmodel
 import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 
 class MainActivity : ComponentActivity() {
@@ -20,6 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navigationController = rememberNavController()
+            val mapViewmodel : MapViewmodel = MapViewmodel()
             P4MapsAppOrlandoChirinosTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -30,7 +32,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = Routes.SplashScreen.route ) {
                         composable(Routes.SplashScreen.route) { SplashScreen(navigationController) }
                         composable(Routes.LoginScreen.route) { LoginScreen() }
-                        composable(Routes.MapScreen.route) { MapScreen() }
+                        composable(Routes.MapScreen.route) { MapScreen(mapViewmodel) }
                     }
                 }
             }

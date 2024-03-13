@@ -1,5 +1,6 @@
 package orlando.p4_mapsapp_orlandochirinos.view
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -132,19 +133,24 @@ fun TopBar(mapViewModel: MapViewmodel, state: DrawerState) {
     val scope = rememberCoroutineScope()
     TopAppBar(
         title = {
-            Row (){
+            Row(
+                modifier = Modifier.fillMaxWidth(0.88f), // Para ocupar el max del ancho disponible
+                horizontalArrangement = Arrangement.Center // Para centrar los elementos horizontalmente
+            ) {
                 Icon(imageVector = Icons.Filled.Api, contentDescription = "API" )
-                Text("MAPA ITB" )
-                Icon(imageVector = Icons.Filled.Api, contentDescription = "API" ) }
-                },
+                Text("MAPA ITB")
+                Icon(imageVector = Icons.Filled.Api, contentDescription = "API" )
+            }
+        },
         navigationIcon = {
-            IconButton(onClick = {
-                scope.launch { state.open() } } ) {
+            IconButton(onClick = { scope.launch { state.open() } }) {
                 Icon(imageVector = Icons.Filled.Menu, contentDescription = "Menu")
             }
         }
     )
 }
+
+
 
 /*@Preview(showBackground = true)
 @Composable

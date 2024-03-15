@@ -17,34 +17,19 @@ import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Api
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.rememberCameraPositionState
-import kotlinx.coroutines.launch
-import orlando.p4_mapsapp_orlandochirinos.viewmodels.MapViewmodel
-//===========================================================
-import androidx.compose.material3.rememberModalBottomSheetState
-
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalDrawerSheet
@@ -53,13 +38,27 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
+import kotlinx.coroutines.launch
+import orlando.p4_mapsapp_orlandochirinos.models.ubicationTypes
+import orlando.p4_mapsapp_orlandochirinos.viewmodels.MapViewmodel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
@@ -111,7 +110,7 @@ fun MyDrawer(mapViewModel : MapViewmodel) {
     val state: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
     ModalNavigationDrawer(
-        drawerState = state, gesturesEnabled = false,
+        drawerState = state, gesturesEnabled = true,
         drawerContent = {
             ModalDrawerSheet {
                 Row {
@@ -186,9 +185,12 @@ fun Bottom(){
         sheetState = sheetState ) {
         // Sheet content
 
-        Box (modifier = Modifier.fillMaxWidth(0.6f).fillMaxHeight().align(Alignment.CenterHorizontally) ) {
+        Box (modifier = Modifier
+            .fillMaxWidth(0.6f)
+            .fillMaxHeight()
+            .align(Alignment.CenterHorizontally) ) {
 
-            Column() {
+            Column {
 
                 OutlinedTextField(
                     value = nameOfPlace,
@@ -218,6 +220,7 @@ fun Bottom(){
                     imageVector = Icons.Filled.CameraAlt, contentDescription = "CAMERA"
                 )
 
+                SelectCategories()
 
                 Button(
                     modifier = Modifier
@@ -238,6 +241,41 @@ fun Bottom(){
                 }
                 Spacer(modifier = Modifier.fillMaxHeight(0.05f))
             }
+        }
+    }
+}
+
+@Composable
+fun SelectCategories(){
+    var selectedText by remember { mutableStateOf("") }
+    var expanded by remember { mutableStateOf(false) }
+
+    OutlinedTextField(
+        value = selectedText,
+        onValueChange = { selectedText = it },
+        enabled = false,
+        readOnly = true,
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(0.08f)
+            .clickable { expanded = true },
+        trailingIcon = {
+            Icon(imageVector = Icons.Filled.ArrowDropDown,
+                contentDescription = "Drop",
+                modifier = Modifier.clickable { expanded = true } )
+        }
+    )
+
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { expanded = false },
+        modifier = Modifier.fillMaxWidth(0.6f)
+    ) {
+        ubicationTypes.forEach { typeOfUbication ->
+            DropdownMenuItem(
+                text = { Text(text = typeOfUbication) },
+                onClick = { expanded = false ; selectedText = typeOfUbication }
+            )
         }
     }
 }

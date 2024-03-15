@@ -8,3 +8,5 @@ data class Ubicacion(
 )
 
 val listOfUbicacion : MutableList<Ubicacion> = mutableListOf()
+val ubicationTypes : List<String> = listOf("Favoritos","Restaurantes","Casas")
+

@@ -1,6 +1,5 @@
 package orlando.p4_mapsapp_orlandochirinos.view
 
-//===========================================================
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -87,7 +86,6 @@ fun MapGoogle(mapViewModel: MapViewmodel){
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
-            onMapClick = { /*TODO*/ },
             onMapLongClick = { showBottomSheet = !showBottomSheet } ) {
 
             mapViewModel.UBICACIONES.forEach { ubicacion ->
@@ -110,7 +108,7 @@ fun MyDrawer(mapViewModel : MapViewmodel) {
     val state: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
     ModalNavigationDrawer(
-        drawerState = state, gesturesEnabled = true,
+        drawerState = state, gesturesEnabled = false,
         drawerContent = {
             ModalDrawerSheet {
                 Row {
@@ -210,7 +208,8 @@ fun Bottom(){
                     )
                 )
 
-                //DROPDOWN MENU RESTANTE
+                Spacer(modifier = Modifier.fillMaxHeight(0.03f))
+                SelectCategories()
 
                 Icon(
                     modifier = Modifier
@@ -219,8 +218,6 @@ fun Bottom(){
                         .clickable { /*TODO*/ },
                     imageVector = Icons.Filled.CameraAlt, contentDescription = "CAMERA"
                 )
-
-                SelectCategories()
 
                 Button(
                     modifier = Modifier
@@ -279,12 +276,3 @@ fun SelectCategories(){
         }
     }
 }
-
-
-/*@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    P4MapsAppOrlandoChirinosTheme {
-        MapScreen()
-    }
-}*/

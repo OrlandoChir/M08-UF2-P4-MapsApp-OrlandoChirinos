@@ -90,20 +90,7 @@ fun MapGoogle(mapViewModel: MapViewmodel){
             }
         }
     }
-    if (showBottomSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { showBottomSheet = false },
-            sheetState = sheetState ) {
-            // Sheet content
-            Button(onClick = {
-                scope.launch { sheetState.hide() }.invokeOnCompletion {
-                    if (!sheetState.isVisible) { showBottomSheet = false }
-                }
-            } ) {
-                Text("Hide bottom sheet")
-            }
-        }
-    }
+    if (showBottomSheet) { Bottom() }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -183,32 +170,16 @@ fun Bottom(){
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
 
-    Scaffold(
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                text = { Text("Show bottom sheet") },
-                icon = { Icon(Icons.Filled.Add, contentDescription = "") },
-                onClick = {
-                    showBottomSheet = true
-                }
-            )
-        }
-    ) { contentPadding ->
-        // Screen content
-
-        if (showBottomSheet) {
-            ModalBottomSheet(
-                onDismissRequest = { showBottomSheet = false },
-                sheetState = sheetState ) {
-                // Sheet content
-                Button(onClick = {
-                    scope.launch { sheetState.hide() }.invokeOnCompletion {
-                        if (!sheetState.isVisible) { showBottomSheet = false }
-                    }
-                } ) {
-                    Text("Hide bottom sheet")
-                }
+    ModalBottomSheet(
+        onDismissRequest = { showBottomSheet = false },
+        sheetState = sheetState ) {
+        // Sheet content
+        Button(onClick = {
+            scope.launch { sheetState.hide() }.invokeOnCompletion {
+                if (!sheetState.isVisible) { showBottomSheet = false }
             }
+        } ) {
+            Text("Hide bottom sheet")
         }
     }
 }

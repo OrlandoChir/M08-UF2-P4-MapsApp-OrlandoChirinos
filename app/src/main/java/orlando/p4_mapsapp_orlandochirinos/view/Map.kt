@@ -2,21 +2,28 @@ package orlando.p4_mapsapp_orlandochirinos.view
 
 //===========================================================
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Api
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -50,6 +57,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
@@ -165,21 +175,69 @@ fun TopBar(mapViewModel: MapViewmodel, state: DrawerState) {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Bottom(){
-
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
+    var nameOfPlace by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
 
     ModalBottomSheet(
         onDismissRequest = { showBottomSheet = false },
         sheetState = sheetState ) {
         // Sheet content
-        Button(onClick = {
-            scope.launch { sheetState.hide() }.invokeOnCompletion {
-                if (!sheetState.isVisible) { showBottomSheet = false }
+
+        Box (modifier = Modifier.fillMaxWidth(0.6f).fillMaxHeight().align(Alignment.CenterHorizontally) ) {
+
+            Column() {
+
+                OutlinedTextField(
+                    value = nameOfPlace,
+                    onValueChange = { nameOfPlace = it },
+                    label = { Text("Nombre del lugar") },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Color.Green, unfocusedBorderColor = Color.Black
+                    )
+                )
+
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("Descripción del lugar") },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Color.Green, unfocusedBorderColor = Color.Black
+                    )
+                )
+
+                //DROPDOWN MENU RESTANTE
+
+                Icon(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.2f)
+                        .clickable { /*TODO*/ },
+                    imageVector = Icons.Filled.CameraAlt, contentDescription = "CAMERA"
+                )
+
+
+                Button(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    shape = RectangleShape,
+                    colors = ButtonDefaults.buttonColors(Color.DarkGray),
+                    onClick = {
+                        scope.launch { sheetState.hide() }.invokeOnCompletion {
+                            if (!sheetState.isVisible) {
+                                showBottomSheet = false
+                            }
+                        }
+                    }
+                ) {
+                    Text("GO BACK") //Después tiene que añadir el marcador.
+                }
+                Spacer(modifier = Modifier.fillMaxHeight(0.05f))
             }
-        } ) {
-            Text("Hide bottom sheet")
         }
     }
 }

@@ -1,4 +1,4 @@
-package orlando.p4_mapsapp_orlandochirinos.view
+package orlando.p4_mapsapp_orlandochirinos.View
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -18,10 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import orlando.p4_mapsapp_orlandochirinos.ui.theme.P4MapsAppOrlandoChirinosTheme
 import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 import orlando.trivial.p4_mapsapp_orlandochirinos.R
 

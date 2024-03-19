@@ -7,6 +7,3 @@ data class Ubicacion(
     val position: LatLng,
     val tag : String
 )
-
-
-

@@ -1,4 +1,4 @@
-package orlando.p4_mapsapp_orlandochirinos.view
+package orlando.p4_mapsapp_orlandochirinos.View
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
@@ -59,6 +59,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
 import orlando.p4_mapsapp_orlandochirinos.Models.tryAddNewLocation
+import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
@@ -79,7 +80,7 @@ fun MapGoogle(mapViewModel: MapViewmodel){
         .padding(5.dp) )
     {
         //Posicion por defecto && Posicionamiento y zoom de cámara.
-        val defaultPosition = mapViewModel.availableLocations[0].position
+        val defaultPosition = mapViewModel.positionToSee
         val cameraPositionState = rememberCameraPositionState {
             position = CameraPosition.fromLatLngZoom(defaultPosition, 15f) }
 
@@ -120,11 +121,14 @@ fun MyDrawer(mapViewModel : MapViewmodel) {
                     Icon(imageVector = Icons.Filled.Map, contentDescription = "MAP" )
                 }
                 Divider ()
-                /* Drawer items:
+            Button(onClick = { navigationController.navigate(Routes.MarkerListScreen.route) }) {
+            }
+
+            /* Drawer items:
                 My markers
                 Show Map
                 LogOut
-                 */
+            */
             }
         } ) {
         MyScaffold(mapViewModel, state)
@@ -216,12 +220,15 @@ fun Bottom(mapViewModel: MapViewmodel){
                 SelectCategories(mapViewModel)
 
                 Icon(
-                    modifier = Modifier.fillMaxWidth().fillMaxHeight(0.2f)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.2f)
                         .clickable { /*TODO*/ },
                     imageVector = Icons.Filled.CameraAlt, contentDescription = "CAMERA" )
 
                 Button(
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
                         .fillMaxWidth()
                         .fillMaxWidth(),
                     shape = RectangleShape,

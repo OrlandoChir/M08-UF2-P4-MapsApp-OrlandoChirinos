@@ -1,4 +1,4 @@
-package orlando.p4_mapsapp_orlandochirinos.view
+package orlando.p4_mapsapp_orlandochirinos.View
 
 import androidx.navigation.compose.rememberNavController
 import android.os.Bundle
@@ -33,6 +33,7 @@ class MainActivity : ComponentActivity() {
                         composable(Routes.SplashScreen.route) { SplashScreen(navigationController) }
                         composable(Routes.LoginScreen.route) { LoginScreen(navigationController) }
                         composable(Routes.MapScreen.route) { MapScreen(mapViewmodel) }
+                        composable(Routes.MarkerListScreen.route) { MarkerListScreen(mapViewmodel,navigationController) }
                     }
                 }
             }

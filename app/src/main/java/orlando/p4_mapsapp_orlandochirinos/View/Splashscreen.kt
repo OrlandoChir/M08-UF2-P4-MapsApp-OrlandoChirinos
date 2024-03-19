@@ -1,4 +1,4 @@
-package orlando.p4_mapsapp_orlandochirinos.view
+package orlando.p4_mapsapp_orlandochirinos.View
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween

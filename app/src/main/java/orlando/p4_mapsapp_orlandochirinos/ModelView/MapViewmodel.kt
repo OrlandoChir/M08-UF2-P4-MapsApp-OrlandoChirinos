@@ -25,6 +25,11 @@ class MapViewmodel : ViewModel() {
     )
         private set
     fun addLocation( newUbication : Ubicacion ){ this.availableLocations.add(newUbication) }
+    fun getAllLocations():List<Ubicacion> { return this.availableLocations }
+
+    var positionToSee: LatLng = availableLocations[0].position
+        private set
+    fun changePosition(newPosition : LatLng){ this.positionToSee = newPosition }
 
     private val _selectedLocation = MutableStateFlow<LatLng?>(null)
     val selectedLocation: StateFlow<LatLng?> = _selectedLocation

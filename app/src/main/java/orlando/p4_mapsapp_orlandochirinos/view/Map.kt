@@ -39,6 +39,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -84,7 +85,10 @@ fun MapGoogle(mapViewModel: MapViewmodel){
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
-            onMapLongClick = { mapViewModel.showBottomSheet() } ) {
+            onMapLongClick = {  coordinates ->
+                mapViewModel.onMapLongClick(coordinates)
+                mapViewModel.showBottomSheet()
+            } ) {
 
             mapViewModel.UBICACIONES.forEach { ubicacion ->
                 Marker(
@@ -175,6 +179,8 @@ fun Bottom(mapViewModel: MapViewmodel){
     var nameOfPlace by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
 
+    val selectedLocation by mapViewModel.selectedLocation.collectAsState()
+
     ModalBottomSheet(
         onDismissRequest = { mapViewModel.showBottomSheet() },
         sheetState = sheetState ) {
@@ -192,7 +198,7 @@ fun Bottom(mapViewModel: MapViewmodel){
                     onValueChange = { nameOfPlace = it },
                     label = { Text("Nombre del lugar") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Color.Green, unfocusedBorderColor = Color.Black
+                        focusedBorderColor = Color.Magenta, unfocusedBorderColor = Color.Black
                     )
                 )
 
@@ -201,7 +207,7 @@ fun Bottom(mapViewModel: MapViewmodel){
                     onValueChange = { description = it },
                     label = { Text("Descripción del lugar") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Color.Green, unfocusedBorderColor = Color.Black
+                        focusedBorderColor = Color.Magenta, unfocusedBorderColor = Color.Black
                     )
                 )
 
@@ -209,29 +215,24 @@ fun Bottom(mapViewModel: MapViewmodel){
                 SelectCategories(mapViewModel)
 
                 Icon(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.2f)
+                    modifier = Modifier.fillMaxWidth().fillMaxHeight(0.2f)
                         .clickable { /*TODO*/ },
-                    imageVector = Icons.Filled.CameraAlt, contentDescription = "CAMERA"
-                )
+                    imageVector = Icons.Filled.CameraAlt, contentDescription = "CAMERA" )
 
                 Button(
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                         .fillMaxWidth()
                         .fillMaxWidth(),
                     shape = RectangleShape,
                     colors = ButtonDefaults.buttonColors(Color.DarkGray),
                     onClick = {
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
-                            if (!sheetState.isVisible) {
-                                mapViewModel.showBottomSheet()
-                            }
+                            if (!sheetState.isVisible) { mapViewModel.showBottomSheet() }
+
                         }
                     }
                 ) {
-                    Text("GO BACK") //Después tiene que añadir el marcador.
+                    Text("AÑADIR MARCADOR") //Después tiene que añadir el marcador.
                 }
                 Spacer(modifier = Modifier.fillMaxHeight(0.05f))
             }

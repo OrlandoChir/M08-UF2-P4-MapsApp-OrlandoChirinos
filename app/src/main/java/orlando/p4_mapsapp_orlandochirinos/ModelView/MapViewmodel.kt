@@ -11,24 +11,20 @@ import orlando.p4_mapsapp_orlandochirinos.Models.Ubicacion
 
 class MapViewmodel : ViewModel() {
 
-    val TypeOfUbication = listOf<String>("Favoritos", "Restaurantes","Parques","Casas")
-    var typeSelected by mutableStateOf("")
+    val tagList = listOf<String>("Favoritos", "Restaurantes","Parques","Casas")
+    var tagSelected by mutableStateOf("")
         private set
-    fun selectType(typeValue: String) { this.typeSelected = typeValue }
-    var UBICACIONES : MutableList<Ubicacion> by mutableStateOf(
+    fun selectTag(tagValue: String) { this.tagSelected = tagValue }
+    var availableLocations : MutableList<Ubicacion> by mutableStateOf(
         mutableListOf(
             Ubicacion(  nombre = "ITB",
                         snippet = "MARKER AT ITB",
                         position = LatLng(41.4534265, 2.1837151),
-                        type = TypeOfUbication[0]),
-
-            Ubicacion(  nombre = "somewhere",
-                        snippet = "random",
-                        position = LatLng(41.4534265, 2.1835151),
-                        type = TypeOfUbication[0]) )
+                        tag = tagList[0])
+        )
     )
         private set
-    fun addLocation( newUbication : Ubicacion ){ this.UBICACIONES.add(newUbication) }
+    fun addLocation( newUbication : Ubicacion ){ this.availableLocations.add(newUbication) }
 
     private val _selectedLocation = MutableStateFlow<LatLng?>(null)
     val selectedLocation: StateFlow<LatLng?> = _selectedLocation

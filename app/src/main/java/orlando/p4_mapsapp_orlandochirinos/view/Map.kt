@@ -58,7 +58,7 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
-import orlando.p4_mapsapp_orlandochirinos.Models.Ubicacion
+import orlando.p4_mapsapp_orlandochirinos.Models.tryAddNewLocation
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
@@ -79,7 +79,7 @@ fun MapGoogle(mapViewModel: MapViewmodel){
         .padding(5.dp) )
     {
         //Posicion por defecto && Posicionamiento y zoom de cámara.
-        val defaultPosition = mapViewModel.UBICACIONES[0].position
+        val defaultPosition = mapViewModel.availableLocations[0].position
         val cameraPositionState = rememberCameraPositionState {
             position = CameraPosition.fromLatLngZoom(defaultPosition, 15f) }
 
@@ -91,11 +91,12 @@ fun MapGoogle(mapViewModel: MapViewmodel){
                 mapViewModel.showBottomSheet()
             } ) {
 
-            mapViewModel.UBICACIONES.forEach { ubicacion ->
+            mapViewModel.availableLocations.forEach { ubicacion ->
                 Marker(
                     state = MarkerState(position = ubicacion.position),
                     title = ubicacion.nombre,
-                    snippet = ubicacion.snippet
+                    snippet = ubicacion.snippet,
+                    tag = ubicacion.tag,
                 )
             }
         }
@@ -120,7 +121,8 @@ fun MyDrawer(mapViewModel : MapViewmodel) {
                 }
                 Divider ()
                 /* Drawer items:
-
+                My markers
+                Show Map
                 LogOut
                  */
             }
@@ -226,17 +228,12 @@ fun Bottom(mapViewModel: MapViewmodel){
                     colors = ButtonDefaults.buttonColors(Color.DarkGray),
                     onClick = {
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
-                            if ( selectedLocation != null &&
-                                 nameOfPlace.length > 1  &&
-                                 mapViewModel.typeSelected in mapViewModel.TypeOfUbication) {
-                                mapViewModel.addLocation(
-                                    Ubicacion(
-                                        nameOfPlace,
-                                        description,
-                                        selectedLocation!!,
-                                        mapViewModel.typeSelected) ) }
+                            //Añadir (si se puede) el marcador
+                            tryAddNewLocation(mapViewModel, selectedLocation, nameOfPlace, description)
+
+                            //Cerrar bottomsheet
                             if (!sheetState.isVisible) {
-                                mapViewModel.showBottomSheet() ; mapViewModel.selectType("") }
+                                mapViewModel.showBottomSheet() ; mapViewModel.selectTag("") }
                         }
                     }
                 ) {
@@ -255,7 +252,7 @@ fun SelectCategories(mapViewModel: MapViewmodel){
     var expanded by remember { mutableStateOf(false) }
 
     OutlinedTextField(
-        value = mapViewModel.typeSelected,
+        value = mapViewModel.tagSelected,
         onValueChange = { selectedText = it },
         enabled = false,
         readOnly = true,
@@ -275,10 +272,10 @@ fun SelectCategories(mapViewModel: MapViewmodel){
         onDismissRequest = { expanded = false },
         modifier = Modifier.fillMaxWidth(0.6f)
     ) {
-        mapViewModel.TypeOfUbication.forEach { typeOfUbication ->
+        mapViewModel.tagList.forEach { typeOfUbication ->
             DropdownMenuItem(
                 text = { Text(text = typeOfUbication) },
-                onClick = { expanded = false ; mapViewModel.selectType(typeOfUbication) }
+                onClick = { expanded = false ; mapViewModel.selectTag(typeOfUbication) }
             )
         }
     }

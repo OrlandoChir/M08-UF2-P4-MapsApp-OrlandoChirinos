@@ -20,11 +20,13 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import orlando.p4_mapsapp_orlandochirinos.ui.theme.P4MapsAppOrlandoChirinosTheme
+import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 import orlando.trivial.p4_mapsapp_orlandochirinos.R
 
 @Composable
-fun LoginScreen(){
+fun LoginScreen(navigationController: NavHostController) {
 
     Box(modifier = Modifier.fillMaxSize()){
 
@@ -33,7 +35,7 @@ fun LoginScreen(){
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.25f)
-                    .clickable { /*TODO*/ },
+                    .clickable { /*TODO*/ navigationController.navigate(Routes.MapScreen.route) },
                 painter = painterResource(id = R.drawable.loginicon),
                 contentDescription = "Login")
 
@@ -57,10 +59,11 @@ fun LoginScreen(){
 
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun LoginPreview() {
     P4MapsAppOrlandoChirinosTheme {
-        LoginScreen()
+        LoginScreen(navigationController)
     }
-}
+}*/

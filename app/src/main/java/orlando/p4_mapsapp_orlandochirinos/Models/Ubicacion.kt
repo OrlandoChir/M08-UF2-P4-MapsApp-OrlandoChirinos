@@ -5,7 +5,7 @@ data class Ubicacion(
     val nombre: String,
     val snippet : String,
     val position: LatLng,
-    val type : String
+    val tag : String
 )
 
 

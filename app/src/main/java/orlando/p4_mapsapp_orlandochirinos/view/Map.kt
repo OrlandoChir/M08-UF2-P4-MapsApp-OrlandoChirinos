@@ -58,6 +58,7 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
+import orlando.p4_mapsapp_orlandochirinos.Models.Ubicacion
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
@@ -198,8 +199,7 @@ fun Bottom(mapViewModel: MapViewmodel){
                     onValueChange = { nameOfPlace = it },
                     label = { Text("Nombre del lugar") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Color.Magenta, unfocusedBorderColor = Color.Black
-                    )
+                        focusedBorderColor = Color.Magenta, unfocusedBorderColor = Color.Black )
                 )
 
                 OutlinedTextField(
@@ -207,8 +207,7 @@ fun Bottom(mapViewModel: MapViewmodel){
                     onValueChange = { description = it },
                     label = { Text("Descripción del lugar") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Color.Magenta, unfocusedBorderColor = Color.Black
-                    )
+                        focusedBorderColor = Color.Magenta, unfocusedBorderColor = Color.Black )
                 )
 
                 Spacer(modifier = Modifier.fillMaxHeight(0.03f))
@@ -227,8 +226,17 @@ fun Bottom(mapViewModel: MapViewmodel){
                     colors = ButtonDefaults.buttonColors(Color.DarkGray),
                     onClick = {
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
-                            if (!sheetState.isVisible) { mapViewModel.showBottomSheet() }
-
+                            if ( selectedLocation != null &&
+                                 nameOfPlace.length > 1  &&
+                                 mapViewModel.typeSelected in mapViewModel.TypeOfUbication) {
+                                mapViewModel.addLocation(
+                                    Ubicacion(
+                                        nameOfPlace,
+                                        description,
+                                        selectedLocation!!,
+                                        mapViewModel.typeSelected) ) }
+                            if (!sheetState.isVisible) {
+                                mapViewModel.showBottomSheet() ; mapViewModel.selectType("") }
                         }
                     }
                 ) {
@@ -240,13 +248,14 @@ fun Bottom(mapViewModel: MapViewmodel){
     }
 }
 
+@OptIn(ExperimentalStdlibApi::class)
 @Composable
 fun SelectCategories(mapViewModel: MapViewmodel){
     var selectedText by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
 
     OutlinedTextField(
-        value = selectedText,
+        value = mapViewModel.typeSelected,
         onValueChange = { selectedText = it },
         enabled = false,
         readOnly = true,
@@ -266,10 +275,10 @@ fun SelectCategories(mapViewModel: MapViewmodel){
         onDismissRequest = { expanded = false },
         modifier = Modifier.fillMaxWidth(0.6f)
     ) {
-        mapViewModel.ubicationTypes.forEach { typeOfUbication ->
+        mapViewModel.TypeOfUbication.forEach { typeOfUbication ->
             DropdownMenuItem(
                 text = { Text(text = typeOfUbication) },
-                onClick = { expanded = false ; selectedText = typeOfUbication }
+                onClick = { expanded = false ; mapViewModel.selectType(typeOfUbication) }
             )
         }
     }

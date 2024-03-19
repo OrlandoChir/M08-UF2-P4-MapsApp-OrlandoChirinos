@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import orlando.p4_mapsapp_orlandochirinos.ui.theme.P4MapsAppOrlandoChirinosTheme
-import orlando.p4_mapsapp_orlandochirinos.viewmodels.MapViewmodel
+import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
 import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 
 class MainActivity : ComponentActivity() {

@@ -56,8 +56,7 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
-import orlando.p4_mapsapp_orlandochirinos.models.ubicationTypes
-import orlando.p4_mapsapp_orlandochirinos.viewmodels.MapViewmodel
+import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
@@ -71,7 +70,6 @@ fun MapScreen(mapViewModel: MapViewmodel) {
 fun MapGoogle(mapViewModel: MapViewmodel){
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-    var showBottomSheet by remember { mutableStateOf(false) }
 
 
     Column(modifier = Modifier
@@ -86,7 +84,7 @@ fun MapGoogle(mapViewModel: MapViewmodel){
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
-            onMapLongClick = { showBottomSheet = !showBottomSheet } ) {
+            onMapLongClick = { mapViewModel.showBottomSheet() } ) {
 
             mapViewModel.UBICACIONES.forEach { ubicacion ->
                 Marker(
@@ -97,7 +95,7 @@ fun MapGoogle(mapViewModel: MapViewmodel){
             }
         }
     }
-    if (showBottomSheet) { Bottom() }
+    if (mapViewModel.bottomSheet) { Bottom(mapViewModel) }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -121,7 +119,7 @@ fun MyDrawer(mapViewModel : MapViewmodel) {
                 LogOut
                  */
             }
-        }) {
+        } ) {
         MyScaffold(mapViewModel, state)
     }
 
@@ -171,15 +169,14 @@ fun TopBar(mapViewModel: MapViewmodel, state: DrawerState) {
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Bottom(){
+fun Bottom(mapViewModel: MapViewmodel){
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-    var showBottomSheet by remember { mutableStateOf(false) }
     var nameOfPlace by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
 
     ModalBottomSheet(
-        onDismissRequest = { showBottomSheet = false },
+        onDismissRequest = { mapViewModel.showBottomSheet() },
         sheetState = sheetState ) {
         // Sheet content
 
@@ -209,7 +206,7 @@ fun Bottom(){
                 )
 
                 Spacer(modifier = Modifier.fillMaxHeight(0.03f))
-                SelectCategories()
+                SelectCategories(mapViewModel)
 
                 Icon(
                     modifier = Modifier
@@ -229,7 +226,7 @@ fun Bottom(){
                     onClick = {
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
                             if (!sheetState.isVisible) {
-                                showBottomSheet = false
+                                mapViewModel.showBottomSheet()
                             }
                         }
                     }
@@ -243,7 +240,7 @@ fun Bottom(){
 }
 
 @Composable
-fun SelectCategories(){
+fun SelectCategories(mapViewModel: MapViewmodel){
     var selectedText by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
 
@@ -268,7 +265,7 @@ fun SelectCategories(){
         onDismissRequest = { expanded = false },
         modifier = Modifier.fillMaxWidth(0.6f)
     ) {
-        ubicationTypes.forEach { typeOfUbication ->
+        mapViewModel.ubicationTypes.forEach { typeOfUbication ->
             DropdownMenuItem(
                 text = { Text(text = typeOfUbication) },
                 onClick = { expanded = false ; selectedText = typeOfUbication }

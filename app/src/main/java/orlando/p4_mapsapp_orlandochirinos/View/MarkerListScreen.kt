@@ -42,6 +42,7 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
             .padding(top = 5.dp)
             .clickable {
               //  navigationController.navigate(Routes.MapScreen.spawnOnPosition(location.position))
+                mapViewmodel.screenSelect("map")
                 mapViewmodel.changePosition(location.position)
                 navigationController.navigate(Routes.MapScreen.route)
             }

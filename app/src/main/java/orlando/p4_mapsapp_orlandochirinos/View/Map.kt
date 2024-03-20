@@ -20,7 +20,6 @@ import androidx.compose.material.icons.filled.Api
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -45,6 +44,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -127,7 +127,7 @@ fun MyDrawer(mapViewModel: MapViewmodel, navigationController: NavHostController
                     Icon( /*Cerrar el menú lateral*/
                         modifier = Modifier
                             .padding(16.dp)
-                            .clickable { scope.launch { state.close()  } },
+                            .clickable { mapViewModel.closeNavigationMenu() },
                         imageVector = Icons.Filled.ArrowBackIosNew,
                         contentDescription = "MAP")
                 }
@@ -139,7 +139,11 @@ fun MyDrawer(mapViewModel: MapViewmodel, navigationController: NavHostController
                         modifier = Modifier.fillMaxWidth(0.7f),
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(Color.Magenta),
-                        onClick = { navigationController.navigate(Routes.MarkerListScreen.route) }) {
+                        onClick = {
+                            mapViewModel.screenSelect(mapViewModel.screenList[2])
+                            mapViewModel.closeNavigationMenu()
+                            /*navigationController.navigate(Routes.MarkerListScreen.route)*/ })
+                    {
                         Text(text = "MIS MARCADORES")
                     }
 
@@ -147,7 +151,9 @@ fun MyDrawer(mapViewModel: MapViewmodel, navigationController: NavHostController
                         modifier = Modifier.fillMaxWidth(0.7f),
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(Color.Magenta),
-                        onClick = { navigationController.navigate(Routes.MapScreen.route) }) {
+                        onClick = {
+                            mapViewModel.screenSelect(mapViewModel.screenList[1])
+                            mapViewModel.closeNavigationMenu() }) {
                         Text(text = "MAPA")
                     }
 
@@ -155,20 +161,26 @@ fun MyDrawer(mapViewModel: MapViewmodel, navigationController: NavHostController
                         modifier = Modifier.fillMaxWidth(0.7f),
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(Color.Magenta),
-                        onClick = { navigationController.navigate(Routes.LoginScreen.route) }) {
+                        onClick = {
+                            mapViewModel.screenSelect(mapViewModel.screenList[0])
+                            navigationController.navigate(Routes.LoginScreen.route) }) {
                         Text(text = "CERRAR SESIÓN")
                     }
                 }
             }
         } ) {
-        MyScaffold(mapViewModel, state)
+        MyScaffold(mapViewModel, state,navigationController)
     }
-
+    if (mapViewModel.closeNav) { scope.launch { state.close() } }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyScaffold(mapViewModel: MapViewmodel, state: DrawerState) {
+fun MyScaffold(
+    mapViewModel: MapViewmodel,
+    state: DrawerState,
+    navigationController: NavHostController
+) {
 
     Scaffold(
         topBar = { TopBar(mapViewModel = mapViewModel, state = state) }
@@ -177,11 +189,15 @@ fun MyScaffold(mapViewModel: MapViewmodel, state: DrawerState) {
         Box(modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues) ) {
-            MapGoogle(mapViewModel = mapViewModel)
+
+            when(mapViewModel.currentScreen){
+                mapViewModel.screenList[0] -> { LoginScreen(mapViewModel,navigationController) }
+                mapViewModel.screenList[1] -> { MapGoogle( mapViewModel ) }
+                mapViewModel.screenList[2] -> { MarkerListScreen(mapViewModel,navigationController) }
+                mapViewModel.screenList[3] -> {  }
+            }
         }
-
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -200,7 +216,7 @@ fun TopBar(mapViewModel: MapViewmodel, state: DrawerState) {
             }
         },
         navigationIcon = {
-            IconButton(onClick = { scope.launch { state.open() } }) {
+            IconButton(onClick = { scope.launch { state.open() } ; mapViewModel.closeNavigationMenu() }) {
                 Icon(imageVector = Icons.Filled.Menu, contentDescription = "Menu")
             }
         }

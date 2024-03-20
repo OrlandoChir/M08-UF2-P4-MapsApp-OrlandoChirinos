@@ -20,20 +20,26 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
 import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 import orlando.trivial.p4_mapsapp_orlandochirinos.R
 
 @Composable
-fun LoginScreen(navigationController: NavHostController) {
+fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostController) {
 
     Box(modifier = Modifier.fillMaxSize()){
-
+        if (mapViewmodel.closeNav) { mapViewmodel.closeNavigationMenu()  }
+        mapViewmodel.closeNavigationMenu()
         Column(modifier = Modifier.align(Alignment.Center) ) {
             Image(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.25f)
-                    .clickable { /*TODO*/ navigationController.navigate(Routes.MapScreen.route) },
+                    .clickable { /*TODO*/
+                        mapViewmodel.screenSelect("map")
+                        navigationController.navigate(Routes.MapScreen.route)
+                               },
+
                 painter = painterResource(id = R.drawable.loginicon),
                 contentDescription = "Login")
 

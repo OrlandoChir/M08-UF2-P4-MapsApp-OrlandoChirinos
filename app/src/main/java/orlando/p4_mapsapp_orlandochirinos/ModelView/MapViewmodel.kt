@@ -12,9 +12,16 @@ import orlando.p4_mapsapp_orlandochirinos.Models.Ubicacion
 class MapViewmodel : ViewModel() {
 
     val tagList = listOf<String>("Favoritos", "Restaurantes","Parques","Casas")
+
     var tagSelected by mutableStateOf("")
         private set
     fun selectTag(tagValue: String) { this.tagSelected = tagValue }
+
+    val screenList = listOf<String>("login","map","markerlist","markerdetail")
+
+    var currentScreen by mutableStateOf("")
+        private set
+    fun screenSelect(screenValue: String) { this.currentScreen = screenValue }
     var availableLocations : MutableList<Ubicacion> by mutableStateOf(
         mutableListOf(
             Ubicacion(  nombre = "ITB",
@@ -40,5 +47,8 @@ class MapViewmodel : ViewModel() {
         private set
     fun showBottomSheet(){ this.bottomSheet = !this.bottomSheet }
 
+    var closeNav : Boolean by mutableStateOf(true)
+
+    fun closeNavigationMenu(){ this.closeNav = !this.closeNav }
 }
 

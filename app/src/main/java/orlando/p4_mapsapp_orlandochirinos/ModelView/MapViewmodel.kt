@@ -47,8 +47,8 @@ class MapViewmodel : ViewModel() {
         private set
     fun showBottomSheet(){ this.bottomSheet = !this.bottomSheet }
 
-    var closeNav : Boolean by mutableStateOf(true)
+/*    var closeNav : Boolean by mutableStateOf(true)
 
-    fun closeNavigationMenu(){ this.closeNav = !this.closeNav }
+    fun closeNavigationMenu(){ this.closeNav = !this.closeNav }*/
 }
 

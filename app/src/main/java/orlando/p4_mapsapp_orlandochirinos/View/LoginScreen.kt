@@ -28,8 +28,6 @@ import orlando.trivial.p4_mapsapp_orlandochirinos.R
 fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostController) {
 
     Box(modifier = Modifier.fillMaxSize()){
-        if (mapViewmodel.closeNav) { mapViewmodel.closeNavigationMenu()  }
-        mapViewmodel.closeNavigationMenu()
         Column(modifier = Modifier.align(Alignment.Center) ) {
             Image(
                 modifier = Modifier

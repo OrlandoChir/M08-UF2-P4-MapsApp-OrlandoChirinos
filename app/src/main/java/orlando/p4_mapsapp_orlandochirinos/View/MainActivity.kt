@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = Routes.SplashScreen.route ) {
                         composable(Routes.SplashScreen.route) { SplashScreen(navigationController) }
                         composable(Routes.LoginScreen.route) { LoginScreen(navigationController) }
-                        composable(Routes.MapScreen.route) { MapScreen(mapViewmodel) }
+                        composable(Routes.MapScreen.route) { MapScreen(mapViewmodel,navigationController) }
                         composable(Routes.MarkerListScreen.route) { MarkerListScreen(mapViewmodel,navigationController) }
                     }
                 }

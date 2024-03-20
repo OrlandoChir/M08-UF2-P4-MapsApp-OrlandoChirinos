@@ -17,6 +17,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Api
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Map
@@ -46,11 +47,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavHostController
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
@@ -63,8 +65,8 @@ import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun MapScreen(mapViewModel: MapViewmodel) {
-    MyDrawer(mapViewModel = mapViewModel)
+fun MapScreen(mapViewModel: MapViewmodel, navigationController: NavHostController) {
+    MyDrawer(mapViewModel = mapViewModel,navigationController)
     //Bottom()
 }
 
@@ -73,7 +75,6 @@ fun MapScreen(mapViewModel: MapViewmodel) {
 fun MapGoogle(mapViewModel: MapViewmodel){
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -107,8 +108,7 @@ fun MapGoogle(mapViewModel: MapViewmodel){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyDrawer(mapViewModel : MapViewmodel) {
-    val navigationController = rememberNavController()
+fun MyDrawer(mapViewModel: MapViewmodel, navigationController: NavHostController) {
     val scope = rememberCoroutineScope()
     val state: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -116,19 +116,49 @@ fun MyDrawer(mapViewModel : MapViewmodel) {
         drawerState = state, gesturesEnabled = false,
         drawerContent = {
             ModalDrawerSheet {
-                Row {
-                    Text("MENU TO WAPO", modifier = Modifier.padding(16.dp) )
-                    Icon(imageVector = Icons.Filled.Map, contentDescription = "MAP" )
+                Row(modifier = Modifier.fillMaxWidth(),verticalAlignment = Alignment.CenterVertically) {
+
+                    Text(text = "MENU DE NAVEGACIÓN", modifier = Modifier
+                        .weight(1f)
+                        .padding(16.dp) )
+
+                    Spacer(modifier = Modifier.weight(0.2f))
+
+                    Icon( /*Cerrar el menú lateral*/
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .clickable { scope.launch { state.close()  } },
+                        imageVector = Icons.Filled.ArrowBackIosNew,
+                        contentDescription = "MAP")
                 }
                 Divider ()
-            Button(onClick = { navigationController.navigate(Routes.MarkerListScreen.route) }) {
-            }
+                Column (modifier = Modifier
+                    .padding(top = 5.dp)
+                    .align(CenterHorizontally) ) {
+                    Button(
+                        modifier = Modifier.fillMaxWidth(0.7f),
+                        shape = RectangleShape,
+                        colors = ButtonDefaults.buttonColors(Color.Magenta),
+                        onClick = { navigationController.navigate(Routes.MarkerListScreen.route) }) {
+                        Text(text = "MIS MARCADORES")
+                    }
 
-            /* Drawer items:
-                My markers
-                Show Map
-                LogOut
-            */
+                    Button(
+                        modifier = Modifier.fillMaxWidth(0.7f),
+                        shape = RectangleShape,
+                        colors = ButtonDefaults.buttonColors(Color.Magenta),
+                        onClick = { navigationController.navigate(Routes.MapScreen.route) }) {
+                        Text(text = "MAPA")
+                    }
+
+                    Button(
+                        modifier = Modifier.fillMaxWidth(0.7f),
+                        shape = RectangleShape,
+                        colors = ButtonDefaults.buttonColors(Color.Magenta),
+                        onClick = { navigationController.navigate(Routes.LoginScreen.route) }) {
+                        Text(text = "CERRAR SESIÓN")
+                    }
+                }
             }
         } ) {
         MyScaffold(mapViewModel, state)

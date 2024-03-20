@@ -36,10 +36,10 @@ fun MarkerListScreen(mapViewmodel: MapViewmodel, navigationController: NavHostCo
 
 @Composable
 fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationController: NavHostController) {
-    Card( border = BorderStroke(4.dp, Color.Black),
+    Card( border = BorderStroke(2.dp, Color.Black),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 6.dp)
+            .padding(top = 5.dp)
             .clickable {
               //  navigationController.navigate(Routes.MapScreen.spawnOnPosition(location.position))
                 mapViewmodel.changePosition(location.position)
@@ -59,7 +59,7 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
                 Text(text = location.nombre,
                     fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 30.dp) )
+                    modifier = Modifier.padding(top = 5.dp) )
                 Text(text = "Descripción: ${location.snippet}\n" +
                             "Etiqueta: ${location.tag}")
             }

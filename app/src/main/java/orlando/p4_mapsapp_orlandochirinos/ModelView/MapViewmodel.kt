@@ -17,7 +17,7 @@ class MapViewmodel : ViewModel() {
         private set
     fun selectTag(tagValue: String) { this.tagSelected = tagValue }
 
-    val screenList = listOf<String>("login","map","markerlist","markerdetail")
+    val screenList = listOf<String>("login","map","markerlist","markerdetail","camera")
 
     var currentScreen by mutableStateOf("")
         private set

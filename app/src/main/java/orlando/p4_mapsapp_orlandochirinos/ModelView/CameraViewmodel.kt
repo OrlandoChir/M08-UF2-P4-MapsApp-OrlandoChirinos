@@ -1,11 +1,18 @@
 package orlando.p4_mapsapp_orlandochirinos.ModelView
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
 class CameraViewmodel : ViewModel() {
+
+    var cameraOpen by mutableStateOf(false)
+        private set
+    fun openCamera(){ cameraOpen = !cameraOpen }
+
+
     private val _cameraPermissionGranted = MutableLiveData(false)
     val cameraPermissionGranted = _cameraPermissionGranted
 

@@ -21,8 +21,12 @@ import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun MapScreen(mapViewModel: MapViewmodel, navigationController: NavHostController) {
-    MenuLateral(mapViewModel = mapViewModel,navigationController)
+fun MapScreen(
+    mapViewModel: MapViewmodel,
+    navigationController: NavHostController,
+    cameraViewmodel: CameraViewmodel
+) {
+    MenuLateral(mapViewModel = mapViewModel,navigationController,cameraViewmodel)
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)

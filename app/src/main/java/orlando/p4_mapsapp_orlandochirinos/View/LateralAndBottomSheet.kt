@@ -58,7 +58,11 @@ import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuLateral(mapViewModel: MapViewmodel, navigationController: NavHostController) {
+fun MenuLateral(
+    mapViewModel: MapViewmodel,
+    navigationController: NavHostController,
+    cameraViewmodel: CameraViewmodel
+) {
     val scope = rememberCoroutineScope()
     val state: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -119,7 +123,7 @@ fun MenuLateral(mapViewModel: MapViewmodel, navigationController: NavHostControl
                 }
             }
         } ) {
-        ScreenAdmin(mapViewModel, state,navigationController)
+        ScreenAdmin(mapViewModel, state,navigationController,cameraViewmodel)
     }
     //if (mapViewModel.closeNav) { scope.launch { state.close() } }
 }
@@ -128,7 +132,8 @@ fun MenuLateral(mapViewModel: MapViewmodel, navigationController: NavHostControl
 fun ScreenAdmin (
     mapViewModel: MapViewmodel,
     state: DrawerState,
-    navigationController: NavHostController
+    navigationController: NavHostController,
+    cameraViewmodel: CameraViewmodel
 ) {
     Scaffold(
         topBar = { TopBar(mapViewModel = mapViewModel, state = state) } ) { paddingValues ->
@@ -139,9 +144,10 @@ fun ScreenAdmin (
 
             when(mapViewModel.currentScreen){
                 mapViewModel.screenList[0] -> { LoginScreen(mapViewModel,navigationController) }
-                mapViewModel.screenList[1] -> { MapGoogle( mapViewModel ) }
+                mapViewModel.screenList[1] -> { MapGoogle( mapViewModel,navigationController,cameraViewmodel ) }
                 mapViewModel.screenList[2] -> { MarkerListScreen(mapViewModel,navigationController) }
                 mapViewModel.screenList[3] -> {  }
+                mapViewModel.screenList[4] -> { CameraScreen( mapViewModel, navigationController, cameraViewmodel ) }
             }
         }
     }
@@ -220,7 +226,7 @@ fun Bottom(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.2f)
-                        .clickable {  /* TODO */ },
+                        .clickable { mapViewModel.screenSelect(mapViewModel.screenList[4]) },
                     imageVector = Icons.Filled.CameraAlt, contentDescription = "CAMERA" )
 
                 Button(

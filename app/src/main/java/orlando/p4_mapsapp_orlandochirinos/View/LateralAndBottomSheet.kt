@@ -51,6 +51,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
+import orlando.p4_mapsapp_orlandochirinos.ModelView.CameraViewmodel
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
 import orlando.p4_mapsapp_orlandochirinos.Models.tryAddNewLocation
 import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
@@ -172,7 +173,11 @@ fun TopBar(mapViewModel: MapViewmodel, state: DrawerState) {
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Bottom(mapViewModel: MapViewmodel){
+fun Bottom(
+    mapViewModel: MapViewmodel,
+    navigationController: NavHostController,
+    cameraViewmodel: CameraViewmodel
+){
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var nameOfPlace by remember { mutableStateOf("") }
@@ -215,7 +220,7 @@ fun Bottom(mapViewModel: MapViewmodel){
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.2f)
-                        .clickable { /*TODO*/ },
+                        .clickable {  /* TODO */ },
                     imageVector = Icons.Filled.CameraAlt, contentDescription = "CAMERA" )
 
                 Button(

@@ -1,5 +1,6 @@
 package orlando.p4_mapsapp_orlandochirinos.ModelView
 
+import android.graphics.Bitmap
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,12 +11,17 @@ import kotlinx.coroutines.flow.StateFlow
 import orlando.p4_mapsapp_orlandochirinos.Models.Ubicacion
 
 class MapViewmodel : ViewModel() {
+    val defaultBitmap: Bitmap =
+        Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
 
     val tagList = listOf<String>("Favoritos", "Restaurantes","Parques","Casas")
 
     var tagSelected by mutableStateOf("")
         private set
     fun selectTag(tagValue: String) { this.tagSelected = tagValue }
+    var imageBitmap by mutableStateOf( this.defaultBitmap )
+        private set
+    fun storeCapturedBitmap(toBitmap: Bitmap) { this.imageBitmap = toBitmap }
 
     val screenList = listOf<String>("login","map","markerlist","markerdetail","camera")
 
@@ -27,6 +33,7 @@ class MapViewmodel : ViewModel() {
             Ubicacion(  nombre = "ITB",
                         snippet = "MARKER AT ITB",
                         position = LatLng(41.4534265, 2.1837151),
+                        image = this.defaultBitmap,
                         tag = tagList[0])
         )
     )
@@ -47,8 +54,9 @@ class MapViewmodel : ViewModel() {
         private set
     fun showBottomSheet(){ this.bottomSheet = !this.bottomSheet }
 
-/*    var closeNav : Boolean by mutableStateOf(true)
 
-    fun closeNavigationMenu(){ this.closeNav = !this.closeNav }*/
+    /*    var closeNav : Boolean by mutableStateOf(true)
+
+        fun closeNavigationMenu(){ this.closeNav = !this.closeNav }*/
 }
 

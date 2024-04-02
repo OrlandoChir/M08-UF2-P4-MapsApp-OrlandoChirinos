@@ -1,7 +1,6 @@
 package orlando.p4_mapsapp_orlandochirinos.View
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.util.Log
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -17,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
@@ -55,7 +55,7 @@ fun TakePhotoScreen(mapViewmodel: MapViewmodel,
                     CameraSelector.DEFAULT_FRONT_CAMERA }
                 else { CameraSelector.DEFAULT_BACK_CAMERA }
             } ) {
-            Icon(imageVector = Icons.Default.Cameraswitch, contentDescription = "Switch Camera")
+            Icon(modifier = Modifier.size(60.dp),imageVector = Icons.Default.Cameraswitch, contentDescription = "Switch Camera")
         }
     }
     Column(
@@ -66,20 +66,47 @@ fun TakePhotoScreen(mapViewmodel: MapViewmodel,
         Row (verticalAlignment = Alignment.CenterVertically,
              horizontalArrangement = Arrangement.SpaceAround,
              modifier = Modifier.fillMaxWidth() ) {
-            IconButton(onClick = { /*TODO*/ }) { //ABRIR GALERÍA
-                Icon(imageVector = Icons.Default.Photo, contentDescription = "Open Gallery") }
+
+            //ABRIR GALERÍA
+            IconButton(modifier = Modifier.size(60.dp),onClick = { /*TODO*/ }) {
+                Icon(modifier = Modifier.size(50.dp), imageVector = Icons.Default.Photo, contentDescription = "OpenGallery") }
+
 
             //HACER LA FOTICO
-            IconButton(onClick = {
-                takePhoto(context,controller) { photo ->
+            IconButton(modifier = Modifier.size(60.dp),onClick = {
+                takePhoto(context,controller,mapViewmodel) { photo ->
                     //HACER ALGO CON LA FOTICO (no se el que, sigo el tutorial)
+
                 }
             } ) {
-                Icon(imageVector = Icons.Default.PhotoCamera, contentDescription = "Open Gallery") }
+                Icon(modifier = Modifier.size(50.dp),imageVector = Icons.Default.PhotoCamera, contentDescription = "Take Photo") }
         }
     }
 }
 
+
+private fun takePhoto(
+    context: Context,
+    controller: LifecycleCameraController,
+    mapViewmodel: MapViewmodel,
+    param: (Any) -> Unit,
+) {
+    controller.takePicture(ContextCompat.getMainExecutor(context),
+        object : ImageCapture.OnImageCapturedCallback() {
+            override fun onCaptureSuccess(image: ImageProxy) {
+                super.onCaptureSuccess(image)
+                mapViewmodel.storeCapturedBitmap(image.toBitmap())
+            }
+
+            override fun onError(exception: ImageCaptureException) {
+                super.onError(exception)
+                Log.e("Camera", "Error taken photo", exception)
+            }
+        }
+    )
+}
+
+/*
 private fun takePhoto(context: Context,
                       controller: LifecycleCameraController,
                       onPhotoTaken: (Bitmap) -> Unit )
@@ -98,6 +125,7 @@ private fun takePhoto(context: Context,
         }
     )
 }
+*/
 
 @Composable
 fun CameraPreview(controller: LifecycleCameraController, modifier: Modifier = Modifier) {

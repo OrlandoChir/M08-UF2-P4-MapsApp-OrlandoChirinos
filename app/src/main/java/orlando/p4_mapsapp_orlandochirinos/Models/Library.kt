@@ -12,6 +12,7 @@ fun tryAddNewLocation(
     selectedLocation: LatLng?,
     nameOfPlace: String,
     description: String ) {
+
     if (selectedLocation != null && nameOfPlace.length > 1 &&
         mapViewModel.tagSelected in mapViewModel.tagList) {
         mapViewModel.addLocation(
@@ -19,7 +20,8 @@ fun tryAddNewLocation(
                 nameOfPlace,
                 description,
                 selectedLocation,
-                mapViewModel.tagSelected )
+                mapViewModel.tagSelected,
+                mapViewModel.imageBitmap)
         )
     }
 }

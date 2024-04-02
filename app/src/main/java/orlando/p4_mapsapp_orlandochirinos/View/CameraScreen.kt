@@ -5,15 +5,15 @@ import android.app.Activity
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
@@ -51,16 +51,19 @@ fun CameraScreen(mapViewmodel: MapViewmodel,
         }
     )
 
-    Column( modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center) {
-        Button(onClick = {
-            if (!isCameraPermissionGranted){ launcher.launch(Manifest.permission.CAMERA) }
-            else { navigationController.navigate(Routes.TakePhotoScreen.route) }
-        } ) {
-            Text(text = "TAKE PHOTO")
-        }
-    }
-    if (showPermissionDenied){ PermissionDeclinedScreen() }
+ //   Column( modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+  //    Button(onClick = {
+
+    Icon(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(0.2f)
+            .clickable {
+                if (!isCameraPermissionGranted) { launcher.launch(Manifest.permission.CAMERA) }
+                else { navigationController.navigate(Routes.TakePhotoScreen.route) } },
+                imageVector = Icons.Filled.CameraAlt, contentDescription = "CAMERA" )
+/*           } ) { Text(text = "TAKE PHOTO") }
+        }*/
+    if (showPermissionDenied) { PermissionDeclinedScreen() }
 
 }

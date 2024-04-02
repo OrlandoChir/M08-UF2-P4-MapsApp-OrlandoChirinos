@@ -18,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Api
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -222,12 +221,14 @@ fun Bottom(
                 Spacer(modifier = Modifier.fillMaxHeight(0.03f))
                 SelectCategories(mapViewModel)
 
-                Icon(
+                CameraScreen( mapViewModel, navigationController, cameraViewmodel )
+
+/*                Icon(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.2f)
                         .clickable { mapViewModel.screenSelect(mapViewModel.screenList[4]) },
-                    imageVector = Icons.Filled.CameraAlt, contentDescription = "CAMERA" )
+                    imageVector = Icons.Filled.CameraAlt, contentDescription = "CAMERA" )*/
 
                 Button(
                     modifier = Modifier

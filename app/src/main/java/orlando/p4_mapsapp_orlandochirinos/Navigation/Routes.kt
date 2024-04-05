@@ -5,7 +5,11 @@ sealed class Routes(val route: String) {
     object LoginScreen: Routes("login_screen")
     object MapScreen: Routes("map_screen")
     object MarkerListScreen: Routes("markerlist_screen")
+    object AddNewLocationScreen: Routes("addnewlocation_screen")
+    object EditLocationScreen: Routes("editlocation_screen")
+    object MarkerDetailsScreen: Routes("markerdetails_screen")
     object CameraScreen: Routes("camera_screen")
+    object GalleryScreen: Routes("gallery_screen")
     object TakePhotoScreen: Routes("takephoto_screen")
     object PermissionDeclinedScreen: Routes("permissiondeclined_screen")
 

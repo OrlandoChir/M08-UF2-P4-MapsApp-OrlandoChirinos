@@ -50,12 +50,14 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
     {
         Row {
             //AUN NO TENGO IMAGEN QUE MOSTRAR.
+
 /*            GlideImage(
                 model = agent.displayIcon,
                 contentDescription = "Character Image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxWidth(0.25f)
-            )*/
+            )
+*/
             Column {
                 Text(text = location.nombre,
                     fontSize = MaterialTheme.typography.bodyLarge.fontSize,

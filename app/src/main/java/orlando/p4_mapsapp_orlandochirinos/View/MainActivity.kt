@@ -37,8 +37,10 @@ class MainActivity : ComponentActivity() {
                         composable(Routes.MapScreen.route) { MapScreen(mapViewmodel,navigationController,cameraViewmodel) }
                         composable(Routes.CameraScreen.route) { CameraScreen(mapViewmodel,navigationController,cameraViewmodel) }
                         composable(Routes.TakePhotoScreen.route) { TakePhotoScreen(mapViewmodel,navigationController,cameraViewmodel) }
+                        composable(Routes.GalleryScreen.route) { GalleryScreen(mapViewmodel, navigationController, cameraViewmodel,) }
                         composable(Routes.PermissionDeclinedScreen.route) { PermissionDeclinedScreen() }
                         composable(Routes.MarkerListScreen.route) { MarkerListScreen(mapViewmodel,navigationController) }
+                        composable(Routes.MarkerDetailsScreen.route) { MarkerDetailsScreen(mapViewmodel,navigationController) }
                     }
                 }
             }

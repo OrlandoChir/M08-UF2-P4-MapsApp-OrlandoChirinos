@@ -82,6 +82,8 @@ dependencies {
     implementation("androidx.camera:camera-extensions:1.3.2")
     // = = = = = = = = = = = | | | | | | = = = = = = = = = = =
 
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+
 
     implementation ("androidx.compose.ui:ui:1.1.1")
     implementation ("androidx.compose.material:material:1.1.1")

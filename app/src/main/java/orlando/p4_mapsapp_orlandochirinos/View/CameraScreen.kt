@@ -60,7 +60,10 @@ fun CameraScreen(mapViewmodel: MapViewmodel,
             .fillMaxHeight(0.2f)
             .clickable {
                 if (!isCameraPermissionGranted) { launcher.launch(Manifest.permission.CAMERA) }
-                else { navigationController.navigate(Routes.TakePhotoScreen.route) } },
+                else {
+                   // mapViewmodel.storeImageBitmap(mapViewmodel.defaultBitmap)
+                    navigationController.navigate(Routes.TakePhotoScreen.route)
+                     } },
                 imageVector = Icons.Filled.CameraAlt, contentDescription = "CAMERA" )
 /*           } ) { Text(text = "TAKE PHOTO") }
         }*/

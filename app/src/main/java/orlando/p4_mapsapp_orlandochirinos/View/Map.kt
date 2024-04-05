@@ -50,7 +50,8 @@ fun MapGoogle(mapViewModel: MapViewmodel,navigationController: NavHostController
             onMapLongClick = {  coordinates ->
                 mapViewModel.onMapLongClick(coordinates)
                 mapViewModel.showBottomSheet()
-            } ) {
+            }
+        ) {
 
             mapViewModel.availableLocations.forEach { ubicacion ->
                 Marker(

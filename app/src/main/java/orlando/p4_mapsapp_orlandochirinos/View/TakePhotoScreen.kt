@@ -1,6 +1,7 @@
 package orlando.p4_mapsapp_orlandochirinos.View
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -24,7 +25,11 @@ import androidx.compose.material.icons.filled.Cameraswitch
 import androidx.compose.material.icons.filled.Photo
 import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -35,16 +40,20 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import orlando.p4_mapsapp_orlandochirinos.ModelView.CameraViewmodel
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
+import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 
 @Composable
 fun TakePhotoScreen(mapViewmodel: MapViewmodel,
                     navigationController: NavHostController,
                     cameraViewmodel: CameraViewmodel )
 {
-    val context = LocalContext.current
-    val controller = remember {
-        LifecycleCameraController(context).apply { CameraController.IMAGE_CAPTURE }
+
+    var galleryOpen by rememberSaveable {
+        mutableStateOf(false)
     }
+
+    val context = LocalContext.current
+    val controller = remember { LifecycleCameraController(context).apply { CameraController.IMAGE_CAPTURE } }
     Box(modifier = Modifier.fillMaxSize() ) {
         CameraPreview(controller = controller, modifier = Modifier.fillMaxSize() )
         IconButton(
@@ -68,7 +77,11 @@ fun TakePhotoScreen(mapViewmodel: MapViewmodel,
              modifier = Modifier.fillMaxWidth() ) {
 
             //ABRIR GALERÍA
-            IconButton(modifier = Modifier.size(60.dp),onClick = { /*TODO*/ }) {
+            IconButton(modifier = Modifier.size(60.dp),onClick = {
+                galleryOpen = true
+                navigationController.navigate(Routes.GalleryScreen.route)
+
+            }) {
                 Icon(modifier = Modifier.size(50.dp), imageVector = Icons.Default.Photo, contentDescription = "OpenGallery") }
 
 
@@ -76,16 +89,17 @@ fun TakePhotoScreen(mapViewmodel: MapViewmodel,
             IconButton(modifier = Modifier.size(60.dp),onClick = {
                 takePhoto(context,controller,mapViewmodel) { photo ->
                     //HACER ALGO CON LA FOTICO (no se el que, sigo el tutorial)
-
+                    mapViewmodel.storeImageBitmap(photo)
                 }
             } ) {
                 Icon(modifier = Modifier.size(50.dp),imageVector = Icons.Default.PhotoCamera, contentDescription = "Take Photo") }
         }
     }
+   // if (galleryOpen){GalleryScreen(mapViewmodel,navigationController,cameraViewmodel)}
 }
 
 
-private fun takePhoto(
+/*private fun takePhoto(
     context: Context,
     controller: LifecycleCameraController,
     mapViewmodel: MapViewmodel,
@@ -95,7 +109,7 @@ private fun takePhoto(
         object : ImageCapture.OnImageCapturedCallback() {
             override fun onCaptureSuccess(image: ImageProxy) {
                 super.onCaptureSuccess(image)
-                mapViewmodel.storeCapturedBitmap(image.toBitmap())
+                mapViewmodel.storeCapturedURI(image.toBitmap())
             }
 
             override fun onError(exception: ImageCaptureException) {
@@ -104,12 +118,14 @@ private fun takePhoto(
             }
         }
     )
-}
+}*/
 
-/*
-private fun takePhoto(context: Context,
-                      controller: LifecycleCameraController,
-                      onPhotoTaken: (Bitmap) -> Unit )
+private fun takePhoto(
+    context: Context,
+    controller: LifecycleCameraController,
+    mapViewmodel: MapViewmodel,
+    onPhotoTaken: (Bitmap) -> Unit
+)
 {
     controller.takePicture(ContextCompat.getMainExecutor(context),
         object : ImageCapture.OnImageCapturedCallback(){
@@ -125,7 +141,6 @@ private fun takePhoto(context: Context,
         }
     )
 }
-*/
 
 @Composable
 fun CameraPreview(controller: LifecycleCameraController, modifier: Modifier = Modifier) {

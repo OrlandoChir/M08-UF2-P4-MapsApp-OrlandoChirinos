@@ -2,6 +2,9 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+
+    //FIREBASE TUTORIAL TO WAPO
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -56,6 +59,15 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.2")
 
+
+    //= = = = = = = = = = = FIREBASE TO WAPA = = = = = = = = = = =
+    // Import the Firebase BoM
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    // https://firebase.google.com/docs/android/setup#available-libraries
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
     // = = = = = = = = = = = GUGULMAP IMPLEMENTATIONS = = = = = = = = = = =
     implementation("com.google.maps.android:maps-compose:2.11.4")

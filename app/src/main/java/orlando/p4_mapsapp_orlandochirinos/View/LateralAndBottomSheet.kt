@@ -248,8 +248,7 @@ fun Bottom(
 
                             //Cerrar bottomsheet
                             if (!sheetState.isVisible) {
-                                mapViewModel.showBottomSheet()
-                                /* mapViewModel.selectTag("") */
+                                mapViewModel.showBottomSheet() ; mapViewModel.selectTag("")
                             }
                         }
                     }

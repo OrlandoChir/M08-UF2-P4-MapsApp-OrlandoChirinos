@@ -25,6 +25,7 @@ fun tryAddNewLocation(
         mapViewModel.tagSelected in mapViewModel.tagList) {
         mapViewModel.addLocation(
             Ubicacion(
+                null,
                 nameOfPlace,
                 description,
                 selectedLocation,

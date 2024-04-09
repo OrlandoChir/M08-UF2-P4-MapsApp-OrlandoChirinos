@@ -34,8 +34,8 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.NavHostController
 import orlando.p4_mapsapp_orlandochirinos.ModelView.CameraViewmodel
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
+import orlando.p4_mapsapp_orlandochirinos.R
 import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
-import orlando.trivial.p4_mapsapp_orlandochirinos.R
 
 @Composable
 fun GalleryScreen(

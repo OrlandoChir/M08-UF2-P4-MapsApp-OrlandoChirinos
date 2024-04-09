@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "orlando.trivial.p4_mapsapp_orlandochirinos"
+    namespace = "orlando.p4_mapsapp_orlandochirinos"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "orlando.trivial.p4_mapsapp_orlandochirinos"
+        applicationId = "orlando.p4_mapsapp_orlandochirinos"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

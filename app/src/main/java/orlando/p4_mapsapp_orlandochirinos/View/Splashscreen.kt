@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
-import orlando.trivial.p4_mapsapp_orlandochirinos.R
+import orlando.p4_mapsapp_orlandochirinos.R
 
 @Composable
 fun Splash(alphaAnim: Float) {

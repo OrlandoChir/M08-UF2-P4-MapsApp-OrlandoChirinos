@@ -21,8 +21,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
+import orlando.p4_mapsapp_orlandochirinos.R
 import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
-import orlando.trivial.p4_mapsapp_orlandochirinos.R
 
 @Composable
 fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostController) {

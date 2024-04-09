@@ -11,6 +11,9 @@ import kotlinx.coroutines.flow.StateFlow
 import orlando.p4_mapsapp_orlandochirinos.Models.Ubicacion
 
 class MapViewmodel : ViewModel() {
+
+    //private val database = FirebaseFirestore.getInstance()
+
     val defaultBitmap: Bitmap =
         Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
 
@@ -37,7 +40,9 @@ class MapViewmodel : ViewModel() {
     fun screenSelect(screenValue: String) { this.currentScreen = screenValue }
     var availableLocations : MutableList<Ubicacion> by mutableStateOf(
         mutableListOf(
-            Ubicacion(  nombre = "ITB",
+            Ubicacion(
+                        ubicationId = null,
+                        ubicationName = "ITB",
                         snippet = "MARKER AT ITB",
                         position = LatLng(41.4534265, 2.1837151),
                         tag = tagList[0],

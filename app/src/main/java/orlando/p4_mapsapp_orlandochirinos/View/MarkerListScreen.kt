@@ -59,7 +59,7 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
             )
 */
             Column {
-                Text(text = location.nombre,
+                Text(text = location.ubicationName,
                     fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(top = 5.dp) )

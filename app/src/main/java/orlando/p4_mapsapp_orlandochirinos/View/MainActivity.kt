@@ -12,10 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.firestore.FirebaseFirestore
 import orlando.p4_mapsapp_orlandochirinos.ModelView.CameraViewmodel
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
 import orlando.p4_mapsapp_orlandochirinos.ui.theme.P4MapsAppOrlandoChirinosTheme
 import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
+
+val database = FirebaseFirestore.getInstance()
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

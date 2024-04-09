@@ -56,7 +56,7 @@ fun MapGoogle(mapViewModel: MapViewmodel,navigationController: NavHostController
             mapViewModel.availableLocations.forEach { ubicacion ->
                 Marker(
                     state = MarkerState(position = ubicacion.position),
-                    title = ubicacion.nombre,
+                    title = ubicacion.ubicationName,
                     snippet = ubicacion.snippet,
                     tag = ubicacion.tag,
                 )

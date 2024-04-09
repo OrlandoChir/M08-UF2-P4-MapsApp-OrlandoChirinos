@@ -33,53 +33,8 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.NavHostController
 import orlando.p4_mapsapp_orlandochirinos.ModelView.CameraViewmodel
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
+import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 import orlando.trivial.p4_mapsapp_orlandochirinos.R
-
-/*
-@Composable
-fun GalleryScreen(
-    mapViewmodel: MapViewmodel,
-    navigationController: NavHostController,
-    cameraViewmodel: CameraViewmodel,
-) {
-    val context = LocalContext.current
-    val img : Bitmap? = ContextCompat.getDrawable(context, R.drawable.mapa)?.toBitmap()
-    var bitmap by remember { mutableStateOf(img) }
-    val launchImage = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult ={
-         bitmap =
-             if (Build.VERSION.SDK_INT < 28) { MediaStore.Images.Media.getBitmap(context.contentResolver,it) }
-             else {
-             val source =
-                 it?.let { it1 -> ImageDecoder.createSource(context.contentResolver, it1) }
-             source?.let { it1-> ImageDecoder.decodeBitmap(it1) }!!
-             }
-        }
-    )
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-
-        Button(onClick = { launchImage.launch("image/*") }
-        ) { Text(text = "OPEN GALLERY") }
-
-        Image(
-            bitmap = bitmap!!.asImageBitmap(), contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .clip(CircleShape)
-                .background(Color.Cyan)
-                .border(width = 1.dp, color = Color.White, shape = CircleShape)
-        )
-    }
-}
-*/
-
- */
 
 @Composable
 fun GalleryScreen(
@@ -127,5 +82,53 @@ fun GalleryScreen(
                     .border(width = 1.dp, color = Color.White, shape = CircleShape)
             )
         }
+        Button(onClick = { navigationController.navigate(Routes.MapScreen.route)  }
+        ) { Text(text = "GO BACK") }
     }
 }
+
+/*
+@Composable
+fun GalleryScreen(
+    mapViewmodel: MapViewmodel,
+    navigationController: NavHostController,
+    cameraViewmodel: CameraViewmodel,
+) {
+    val context = LocalContext.current
+    val img : Bitmap? = ContextCompat.getDrawable(context, R.drawable.mapa)?.toBitmap()
+    var bitmap by remember { mutableStateOf(img) }
+    val launchImage = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult ={
+         bitmap =
+             if (Build.VERSION.SDK_INT < 28) { MediaStore.Images.Media.getBitmap(context.contentResolver,it) }
+             else {
+             val source =
+                 it?.let { it1 -> ImageDecoder.createSource(context.contentResolver, it1) }
+             source?.let { it1-> ImageDecoder.decodeBitmap(it1) }!!
+             }
+        }
+    )
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+
+        Button(onClick = { launchImage.launch("image/*") }
+        ) { Text(text = "OPEN GALLERY") }
+
+        Image(
+            bitmap = bitmap!!.asImageBitmap(), contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .clip(CircleShape)
+                .background(Color.Cyan)
+                .border(width = 1.dp, color = Color.White, shape = CircleShape)
+        )
+    }
+}
+*/
+
+ */

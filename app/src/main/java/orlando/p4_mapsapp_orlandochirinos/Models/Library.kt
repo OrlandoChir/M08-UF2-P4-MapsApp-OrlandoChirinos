@@ -29,7 +29,7 @@ fun tryAddNewLocation(
                 description,
                 selectedLocation,
                 mapViewModel.tagSelected,
-                mapViewModel.imageBitmap)
+                mapViewModel.imageUri)
         )
     }
 }

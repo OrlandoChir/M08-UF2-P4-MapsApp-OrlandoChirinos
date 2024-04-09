@@ -187,8 +187,7 @@ fun Bottom(
     val scope = rememberCoroutineScope()
     var nameOfPlace by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var confirmAddLocation by remember { mutableStateOf(false) }
-
+    
     val selectedLocation by mapViewModel.selectedLocation.collectAsState()
 
     ModalBottomSheet(
@@ -203,6 +202,7 @@ fun Bottom(
 
             Column {
                 
+                // GlideImage(model = , contentDescription = )
 
 
                 OutlinedTextField(
@@ -244,11 +244,13 @@ fun Bottom(
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
                             //Añadir (si se puede) el marcador
 
-                            confirmAddLocation = true
+                            tryAddNewLocation(mapViewModel, selectedLocation, nameOfPlace, description)
 
                             //Cerrar bottomsheet
                             if (!sheetState.isVisible) {
-                                mapViewModel.showBottomSheet() ; mapViewModel.selectTag("") }
+                                mapViewModel.showBottomSheet()
+                                /* mapViewModel.selectTag("") */
+                            }
                         }
                     }
                 ) {
@@ -257,7 +259,6 @@ fun Bottom(
                 Spacer(modifier = Modifier.fillMaxHeight(0.05f))
             }
         }
-        if (confirmAddLocation){ tryAddNewLocation(mapViewModel, selectedLocation, nameOfPlace, description) }
     }
 }
 

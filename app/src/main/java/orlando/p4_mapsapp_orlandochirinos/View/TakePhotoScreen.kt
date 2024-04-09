@@ -79,20 +79,17 @@ fun TakePhotoScreen(mapViewmodel: MapViewmodel,
             //ABRIR GALERÍA
             IconButton(modifier = Modifier.size(60.dp),onClick = {
                 galleryOpen = true
-                navigationController.navigate(Routes.GalleryScreen.route)
-
-            }) {
-                Icon(modifier = Modifier.size(50.dp), imageVector = Icons.Default.Photo, contentDescription = "OpenGallery") }
+                navigationController.navigate(Routes.GalleryScreen.route) } )
+            { Icon(modifier = Modifier.size(50.dp), imageVector = Icons.Default.Photo, contentDescription = "OpenGallery") }
 
 
             //HACER LA FOTICO
             IconButton(modifier = Modifier.size(60.dp),onClick = {
                 takePhoto(context,controller,mapViewmodel) { photo ->
                     //HACER ALGO CON LA FOTICO (no se el que, sigo el tutorial)
-                    mapViewmodel.storeImageBitmap(photo)
-                }
-            } ) {
-                Icon(modifier = Modifier.size(50.dp),imageVector = Icons.Default.PhotoCamera, contentDescription = "Take Photo") }
+                    mapViewmodel.storeImageBitmap(photo) }
+            } )
+            { Icon(modifier = Modifier.size(50.dp),imageVector = Icons.Default.PhotoCamera, contentDescription = "Take Photo") }
         }
     }
    // if (galleryOpen){GalleryScreen(mapViewmodel,navigationController,cameraViewmodel)}

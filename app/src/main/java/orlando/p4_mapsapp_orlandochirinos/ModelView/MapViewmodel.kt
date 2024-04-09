@@ -14,16 +14,23 @@ class MapViewmodel : ViewModel() {
     val defaultBitmap: Bitmap =
         Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
 
-    val tagList = listOf<String>("Favoritos", "Restaurantes","Parques","Casas")
+    val tagList = listOf<String>("Favoritos", "Restaurantes", "Parques", "Casas")
 
+    val screenList = listOf<String>("login","map","markerlist","markerdetail","camera")
     var tagSelected by mutableStateOf("")
         private set
     fun selectTag(tagValue: String) { this.tagSelected = tagValue }
     var imageBitmap by mutableStateOf( this.defaultBitmap )
         private set
+
     fun storeImageBitmap(bitmap : Bitmap) { this.imageBitmap =  bitmap  }
 
-    val screenList = listOf<String>("login","map","markerlist","markerdetail","camera")
+    var imageUri by mutableStateOf( "" )
+        private set
+
+
+    fun storeImageUri(intImageUri : String) { this.imageUri = intImageUri  }
+
 
     var currentScreen by mutableStateOf("")
         private set
@@ -34,7 +41,7 @@ class MapViewmodel : ViewModel() {
                         snippet = "MARKER AT ITB",
                         position = LatLng(41.4534265, 2.1837151),
                         tag = tagList[0],
-                        image = this.imageBitmap )
+                        image = this.imageUri )
         )
     )
         private set

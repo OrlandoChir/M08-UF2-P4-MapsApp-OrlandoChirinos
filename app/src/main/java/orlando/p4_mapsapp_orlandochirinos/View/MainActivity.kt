@@ -18,8 +18,6 @@ import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
 import orlando.p4_mapsapp_orlandochirinos.ui.theme.P4MapsAppOrlandoChirinosTheme
 import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 
-val database = FirebaseFirestore.getInstance()
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -188,7 +188,7 @@ fun Bottom(
     var nameOfPlace by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     
-    val selectedLocation by mapViewModel.selectedLocation.collectAsState()
+    val selectedLocation by mapViewModel.selectedPosition.collectAsState()
 
     ModalBottomSheet(
         onDismissRequest = { mapViewModel.showBottomSheet() },

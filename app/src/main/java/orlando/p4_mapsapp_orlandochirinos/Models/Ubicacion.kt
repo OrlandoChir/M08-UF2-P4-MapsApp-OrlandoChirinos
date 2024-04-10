@@ -2,7 +2,7 @@ package orlando.p4_mapsapp_orlandochirinos.Models
 import com.google.android.gms.maps.model.LatLng
 
 data class Ubicacion(
-    val ubicationId: String? = null,
+    var ubicationId: String? = null,
     val ubicationName: String,
     val snippet: String,
     val position: LatLng,

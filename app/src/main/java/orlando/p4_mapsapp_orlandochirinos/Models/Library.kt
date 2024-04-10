@@ -23,14 +23,15 @@ fun tryAddNewLocation(
 
     if (selectedLocation != null && nameOfPlace.length > 1 &&
         mapViewModel.tagSelected in mapViewModel.tagList) {
-        mapViewModel.addLocation(
+
+        mapViewModel.repository.addUbication(
             Ubicacion(
-                null,
-                nameOfPlace,
-                description,
-                selectedLocation,
-                mapViewModel.tagSelected,
-                mapViewModel.imageUri)
+                ubicationId = nameOfPlace ,
+                ubicationName  = nameOfPlace,
+                snippet = description,
+                position = selectedLocation,
+                tag = mapViewModel.tagSelected,
+                image = mapViewModel.imageUri )
         )
     }
 }
@@ -43,6 +44,8 @@ fun openAppSettings(activity: Activity){
     }
     activity.startActivity(intent)
 }
+
+
 
 object BitmapToUriConverter {
 

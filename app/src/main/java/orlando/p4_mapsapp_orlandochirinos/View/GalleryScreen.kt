@@ -2,6 +2,7 @@ package orlando.p4_mapsapp_orlandochirinos.View
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -46,14 +47,38 @@ fun GalleryScreen(
     val context = LocalContext.current
     val img : Bitmap? = ContextCompat.getDrawable(context, R.drawable.mapa)?.toBitmap()
     var bitmap by remember { mutableStateOf(img) }
+    var uriGet by remember { mutableStateOf<Uri?>(null ) }
+
+/*    // Lanzador para obtener la imagen desde la galería
     val launchImage = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
-        onResult = {
-            // Verificar si result es null o no
+        onResult = { uri ->
+            // Cargar la imagen desde la URI obtenida
             bitmap =
-                if (Build.VERSION.SDK_INT < 28) { MediaStore.Images.Media.getBitmap(context.contentResolver, it) }
+                if (Build.VERSION.SDK_INT < 28) {
+                    MediaStore.Images.Media.getBitmap(context.contentResolver, uri) }
                 else {
-                    val source = it?.let { it1 -> ImageDecoder.createSource(context.contentResolver, it1) }
+                val source = ImageDecoder.createSource(context.contentResolver, uri!!)
+                ImageDecoder.decodeBitmap(source)
+            }
+        }
+    )*/
+
+    val launchImage = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            // Verificar si result es null o no
+            if (uri != null) { mapViewmodel.setImageUriF(uri) }
+
+            bitmap =
+                if (Build.VERSION.SDK_INT < 28) {
+                    MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+                }
+
+                else {
+                    val source = uri?.let { it1 ->
+                        ImageDecoder.createSource(context.contentResolver, it1)
+                    }
                     source?.let { it1 -> ImageDecoder.decodeBitmap(source) }!!
                 }
         }
@@ -80,8 +105,13 @@ fun GalleryScreen(
                 .border(width = 1.dp, color = Color.White, shape = CircleShape)
         )
 
+        Button(onClick = { if (mapViewmodel.imageUriFirebase != null){
+            mapViewmodel.uploadImage(mapViewmodel.imageUriFirebase!!) } }
+        ) { Text(text = "Upload Image") }
+
         Button(onClick = { navigationController.navigate(Routes.MapScreen.route)  }
         ) { Text(text = "GO BACK") }
+
     }
 }
 

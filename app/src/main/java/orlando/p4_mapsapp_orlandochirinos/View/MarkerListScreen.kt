@@ -58,6 +58,7 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
                 modifier = Modifier.fillMaxWidth(0.25f)
             )
 */
+
             Column {
                 Text(text = location.ubicationName,
                     fontSize = MaterialTheme.typography.bodyLarge.fontSize,

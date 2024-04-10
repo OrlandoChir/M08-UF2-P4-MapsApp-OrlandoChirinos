@@ -1,6 +1,7 @@
 package orlando.p4_mapsapp_orlandochirinos.ModelView
 
 import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,10 +9,14 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import orlando.p4_mapsapp_orlandochirinos.Models.Repository
 import orlando.p4_mapsapp_orlandochirinos.Models.Ubicacion
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MapViewmodel : ViewModel() {
 
@@ -33,11 +38,10 @@ class MapViewmodel : ViewModel() {
 
     fun storeImageBitmap(bitmap : Bitmap) { this.imageBitmap =  bitmap  }
 
-    var imageUri by mutableStateOf( "" )
+    var imageUri by mutableStateOf<String?>( null )
         private set
 
-
-    fun storeImageUri(intImageUri : String) { this.imageUri = intImageUri  }
+    fun storeImageUri(intImageUri : Uri) { this.imageUri = intImageUri.toString()  }
 
 
     var currentScreen by mutableStateOf("")
@@ -46,7 +50,7 @@ class MapViewmodel : ViewModel() {
     var availableLocations : MutableList<Ubicacion> by mutableStateOf(
         mutableListOf(
             Ubicacion(
-                        ubicationId = null,
+                        ubicationId = "ITB",
                         ubicationName = "ITB",
                         snippet = "MARKER AT ITB",
                         position = LatLng(41.4534265, 2.1837151),
@@ -130,8 +134,33 @@ class MapViewmodel : ViewModel() {
                 Log.d("UbicationRepository","Current data: null")
             }
         }
-
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    var imageUriFirebase by mutableStateOf<Uri?>( null )
+        private set
+
+    fun setImageUriF(intImageUri : Uri) { this.imageUriFirebase = intImageUri }
+
+    fun uploadImage( imageUri : Uri ){
+        val formatter = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault() )
+        val now = Date()
+        val fileName = formatter.format(now)
+        val storage = FirebaseStorage.getInstance().getReference("images/$fileName")
+        storage.putFile(imageUri)
+            .addOnSuccessListener {
+                Log.i("IMAGE UPLOAD", "Image uplodaded successfully")
+                storage.downloadUrl.addOnSuccessListener { uri ->
+                    Log.i("IMAGEN" , uri.toString() )
+
+                    //Hacer cositas to wapas, nene
+
+                }
+            }
+            .addOnFailureListener{
+                Log.i("IMAGE UPLOAD", "Image upload failed")
+            }
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 }
     /* var closeNav : Boolean by mutableStateOf(true)
        fun closeNavigationMenu(){ this.closeNav = !this.closeNav }*/

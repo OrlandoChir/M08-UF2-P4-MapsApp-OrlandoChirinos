@@ -10,6 +10,7 @@ class Repository {
     //SELECT
     fun getAllUbications(): CollectionReference {
         return database.collection("ubications") }
+
     fun getUbication(ubicationId: String): DocumentReference {
         return database.collection("ubications").document(ubicationId) }
 

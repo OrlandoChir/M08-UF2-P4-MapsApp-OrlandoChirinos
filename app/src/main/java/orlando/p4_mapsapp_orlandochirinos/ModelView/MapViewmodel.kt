@@ -52,13 +52,6 @@ class MapViewmodel : ViewModel() {
     fun addLocation( newUbication : Ubicacion ){ this.availableLocations.add(newUbication) }
     fun getAllLocations():List<Ubicacion> { return this.availableLocations }
 
-    var positionToSee: LatLng =
-        if (availableLocations.isNotEmpty()) { availableLocations[0].position }
-        else { LatLng(0.0, 0.0) }
-
-        private set
-    fun changePosition(newPosition : LatLng){ this.positionToSee = newPosition }
-
     var bottomSheet : Boolean by  mutableStateOf(false)
         private set
 
@@ -89,6 +82,15 @@ class MapViewmodel : ViewModel() {
 
     private val _image = MutableStateFlow<String?>(null)
     val image: StateFlow<String?> = _image
+
+    var positionToSee: LatLng =
+        if (availableLocations.isNotEmpty()) {
+            LatLng(availableLocations[0].latitud, availableLocations[0].longitud) }
+
+        else { LatLng(0.0, 0.0) }
+
+        private set
+    fun changePosition(newPosition : LatLng){ this.positionToSee = newPosition }
 
     fun getAllUbications(){
         repository.getAllUbications().addSnapshotListener{ value, error ->

@@ -1,11 +1,11 @@
 package orlando.p4_mapsapp_orlandochirinos.Models
-import com.google.android.gms.maps.model.LatLng
 
 data class Ubicacion(
     var ubicationId: String? = null,
     val ubicationName: String,
     val snippet: String,
-    val position: LatLng,
+    var latitud: Double,
+    var longitud: Double,
     val tag: String,
     val image: String? = null
 ){
@@ -13,7 +13,8 @@ data class Ubicacion(
         ubicationId = null,
         ubicationName = "",
         snippet = "",
-        position = LatLng(41.4534265, 2.1837151),
+        latitud = 41.4534265,
+        longitud = 2.1837151,
         tag = "",
         image = null )
 }

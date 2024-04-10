@@ -21,7 +21,8 @@ class Repository {
                 hashMapOf(
                     "ubicationName" to ubicacion.ubicationName,
                     "snippet" to ubicacion.snippet,
-                    "position" to ubicacion.position,
+                    "latitud" to ubicacion.latitud,
+                    "longitud" to ubicacion.longitud,
                     "tag" to ubicacion.tag,
                     "image" to ubicacion.image )
             )
@@ -33,7 +34,8 @@ class Repository {
             hashMapOf(
                 "ubicationName" to editedUbicacion.ubicationName,
                 "snippet" to editedUbicacion.snippet,
-                "position" to editedUbicacion.position,
+                "latitud" to editedUbicacion.latitud,
+                "longitud" to editedUbicacion.longitud,
                 "tag" to editedUbicacion.tag,
                 "image" to editedUbicacion.image)
         )

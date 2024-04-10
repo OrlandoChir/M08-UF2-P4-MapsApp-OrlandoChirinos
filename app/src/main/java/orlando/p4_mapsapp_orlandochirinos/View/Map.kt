@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
@@ -34,6 +35,7 @@ fun MapScreen(
 fun MapGoogle(mapViewModel: MapViewmodel,navigationController: NavHostController,cameraViewmodel: CameraViewmodel){
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
+    mapViewModel.getAllUbications()
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -53,9 +55,11 @@ fun MapGoogle(mapViewModel: MapViewmodel,navigationController: NavHostController
             }
         ) {
 
+            //REEMPLAZAR POR EL REPOSITORY
             mapViewModel.availableLocations.forEach { ubicacion ->
+                val position = LatLng(ubicacion.latitud, ubicacion.longitud)
                 Marker(
-                    state = MarkerState(position = ubicacion.position),
+                    state = MarkerState(position = position),
                     title = ubicacion.ubicationName,
                     snippet = ubicacion.snippet,
                     tag = ubicacion.tag,

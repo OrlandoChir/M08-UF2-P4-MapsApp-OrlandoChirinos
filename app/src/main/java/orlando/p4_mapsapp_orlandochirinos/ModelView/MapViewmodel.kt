@@ -47,22 +47,15 @@ class MapViewmodel : ViewModel() {
     var currentScreen by mutableStateOf("")
         private set
     fun screenSelect(screenValue: String) { this.currentScreen = screenValue }
-    var availableLocations : MutableList<Ubicacion> by mutableStateOf(
-        mutableListOf(
-            Ubicacion(
-                        ubicationId = "ITB",
-                        ubicationName = "ITB",
-                        snippet = "MARKER AT ITB",
-                        position = LatLng(41.4534265, 2.1837151),
-                        tag = "Favoritos",
-                        image = this.imageUri )
-        )
-    )
+    var availableLocations : MutableList<Ubicacion> by mutableStateOf( mutableListOf() )
         private set
     fun addLocation( newUbication : Ubicacion ){ this.availableLocations.add(newUbication) }
     fun getAllLocations():List<Ubicacion> { return this.availableLocations }
 
-    var positionToSee: LatLng = availableLocations[0].position
+    var positionToSee: LatLng =
+        if (availableLocations.isNotEmpty()) { availableLocations[0].position }
+        else { LatLng(0.0, 0.0) }
+
         private set
     fun changePosition(newPosition : LatLng){ this.positionToSee = newPosition }
 
@@ -85,8 +78,11 @@ class MapViewmodel : ViewModel() {
     private val _snippet = MutableStateFlow("")
     val snippet: StateFlow<String> = _snippet
 
-    private val _position = MutableStateFlow(LatLng(0.0, 0.0))
-    val position: StateFlow<LatLng> = _position
+    private val _latitud = MutableStateFlow(0.0)
+    val latitud: StateFlow<Double> = _latitud
+
+    private val _longitud = MutableStateFlow(0.0)
+    val longitud: StateFlow<Double> = _longitud
 
     private val _tag = MutableStateFlow("")
     val tag: StateFlow<String> = _tag
@@ -105,6 +101,7 @@ class MapViewmodel : ViewModel() {
                 if (docChange.type == DocumentChange.Type.ADDED){
                     val newUbication = docChange.document.toObject(Ubicacion::class.java)
                     newUbication.ubicationId = docChange.document.id
+
                     tempList.add(newUbication)
                 }
             }
@@ -126,9 +123,10 @@ class MapViewmodel : ViewModel() {
                 _actualUbication.value = ubication
                 _ubicationName.value = _actualUbication.value!!.ubicationName
                 _snippet.value = _actualUbication.value!!.ubicationName
-                _position.value = _actualUbication.value!!.position
-                _tag.value = _actualUbication.value!!.position.toString()
-                _image.value = _actualUbication.value!!.position.toString()
+                _latitud.value = _actualUbication.value!!.latitud
+                _longitud.value = _actualUbication.value!!.longitud
+                _tag.value = _actualUbication.value!!.tag
+                _image.value = _actualUbication.value!!.image.toString()
             }
             else {
                 Log.d("UbicationRepository","Current data: null")

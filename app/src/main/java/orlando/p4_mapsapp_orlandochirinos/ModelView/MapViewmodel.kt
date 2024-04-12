@@ -116,6 +116,8 @@ class MapViewmodel : ViewModel() {
     fun changePosition(newPosition : LatLng){ this.positionToSee = newPosition }
 
     fun getAllUbications(){
+        //FILTRO
+//     repository.getAllUbications().whereEqualTo("tag","Restaurantes").addSnapshotListener{ value, error ->
         repository.getAllUbications().addSnapshotListener{ value, error ->
             if (error != null){
                 Log.e("Firestore error",error.message.toString() )

@@ -110,7 +110,7 @@ class MapViewmodel : ViewModel() {
         if (availableLocations.isNotEmpty()) {
             LatLng(availableLocations[0].latitud, availableLocations[0].longitud) }
 
-        else { LatLng(0.0, 0.0) }
+        else { LatLng(41.4534265, 2.1837151) }
 
         private set
     fun changePosition(newPosition : LatLng){ this.positionToSee = newPosition }

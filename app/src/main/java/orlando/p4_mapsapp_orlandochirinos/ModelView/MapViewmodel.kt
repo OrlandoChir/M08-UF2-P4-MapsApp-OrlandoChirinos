@@ -6,6 +6,8 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.DocumentChange
@@ -49,8 +51,29 @@ class MapViewmodel : ViewModel() {
     fun screenSelect(screenValue: String) { this.currentScreen = screenValue }
     var availableLocations : MutableList<Ubicacion> by mutableStateOf( mutableListOf() )
         private set
-    fun addLocation( newUbication : Ubicacion ){ this.availableLocations.add(newUbication) }
-    fun getAllLocations():List<Ubicacion> { return this.availableLocations }
+
+    private val _firestoreAvailableLocations = MutableLiveData<List<Ubicacion>>()
+    val firestoreAvailableLocations: LiveData<List<Ubicacion>> = _firestoreAvailableLocations
+
+    fun updateAvailableLocations(newLocations: List<Ubicacion>) {
+        _firestoreAvailableLocations.value = newLocations
+    }
+
+/*    var availableLocations2 : MutableList<Ubicacion> by mutableStateOf( mutableListOf(
+        Ubicacion(
+            ubicationId = "null",
+            ubicationName = "ITB",
+            snippet = "dadad",
+            latitud = 41.4534265,
+            longitud = 2.1837151,
+            tag = "Favoritos",
+            image = "null" )
+        )
+    )
+        private set*/
+
+/*    fun addLocation( newUbication : Ubicacion ){ this.firestoreAvailableLocations.add(newUbication) }
+    fun getAllLocations(): LiveData<List<Ubicacion>> { return this.firestoreAvailableLocations }*/
 
     var bottomSheet : Boolean by  mutableStateOf(false)
         private set
@@ -103,11 +126,10 @@ class MapViewmodel : ViewModel() {
                 if (docChange.type == DocumentChange.Type.ADDED){
                     val newUbication = docChange.document.toObject(Ubicacion::class.java)
                     newUbication.ubicationId = docChange.document.id
-
                     tempList.add(newUbication)
                 }
             }
-            availableLocations = tempList
+            _firestoreAvailableLocations.postValue(tempList)
         }
     }
 

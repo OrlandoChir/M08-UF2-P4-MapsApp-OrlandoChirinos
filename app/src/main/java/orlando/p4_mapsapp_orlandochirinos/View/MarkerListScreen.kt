@@ -13,11 +13,14 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.google.android.gms.maps.model.LatLng
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
 import orlando.p4_mapsapp_orlandochirinos.Models.Ubicacion
 import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
@@ -26,8 +29,10 @@ import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 @Composable
 fun MarkerListScreen(mapViewmodel: MapViewmodel, navigationController: NavHostController) {
 
+    val availableLocations: List<Ubicacion> by mapViewmodel.firestoreAvailableLocations.observeAsState(listOf())
+
     LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)){
-        items(mapViewmodel.getAllLocations()){ location ->
+        items( availableLocations ){ location ->
             LocationItem(location,mapViewmodel,navigationController)
         }
     }
@@ -43,7 +48,7 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
             .clickable {
               //  navigationController.navigate(Routes.MapScreen.spawnOnPosition(location.position))
                 mapViewmodel.screenSelect(mapViewmodel.screenList[1])
-                mapViewmodel.changePosition(location.position)
+                mapViewmodel.changePosition(LatLng(location.latitud,location.longitud))
                 navigationController.navigate(Routes.MapScreen.route)
             }
     )

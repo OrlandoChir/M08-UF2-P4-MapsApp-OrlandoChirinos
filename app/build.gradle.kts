@@ -58,6 +58,7 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0-alpha03")
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.2")
+    implementation ("androidx.compose.runtime:runtime:1.0.0")
 
 
     //= = = = = = = = = = = FIREBASE TO WAPA = = = = = = = = = = =
@@ -73,7 +74,7 @@ dependencies {
     // = = = = = = = = = = = GUGULMAP IMPLEMENTATIONS = = = = = = = = = = =
     implementation("com.google.maps.android:maps-compose:2.11.4")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
-    implementation("com.google.android.gms:play-services-location:21.1.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
     // = = = = = = = = = = =  | | | | | | | | | | | | = = = = = = = = = = =
     // = = = = = = = = = = = NAVEGAÇAO = = = = = = = = = = =
     implementation ("androidx.navigation:navigation-compose:2.7.5")

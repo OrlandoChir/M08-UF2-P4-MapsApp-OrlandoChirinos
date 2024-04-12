@@ -29,7 +29,8 @@ fun tryAddNewLocation(
                 ubicationId = nameOfPlace ,
                 ubicationName  = nameOfPlace,
                 snippet = description,
-                position = selectedLocation,
+                latitud = selectedLocation.latitude,
+                longitud = selectedLocation.longitude,
                 tag = mapViewModel.tagSelected,
                 image = mapViewModel.imageUri )
         )

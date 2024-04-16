@@ -84,10 +84,23 @@ fun MenuLateral(
                         imageVector = Icons.Filled.ArrowBackIosNew,
                         contentDescription = "CLOSE")
                 }
+                
                 Divider ()
                 Column (modifier = Modifier
                     .padding(top = 5.dp)
                     .align(Alignment.CenterHorizontally) ) {
+
+                    Button(
+                        modifier = Modifier.fillMaxWidth(0.7f),
+                        shape = RectangleShape,
+                        colors = ButtonDefaults.buttonColors(Color.Magenta),
+                        onClick = { mapViewModel.clearTag() })
+                    { Text(text = "CLEAR TAGS") }
+
+                    Box(modifier = Modifier.fillMaxWidth(0.7f) ) {
+                        SelectCategories(mapViewModel = mapViewModel)
+                    }
+
                     Button(
                         modifier = Modifier.fillMaxWidth(0.7f),
                         shape = RectangleShape,
@@ -191,7 +204,7 @@ fun Bottom(
     val selectedLocation by mapViewModel.selectedPosition.collectAsState()
 
     ModalBottomSheet(
-        onDismissRequest = { mapViewModel.showBottomSheet() },
+        onDismissRequest = { mapViewModel.showBottomSheet() ; mapViewModel.clearTag() },
         sheetState = sheetState ) {
         // Sheet content
 
@@ -203,7 +216,6 @@ fun Bottom(
             Column {
                 
                 // GlideImage(model = , contentDescription = )
-
 
                 OutlinedTextField(
                     value = nameOfPlace,

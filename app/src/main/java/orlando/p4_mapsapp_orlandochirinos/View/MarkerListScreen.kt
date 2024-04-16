@@ -5,10 +5,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,15 +31,26 @@ import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 
 @Composable
 fun MarkerListScreen(mapViewmodel: MapViewmodel, navigationController: NavHostController) {
-
     val availableLocations: List<Ubicacion> by mapViewmodel.firestoreAvailableLocations.observeAsState(listOf())
 
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)){
-        items( availableLocations ){ location ->
-            LocationItem(location,mapViewmodel,navigationController)
+    Column {
+
+        Row {
+            Button(onClick = { mapViewmodel.clearTag() } )
+                { Text(text = "Limpiar filtro") }
+            SelectCategories(mapViewModel = mapViewmodel)
+        }
+
+        Spacer(modifier = Modifier.size(10.dp) )
+
+        if (mapViewmodel.tagSelected != ""){ mapViewmodel.getUbicationsFiltered(mapViewmodel.tagSelected) }
+        else { mapViewmodel.getAllUbications() }
+
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)){
+            items( availableLocations ){ location ->
+                LocationItem(location,mapViewmodel,navigationController) }
         }
     }
-
 }
 
 @Composable
@@ -46,9 +60,9 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
             .fillMaxWidth()
             .padding(top = 5.dp)
             .clickable {
-              //  navigationController.navigate(Routes.MapScreen.spawnOnPosition(location.position))
+                //  navigationController.navigate(Routes.MapScreen.spawnOnPosition(location.position))
                 mapViewmodel.screenSelect(mapViewmodel.screenList[1])
-                mapViewmodel.changePosition(LatLng(location.latitud,location.longitud))
+                mapViewmodel.changePosition(LatLng(location.latitud, location.longitud))
                 navigationController.navigate(Routes.MapScreen.route)
             }
     )

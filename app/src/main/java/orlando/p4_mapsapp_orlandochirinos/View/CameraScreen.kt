@@ -51,9 +51,6 @@ fun CameraScreen(mapViewmodel: MapViewmodel,
         }
     )
 
- //   Column( modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-  //    Button(onClick = {
-
     Icon(
         modifier = Modifier
             .fillMaxWidth()

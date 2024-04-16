@@ -32,8 +32,9 @@ class MapViewmodel : ViewModel() {
     val tagList = listOf<String>("Favoritos", "Restaurantes", "Parques", "Casas")
 
     val screenList = listOf<String>("login","map","markerlist","markerdetail","camera")
+
     var tagSelected by mutableStateOf("")
-        private set
+    fun clearTag(){ tagSelected = "" }
     fun selectTag(tagValue: String) { this.tagSelected = tagValue }
     var imageBitmap by mutableStateOf( this.defaultBitmap )
         private set
@@ -116,9 +117,26 @@ class MapViewmodel : ViewModel() {
     fun changePosition(newPosition : LatLng){ this.positionToSee = newPosition }
 
     fun getAllUbications(){
-        //FILTRO
-//     repository.getAllUbications().whereEqualTo("tag","Restaurantes").addSnapshotListener{ value, error ->
         repository.getAllUbications().addSnapshotListener{ value, error ->
+            if (error != null){
+                Log.e("Firestore error",error.message.toString() )
+                return@addSnapshotListener
+            }
+            val tempList = mutableListOf<Ubicacion>()
+            for (docChange: DocumentChange in value?.documentChanges!!){
+                if (docChange.type == DocumentChange.Type.ADDED){
+                    val newUbication = docChange.document.toObject(Ubicacion::class.java)
+                    newUbication.ubicationId = docChange.document.id
+                    tempList.add(newUbication)
+                }
+            }
+            _firestoreAvailableLocations.postValue(tempList)
+        }
+    }
+
+    fun getUbicationsFiltered(tagValue:String){
+        //FILTRO
+         repository.getAllUbications().whereEqualTo("tag",tagValue).addSnapshotListener{ value, error ->
             if (error != null){
                 Log.e("Firestore error",error.message.toString() )
                 return@addSnapshotListener

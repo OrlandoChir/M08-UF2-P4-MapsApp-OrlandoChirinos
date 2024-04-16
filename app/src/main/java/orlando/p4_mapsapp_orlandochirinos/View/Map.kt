@@ -40,7 +40,8 @@ fun MapGoogle(mapViewModel: MapViewmodel,navigationController: NavHostController
     val scope = rememberCoroutineScope()
     val availableLocations: List<Ubicacion> by mapViewModel.firestoreAvailableLocations.observeAsState(listOf())
 
-    mapViewModel.getAllUbications()
+    if (mapViewModel.tagSelected != ""){ mapViewModel.getUbicationsFiltered(mapViewModel.tagSelected) }
+    else { mapViewModel.getAllUbications() }
 
     Column(modifier = Modifier
         .fillMaxSize()

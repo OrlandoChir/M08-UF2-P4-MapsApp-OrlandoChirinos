@@ -199,7 +199,7 @@ class MapViewmodel : ViewModel() {
                     Log.i("IMAGEN" , uri.toString() )
 
                     //Hacer cositas to wapas, nene
-
+                    storeImageUri(uri)
                 }
             }
             .addOnFailureListener{

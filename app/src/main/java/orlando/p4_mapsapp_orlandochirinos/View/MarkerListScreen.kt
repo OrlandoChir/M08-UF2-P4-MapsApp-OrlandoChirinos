@@ -23,9 +23,12 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.google.android.gms.maps.model.LatLng
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
 import orlando.p4_mapsapp_orlandochirinos.Models.Ubicacion
@@ -64,6 +67,7 @@ fun MarkerListScreen(mapViewmodel: MapViewmodel, navigationController: NavHostCo
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationController: NavHostController) {
     Card( border = BorderStroke(2.dp, Color.Black),
@@ -81,13 +85,12 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
         Row {
             //AUN NO TENGO IMAGEN QUE MOSTRAR.
 
-/*            GlideImage(
-                model = agent.displayIcon,
-                contentDescription = "Character Image",
+            GlideImage(
+                model = mapViewmodel.imageUriFirebase,
+                contentDescription = "Image from storage",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxWidth(0.25f)
             )
-*/
 
             Column (modifier = Modifier.padding(start = 5.dp, bottom = 10.dp)) {
                 Text(text = location.ubicationName,

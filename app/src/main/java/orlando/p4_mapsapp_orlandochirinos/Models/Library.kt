@@ -17,18 +17,16 @@ import java.io.IOException
 
 fun tryAddNewLocation(
     mapViewModel: MapViewmodel,
-    selectedLocation: LatLng?,
-    nameOfPlace: String,
-    description: String ) {
+    selectedLocation: LatLng?) {
 
-    if (selectedLocation != null && nameOfPlace.length > 1 &&
+    if (selectedLocation != null && mapViewModel.nameOfPlace.length > 1 &&
         mapViewModel.tagSelected in mapViewModel.tagList) {
 
         mapViewModel.repository.addUbication(
             Ubicacion(
-                ubicationId = nameOfPlace ,
-                ubicationName  = nameOfPlace,
-                snippet = description,
+                ubicationId = mapViewModel.nameOfPlace ,
+                ubicationName  = mapViewModel.nameOfPlace,
+                snippet = mapViewModel.description,
                 latitud = selectedLocation.latitude,
                 longitud = selectedLocation.longitude,
                 tag = mapViewModel.tagSelected,

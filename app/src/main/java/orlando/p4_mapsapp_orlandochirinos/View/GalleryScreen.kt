@@ -68,13 +68,10 @@ fun GalleryScreen(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             // Verificar si uri es nulo
-            if (uri != null) {
-                mapViewmodel.setImageUriF(uri)
-
+            if (uri != null) { mapViewmodel.setImageUriF(uri)
                 bitmap =
-                    if (Build.VERSION.SDK_INT < 28) {
-                        MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
-                    } else {
+                    if (Build.VERSION.SDK_INT < 28) { MediaStore.Images.Media.getBitmap(context.contentResolver, uri) }
+                    else {
                         val source = uri.let { ImageDecoder.createSource(context.contentResolver, it) }
                         ImageDecoder.decodeBitmap(source)
                     }

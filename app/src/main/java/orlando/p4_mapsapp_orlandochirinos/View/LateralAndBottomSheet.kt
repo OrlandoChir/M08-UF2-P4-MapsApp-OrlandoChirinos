@@ -198,16 +198,18 @@ fun Bottom(
 ){
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-    var nameOfPlace by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
+
     
     val selectedLocation by mapViewModel.selectedPosition.collectAsState()
 
     ModalBottomSheet(
-        onDismissRequest = { mapViewModel.showBottomSheet() ; mapViewModel.clearTag() },
+        onDismissRequest = { mapViewModel.showBottomSheet()
+                             mapViewModel.clearTag()
+                             mapViewModel.nameOfPlace = ""
+                             mapViewModel.description = ""},
         sheetState = sheetState ) {
-        // Sheet content
 
+        // Sheet content
         Box (modifier = Modifier
             .fillMaxWidth(0.6f)
             .fillMaxHeight()
@@ -218,16 +220,16 @@ fun Bottom(
                 // GlideImage(model = , contentDescription = )
 
                 OutlinedTextField(
-                    value = nameOfPlace,
-                    onValueChange = { nameOfPlace = it },
+                    value = mapViewModel.nameOfPlace,
+                    onValueChange = { mapViewModel.nameOfPlace = it },
                     label = { Text("Nombre del lugar") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = Color.Magenta, unfocusedBorderColor = Color.Black )
                 )
 
                 OutlinedTextField(
-                    value = description,
-                    onValueChange = { description = it },
+                    value = mapViewModel.description,
+                    onValueChange = { mapViewModel.description = it },
                     label = { Text("Descripción del lugar") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = Color.Magenta, unfocusedBorderColor = Color.Black )
@@ -256,7 +258,7 @@ fun Bottom(
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
                             //Añadir (si se puede) el marcador
 
-                            tryAddNewLocation(mapViewModel, selectedLocation, nameOfPlace, description)
+                            tryAddNewLocation(mapViewModel, selectedLocation)
 
                             //Cerrar bottomsheet
                             if (!sheetState.isVisible) {

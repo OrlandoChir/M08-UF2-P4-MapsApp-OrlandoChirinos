@@ -23,8 +23,11 @@ import java.util.Locale
 class MapViewmodel : ViewModel() {
 
     //private val database = FirebaseFirestore.getInstance()
-
     var repository : Repository = Repository()
+
+    var nameOfPlace by mutableStateOf("")
+
+    var description by mutableStateOf("")
 
     val defaultBitmap: Bitmap =
         Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
@@ -188,6 +191,7 @@ class MapViewmodel : ViewModel() {
         val now = Date()
         val fileName = formatter.format(now)
         val storage = FirebaseStorage.getInstance().getReference("images/$fileName")
+
         storage.putFile(imageUri)
             .addOnSuccessListener {
                 Log.i("IMAGE UPLOAD", "Image uplodaded successfully")

@@ -67,20 +67,18 @@ fun GalleryScreen(
     val launchImage = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
-            // Verificar si result es null o no
-            if (uri != null) { mapViewmodel.setImageUriF(uri) }
+            // Verificar si uri es nulo
+            if (uri != null) {
+                mapViewmodel.setImageUriF(uri)
 
-            bitmap =
-                if (Build.VERSION.SDK_INT < 28) {
-                    MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
-                }
-
-                else {
-                    val source = uri?.let { it1 ->
-                        ImageDecoder.createSource(context.contentResolver, it1)
+                bitmap =
+                    if (Build.VERSION.SDK_INT < 28) {
+                        MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+                    } else {
+                        val source = uri.let { ImageDecoder.createSource(context.contentResolver, it) }
+                        ImageDecoder.decodeBitmap(source)
                     }
-                    source?.let { it1 -> ImageDecoder.decodeBitmap(source) }!!
-                }
+            }
         }
     )
 
@@ -90,28 +88,33 @@ fun GalleryScreen(
         modifier = Modifier.fillMaxSize()
     ) {
 
-        Button(onClick = { launchImage.launch("image/*") }
-        ) { Text(text = "OPEN GALLERY") }
+        Button(onClick = { launchImage.launch("image/*") }) {
+            Text(text = "OPEN GALLERY") }
 
         // Utilizamos el operador de elvis (?:) para manejar el posible valor nulo de bitmap
-        Image(
-            bitmap = bitmap!!.asImageBitmap(),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(250.dp)
-                .background(Color.Cyan)
-                .border(width = 1.dp, color = Color.White, shape = CircleShape)
-        )
+        if (bitmap != null) {
+            Image(
+                bitmap = bitmap!!.asImageBitmap(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .size(250.dp)
+                    .background(Color.Cyan)
+                    .border(width = 1.dp, color = Color.White, shape = CircleShape)
+            )
+        }
+        else { Text(text = "No image selected") }
 
-        Button(onClick = { if (mapViewmodel.imageUriFirebase != null){
-            mapViewmodel.uploadImage(mapViewmodel.imageUriFirebase!!) } }
-        ) { Text(text = "Upload Image") }
+        Button(onClick = {
+            if (mapViewmodel.imageUriFirebase != null) {
+                mapViewmodel.uploadImage(mapViewmodel.imageUriFirebase!!) }
+        })
+        { Text(text = "Upload Image") }
 
-        Button(onClick = { navigationController.navigate(Routes.MapScreen.route)  }
-        ) { Text(text = "GO BACK") }
-
+        Button(onClick = { navigationController.navigate(Routes.MapScreen.route) }) {
+            Text(text = "GO BACK")
+        }
     }
 }
 

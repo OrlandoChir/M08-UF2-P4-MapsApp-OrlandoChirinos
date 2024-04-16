@@ -3,6 +3,7 @@ package orlando.p4_mapsapp_orlandochirinos.View
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -33,22 +36,30 @@ import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 fun MarkerListScreen(mapViewmodel: MapViewmodel, navigationController: NavHostController) {
     val availableLocations: List<Ubicacion> by mapViewmodel.firestoreAvailableLocations.observeAsState(listOf())
 
-    Column {
+    Box(modifier = Modifier.padding(5.dp) ) {
+        Column {
 
-        Row {
-            Button(onClick = { mapViewmodel.clearTag() } )
-                { Text(text = "Limpiar filtro") }
-            SelectCategories(mapViewModel = mapViewmodel)
-        }
+            Row {
+                Button(
+                    modifier = Modifier.fillMaxWidth(0.4f),
+                    shape = RectangleShape,
+                    colors = ButtonDefaults.buttonColors(Color.Magenta),
+                    onClick = { mapViewmodel.clearTag() })
+                { Text(text = "CLEAR TAGS") }
+                Spacer(modifier = Modifier.padding(5.dp))
+                SelectCategories(mapViewModel = mapViewmodel)
+            }
 
-        Spacer(modifier = Modifier.size(10.dp) )
+            Spacer(modifier = Modifier.size(10.dp))
 
-        if (mapViewmodel.tagSelected != ""){ mapViewmodel.getUbicationsFiltered(mapViewmodel.tagSelected) }
-        else { mapViewmodel.getAllUbications() }
+            if (mapViewmodel.tagSelected != "") { mapViewmodel.getUbicationsFiltered(mapViewmodel.tagSelected) }
+            else { mapViewmodel.getAllUbications() }
 
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)){
-            items( availableLocations ){ location ->
-                LocationItem(location,mapViewmodel,navigationController) }
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                items(availableLocations) { location ->
+                    LocationItem(location, mapViewmodel, navigationController)
+                }
+            }
         }
     }
 }
@@ -78,7 +89,7 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
             )
 */
 
-            Column {
+            Column (modifier = Modifier.padding(start = 5.dp, bottom = 10.dp)) {
                 Text(text = location.ubicationName,
                     fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                     fontWeight = FontWeight.Bold,

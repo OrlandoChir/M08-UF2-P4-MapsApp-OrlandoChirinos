@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
@@ -44,11 +45,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import kotlinx.coroutines.launch
 import orlando.p4_mapsapp_orlandochirinos.ModelView.CameraViewmodel
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
@@ -188,7 +193,7 @@ fun TopBar(mapViewModel: MapViewmodel, state: DrawerState) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Bottom(
@@ -198,15 +203,12 @@ fun Bottom(
 ){
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-
-    
     val selectedLocation by mapViewModel.selectedPosition.collectAsState()
 
     ModalBottomSheet(
         onDismissRequest = { mapViewModel.showBottomSheet()
                              mapViewModel.clearTag()
-                             mapViewModel.nameOfPlace = ""
-                             mapViewModel.description = ""},
+                             mapViewModel.clearModal() },
         sheetState = sheetState ) {
 
         // Sheet content
@@ -216,8 +218,16 @@ fun Bottom(
             .align(Alignment.CenterHorizontally) ) {
 
             Column {
-                
-                // GlideImage(model = , contentDescription = )
+
+                if (mapViewModel.imageUriFirebase != null) {
+                    GlideImage(
+                        model = mapViewModel.imageUri,
+                        contentDescription = "Image preview",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.size(100.dp).align(CenterHorizontally)
+                    )
+                    Spacer(modifier = Modifier.fillMaxHeight(0.02f))
+                }
 
                 OutlinedTextField(
                     value = mapViewModel.nameOfPlace,
@@ -239,13 +249,6 @@ fun Bottom(
                 SelectCategories(mapViewModel)
 
                 CameraScreen( mapViewModel, navigationController, cameraViewmodel )
-
-/*                Icon(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.2f)
-                        .clickable { mapViewModel.screenSelect(mapViewModel.screenList[4]) },
-                    imageVector = Icons.Filled.CameraAlt, contentDescription = "CAMERA" )*/
 
                 Button(
                     modifier = Modifier

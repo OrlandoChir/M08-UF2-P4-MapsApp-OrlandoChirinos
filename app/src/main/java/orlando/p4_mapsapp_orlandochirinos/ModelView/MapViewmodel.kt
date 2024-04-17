@@ -209,6 +209,12 @@ class MapViewmodel : ViewModel() {
             }
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////
+    fun clearModal(){
+        this.nameOfPlace = ""
+        this.description = ""
+        this.imageUriFirebase = null
+    }
+
 }
     /* var closeNav : Boolean by mutableStateOf(true)
        fun closeNavigationMenu(){ this.closeNav = !this.closeNav }*/

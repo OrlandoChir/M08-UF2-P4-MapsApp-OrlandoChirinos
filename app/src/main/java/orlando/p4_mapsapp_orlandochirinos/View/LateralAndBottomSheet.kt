@@ -260,7 +260,6 @@ fun Bottom(
                     onClick = {
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
                             //Añadir (si se puede) el marcador
-
                             tryAddNewLocation(mapViewModel, selectedLocation)
 
                             //Cerrar bottomsheet

@@ -12,6 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DeleteForever
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -20,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -92,14 +97,35 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
                 modifier = Modifier.fillMaxWidth(0.25f)
             )
 
-            Column (modifier = Modifier.padding(start = 5.dp, bottom = 10.dp)) {
-                Text(text = location.ubicationName,
-                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 5.dp) )
-                Text(text = "Descripción: ${location.snippet}\n" +
-                            "Etiqueta: ${location.tag}")
+            Box(modifier = Modifier.fillMaxWidth(0.80f)) {
+                Column(modifier = Modifier.padding(start = 5.dp, bottom = 10.dp)) {
+                    Text(
+                        text = location.ubicationName,
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(top = 5.dp)
+                    )
+                    Text(text = "Descripción: ${location.snippet}\n" +
+                                "Etiqueta: ${location.tag}" )
+                }
             }
+            Column( modifier = Modifier.align(CenterVertically) ) {
+                Icon(
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clickable { } ,
+                    imageVector = Icons.Filled.Edit, contentDescription = "EDIT" )
+
+                Spacer(modifier = Modifier.size(10.dp))
+
+                Icon(
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clickable { } ,
+                    imageVector = Icons.Filled.DeleteForever, contentDescription = "DELETE" )
+            }
+
+
         }
     }
 }

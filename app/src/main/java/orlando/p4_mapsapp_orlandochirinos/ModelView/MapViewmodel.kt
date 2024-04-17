@@ -181,6 +181,8 @@ class MapViewmodel : ViewModel() {
         }
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////
+
+
     var imageUriFirebase by mutableStateOf<Uri?>( null )
         private set
 

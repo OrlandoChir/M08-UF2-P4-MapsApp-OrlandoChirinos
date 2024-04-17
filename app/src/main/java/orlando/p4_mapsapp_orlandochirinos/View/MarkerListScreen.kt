@@ -86,7 +86,7 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
             //AUN NO TENGO IMAGEN QUE MOSTRAR.
 
             GlideImage(
-                model = mapViewmodel.imageUriFirebase,
+                model = location.image,
                 contentDescription = "Image from storage",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxWidth(0.25f)

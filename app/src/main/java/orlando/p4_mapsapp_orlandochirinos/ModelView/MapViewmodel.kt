@@ -119,6 +119,9 @@ class MapViewmodel : ViewModel() {
         private set
     fun changePosition(newPosition : LatLng){ this.positionToSee = newPosition }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    //SQL
+    //SELECT ALL
     fun getAllUbications(){
         repository.getAllUbications().addSnapshotListener{ value, error ->
             if (error != null){
@@ -137,6 +140,7 @@ class MapViewmodel : ViewModel() {
         }
     }
 
+    //SELECT WHERE
     fun getUbicationsFiltered(tagValue:String){
         //FILTRO
          repository.getAllUbications().whereEqualTo("tag",tagValue).addSnapshotListener{ value, error ->
@@ -156,6 +160,7 @@ class MapViewmodel : ViewModel() {
         }
     }
 
+    //SELECT x FROM
     fun getUbication(intUbicationId: String){
         repository.getUbication(intUbicationId).addSnapshotListener{ value, error ->
             if (error != null){
@@ -180,6 +185,13 @@ class MapViewmodel : ViewModel() {
             }
         }
     }
+
+    //UPDATE
+    fun deleteUbication(intUbicationId: String){
+        repository.deleteUbication(intUbicationId)
+    }
+
+
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
 

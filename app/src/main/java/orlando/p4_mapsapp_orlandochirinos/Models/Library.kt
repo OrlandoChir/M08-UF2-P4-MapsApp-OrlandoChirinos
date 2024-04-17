@@ -44,7 +44,10 @@ fun openAppSettings(activity: Activity){
     activity.startActivity(intent)
 }
 
-
+fun filterMarker(mapViewmodel: MapViewmodel) {
+    if (mapViewmodel.tagSelected != "") { mapViewmodel.getUbicationsFiltered(mapViewmodel.tagSelected) }
+    else { mapViewmodel.getAllUbications() }
+}
 
 object BitmapToUriConverter {
 

@@ -30,7 +30,8 @@ class Repository {
 
     //UPDATE
     fun editUbication(editedUbicacion: Ubicacion){
-        database.collection("ubications").document(editedUbicacion.ubicationId!!).set(
+        database.collection("ubications").document(editedUbicacion.ubicationId!!)
+            .set(
             hashMapOf(
                 "ubicationName" to editedUbicacion.ubicationName,
                 "snippet" to editedUbicacion.snippet,

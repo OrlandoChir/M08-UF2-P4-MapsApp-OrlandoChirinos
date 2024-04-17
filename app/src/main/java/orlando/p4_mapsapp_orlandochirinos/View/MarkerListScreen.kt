@@ -37,6 +37,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.google.android.gms.maps.model.LatLng
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
 import orlando.p4_mapsapp_orlandochirinos.Models.Ubicacion
+import orlando.p4_mapsapp_orlandochirinos.Models.filterMarker
 import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 
 
@@ -121,11 +122,12 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
                 Icon(
                     modifier = Modifier
                         .size(30.dp)
-                        .clickable { } ,
+                        .clickable {
+                            location.ubicationId?.let { mapViewmodel.deleteUbication(it) }
+                            filterMarker(mapViewmodel)
+                                   } ,
                     imageVector = Icons.Filled.DeleteForever, contentDescription = "DELETE" )
             }
-
-
         }
     }
 }

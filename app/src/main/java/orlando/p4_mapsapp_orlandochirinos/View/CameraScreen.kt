@@ -58,7 +58,6 @@ fun CameraScreen(mapViewmodel: MapViewmodel,
             .clickable {
                 if (!isCameraPermissionGranted) { launcher.launch(Manifest.permission.CAMERA) }
                 else {
-                   // mapViewmodel.storeImageBitmap(mapViewmodel.defaultBitmap)
                     navigationController.navigate(Routes.TakePhotoScreen.route)
                      } },
                 imageVector = Icons.Filled.CameraAlt, contentDescription = "CAMERA" )

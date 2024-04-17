@@ -22,6 +22,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import orlando.p4_mapsapp_orlandochirinos.ModelView.CameraViewmodel
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
 import orlando.p4_mapsapp_orlandochirinos.Models.Ubicacion
+import orlando.p4_mapsapp_orlandochirinos.Models.filterMarker
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
@@ -40,8 +41,7 @@ fun MapGoogle(mapViewModel: MapViewmodel,navigationController: NavHostController
     val scope = rememberCoroutineScope()
     val availableLocations: List<Ubicacion> by mapViewModel.firestoreAvailableLocations.observeAsState(listOf())
 
-    if (mapViewModel.tagSelected != ""){ mapViewModel.getUbicationsFiltered(mapViewModel.tagSelected) }
-    else { mapViewModel.getAllUbications() }
+    filterMarker(mapViewModel)
 
     Column(modifier = Modifier
         .fillMaxSize()

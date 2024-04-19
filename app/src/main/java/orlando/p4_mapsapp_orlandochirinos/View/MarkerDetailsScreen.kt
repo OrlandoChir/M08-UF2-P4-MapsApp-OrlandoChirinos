@@ -13,7 +13,6 @@ fun MarkerDetailsScreen(mapViewmodel: MapViewmodel, navigationController: NavHos
         Column {
              //Imagen que viene del URI transformado en string.
 
-
             //Nombre del lugar
 
 

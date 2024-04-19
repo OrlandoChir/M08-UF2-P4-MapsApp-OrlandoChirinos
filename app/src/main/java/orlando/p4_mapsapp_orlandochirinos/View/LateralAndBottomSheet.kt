@@ -67,6 +67,7 @@ fun MenuLateral(
     navigationController: NavHostController,
     cameraViewmodel: CameraViewmodel
 ) {
+
     val scope = rememberCoroutineScope()
     val state: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 

@@ -101,7 +101,6 @@ fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostControl
                 colors = ButtonDefaults.buttonColors(Color.DarkGray),
                 onClick = {
                     tryAddUser(userEmail,userPassword,mapViewmodel)
-                    show = !goToNext
                 }
             ) {
 

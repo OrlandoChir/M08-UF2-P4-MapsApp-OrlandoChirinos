@@ -109,11 +109,11 @@ fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostControl
         }
 
     }
-    if (show) {
+    if (goToNext) {
         navigationController.navigate(Routes.MapScreen.route)
         mapViewmodel.screenSelect("map")
     }
-    else { ErrorDialog(show,error){show = false} }
+    if (show)  { ErrorDialog(show,error){show = false} }
 
 }
 

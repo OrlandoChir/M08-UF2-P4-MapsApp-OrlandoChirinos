@@ -52,7 +52,7 @@ fun filterMarker(mapViewmodel: MapViewmodel) {
 ///////////////////////////////////AUTH: REGISTER AND LOGIN/////////////////////////////////////////
 
 fun tryAddUser(userEmail: String, userPassword: String, mapViewmodel: MapViewmodel) {
-    if ( (userEmail != "" && userEmail.contains("@gmail.com")) &&
+    if ( (userEmail.isNotBlank() && userEmail.endsWith("@gmail.com")) &&
         (userPassword.length > 6) ){
         mapViewmodel.registerUser(userEmail,userPassword)
     }

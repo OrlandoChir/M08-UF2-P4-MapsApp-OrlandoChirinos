@@ -255,8 +255,10 @@ class MapViewmodel : ViewModel() {
                 else {
                     val exception = task.exception
                     if (exception is FirebaseAuthUserCollisionException) {
-                        _registrationError.value = "Mail is currently registered" }
-                    else { _registrationError.value = "User creation error: ${exception?.message}" }
+                        _registrationError.value = "Mail is currently registered"
+                        _goToNext.value = false}
+                    else {  _registrationError.value = "User creation error: ${exception?.message}"
+                            _goToNext.value = false}
 
                     _goToNext.value = false
                 }

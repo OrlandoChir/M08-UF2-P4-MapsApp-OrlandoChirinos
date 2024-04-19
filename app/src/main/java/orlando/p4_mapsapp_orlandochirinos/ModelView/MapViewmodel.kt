@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -237,6 +238,10 @@ class MapViewmodel : ViewModel() {
     private val _goToNext = MutableLiveData<Boolean>()
     val goToNext: LiveData<Boolean> = _goToNext
 
+    private val _registrationError = MutableLiveData<String>()
+    val registrationError: LiveData<String> = _registrationError
+
+
     private val _userId = MutableLiveData<String>()
     private val userId : MutableLiveData<String> = _userId
 
@@ -244,18 +249,18 @@ class MapViewmodel : ViewModel() {
     private val loggedUser : MutableLiveData<String> = _loggedUser
 
     fun registerUser(email: String, password: String){
-
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    _goToNext.value = true
-                } else {
-                    _goToNext.value = false
-                    Log.d("Error", "Error creating user: ${task.result}")
-                }
-                // modifyProcessing()
-            }
+                if (task.isSuccessful) { _goToNext.value = true }
+                else {
+                    val exception = task.exception
+                    if (exception is FirebaseAuthUserCollisionException) {
+                        _registrationError.value = "Mail is currently registered" }
+                    else { _registrationError.value = "User creation error: ${exception?.message}" }
 
+                    _goToNext.value = false
+                }
+            }
     }
 
     fun loginUser(email: String?, password: String?){

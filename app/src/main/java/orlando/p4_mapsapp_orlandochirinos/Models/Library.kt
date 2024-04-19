@@ -54,6 +54,7 @@ fun filterMarker(mapViewmodel: MapViewmodel) {
 fun tryAddUser(userEmail: String, userPassword: String, mapViewmodel: MapViewmodel) {
     var noErrors = false
     if ( (userEmail != "") && (userPassword.length > 6) ){
+        mapViewmodel.registerUser(userEmail,userPassword)
 
     }
 

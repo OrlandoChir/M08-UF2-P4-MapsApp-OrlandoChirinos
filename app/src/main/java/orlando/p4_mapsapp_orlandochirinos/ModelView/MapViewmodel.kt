@@ -244,14 +244,18 @@ class MapViewmodel : ViewModel() {
     private val loggedUser : MutableLiveData<String> = _loggedUser
 
     fun registerUser(email: String, password: String){
-        auth.createUserWithEmailAndPassword(email,password)
+
+        auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                if (task.isSuccessful){ _goToNext.value = true }
-                else { _goToNext.value = false
-                    Log.d("Error","Error creating user: ${task.result}")
+                if (task.isSuccessful) {
+                    _goToNext.value = true
+                } else {
+                    _goToNext.value = false
+                    Log.d("Error", "Error creating user: ${task.result}")
                 }
-               // modifyProcessing()
+                // modifyProcessing()
             }
+
     }
 
     fun loginUser(email: String?, password: String?){
@@ -268,13 +272,12 @@ class MapViewmodel : ViewModel() {
                 }
                 //modifyProcessing()
             }
+    }
 
-        fun signOut(){
-            _userId.value = ""
-            _loggedUser.value = ""
-            auth.signOut()
-        }
-
+    fun signOut(){
+        _userId.value = ""
+        _loggedUser.value = ""
+        auth.signOut()
     }
 
 }

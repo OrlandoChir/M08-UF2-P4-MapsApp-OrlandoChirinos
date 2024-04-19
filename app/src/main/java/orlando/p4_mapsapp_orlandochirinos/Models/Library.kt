@@ -49,6 +49,18 @@ fun filterMarker(mapViewmodel: MapViewmodel) {
     else { mapViewmodel.getAllUbications() }
 }
 
+///////////////////////////////////AUTH: REGISTER AND LOGIN/////////////////////////////////////////
+
+fun tryAddUser(userEmail: String, userPassword: String, mapViewmodel: MapViewmodel) {
+    var noErrors = false
+    if ( (userEmail != "") && (userPassword.length > 6) ){
+
+    }
+
+    if (noErrors){ mapViewmodel.registerUser(userEmail,userPassword) }
+}
+
+
 object BitmapToUriConverter {
 
     fun getImageUri(context: Context, bitmap: Bitmap): Uri {

@@ -89,7 +89,7 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
     )
     {
         Row {
-            //AUN NO TENGO IMAGEN QUE MOSTRAR.
+            //TENGO IMAGEN QUE MOSTRAR.
 
             GlideImage(
                 model = location.image,

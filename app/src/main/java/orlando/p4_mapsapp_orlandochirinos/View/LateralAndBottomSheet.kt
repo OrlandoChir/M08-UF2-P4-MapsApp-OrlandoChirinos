@@ -134,6 +134,7 @@ fun MenuLateral(
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(Color.Magenta),
                         onClick = {
+                            mapViewModel.signOut()
                             mapViewModel.screenSelect(mapViewModel.screenList[0])
                             navigationController.navigate(Routes.LoginScreen.route) }) {
                         Text(text = "CERRAR SESIÓN")

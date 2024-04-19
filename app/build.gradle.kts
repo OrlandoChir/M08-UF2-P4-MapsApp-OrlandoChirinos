@@ -69,6 +69,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation ("com.google.firebase:firebase-storage-ktx")
+    implementation ("com.firebaseui:firebase-ui-auth:7.2.0")
     //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
     // = = = = = = = = = = = GUGULMAP IMPLEMENTATIONS = = = = = = = = = = =

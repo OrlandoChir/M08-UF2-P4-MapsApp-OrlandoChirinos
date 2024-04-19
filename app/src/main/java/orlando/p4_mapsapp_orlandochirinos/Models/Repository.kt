@@ -5,8 +5,9 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 class Repository {
-    val database = FirebaseFirestore.getInstance()
+    val database = FirebaseFirestore.getInstance() //Almacenamiento y marcadores
 
+    ////////////////////////////  ALMACENAMIENTO Y MARCADORES  ////////////////////////////////////
     //SELECT
     fun getAllUbications(): CollectionReference {
         return database.collection("ubications") }
@@ -46,4 +47,5 @@ class Repository {
     fun deleteUbication(ubicationId: String){
         database.collection("ubications").document(ubicationId).delete()
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 }

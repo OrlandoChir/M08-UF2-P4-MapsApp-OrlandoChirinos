@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +24,8 @@ import java.util.Locale
 class MapViewmodel : ViewModel() {
 
     //private val database = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance() //Autenticacion
+
     var repository : Repository = Repository()
 
     var nameOfPlace by mutableStateOf("")
@@ -63,18 +66,24 @@ class MapViewmodel : ViewModel() {
         _firestoreAvailableLocations.value = newLocations
     }
 
-/*    var availableLocations2 : MutableList<Ubicacion> by mutableStateOf( mutableListOf(
-        Ubicacion(
-            ubicationId = "null",
-            ubicationName = "ITB",
-            snippet = "dadad",
-            latitud = 41.4534265,
-            longitud = 2.1837151,
-            tag = "Favoritos",
-            image = "null" )
+    fun clearModal(){
+        this.nameOfPlace = ""
+        this.description = ""
+        this.imageUriFirebase = null
+    }
+
+    /*    var availableLocations2 : MutableList<Ubicacion> by mutableStateOf( mutableListOf(
+            Ubicacion(
+                ubicationId = "null",
+                ubicationName = "ITB",
+                snippet = "dadad",
+                latitud = 41.4534265,
+                longitud = 2.1837151,
+                tag = "Favoritos",
+                image = "null" )
+            )
         )
-    )
-        private set*/
+            private set*/
 
 /*    fun addLocation( newUbication : Ubicacion ){ this.firestoreAvailableLocations.add(newUbication) }
     fun getAllLocations(): LiveData<List<Ubicacion>> { return this.firestoreAvailableLocations }*/
@@ -221,10 +230,51 @@ class MapViewmodel : ViewModel() {
             }
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    fun clearModal(){
-        this.nameOfPlace = ""
-        this.description = ""
-        this.imageUriFirebase = null
+
+
+    /////////////////////////////  AUTENTICACION DE USUARIOS  /////////////////////////////////////
+
+    private val _goToNext = MutableLiveData<Boolean>()
+    val goToNext: LiveData<Boolean> = _goToNext
+
+    private val _userId = MutableLiveData<String>()
+    private val userId : MutableLiveData<String> = _userId
+
+    private val _loggedUser = MutableLiveData<String>()
+    private val loggedUser : MutableLiveData<String> = _loggedUser
+
+    fun registerUser(email: String, password: String){
+        auth.createUserWithEmailAndPassword(email,password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful){ _goToNext.value = true }
+                else { _goToNext.value = false
+                    Log.d("Error","Error creating user: ${task.result}")
+                }
+               // modifyProcessing()
+            }
+    }
+
+    fun loginUser(email: String?, password: String?){
+        auth.signInWithEmailAndPassword(email!!,password!!)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful){
+                    _userId.value = task.result.user?.uid
+                    _loggedUser.value = task.result.user?.email?.split("@")?.get(0)
+                    _goToNext.value = true
+                }
+                else {
+                    _goToNext.value = false
+                    Log.d("Error","Error signing in: ${task.result}")
+                }
+                //modifyProcessing()
+            }
+
+        fun signOut(){
+            _userId.value = ""
+            _loggedUser.value = ""
+            auth.signOut()
+        }
+
     }
 
 }

@@ -41,6 +41,7 @@ import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostController) {
 
     val goToNext by mapViewmodel.goToNext.observeAsState(false)
+    val error by mapViewmodel.registrationError.observeAsState("")
 
     var userEmail by rememberSaveable { mutableStateOf("") }
     var userPassword by rememberSaveable { mutableStateOf("") }
@@ -109,16 +110,16 @@ fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostControl
         }
 
     }
-    if (goToNext) {
-        mapViewmodel.screenSelect("map")
+    if (show) {
         navigationController.navigate(Routes.MapScreen.route)
+        mapViewmodel.screenSelect("map")
     }
-    else { ErrorDialog(show = show){show = false} }
+    else { ErrorDialog(show,error){show = false} }
 
 }
 
 @Composable
-fun ErrorDialog(show: Boolean, onDismiss: () -> Unit){
+fun ErrorDialog(show: Boolean, errorMessage: String, onDismiss: () -> Unit) {
     if(show){
         Dialog( onDismissRequest = { onDismiss() } ,
                 properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true )
@@ -128,7 +129,7 @@ fun ErrorDialog(show: Boolean, onDismiss: () -> Unit){
                     .background(Color.White)
                     .padding(24.dp)
                     .fillMaxWidth()) {
-                Text(text = "Register User Error")
+                Text(text = errorMessage)
             }
         }
     }

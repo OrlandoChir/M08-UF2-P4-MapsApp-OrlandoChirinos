@@ -105,7 +105,8 @@ fun GalleryScreen(
 
         Button(onClick = {
             if (mapViewmodel.imageUriFirebase != null) {
-                mapViewmodel.uploadImage(mapViewmodel.imageUriFirebase!!) }
+                mapViewmodel.uploadImage(mapViewmodel.imageUriFirebase!!)
+                navigationController.navigate(Routes.MapScreen.route) }
         })
         { Text(text = "Upload Image") }
 

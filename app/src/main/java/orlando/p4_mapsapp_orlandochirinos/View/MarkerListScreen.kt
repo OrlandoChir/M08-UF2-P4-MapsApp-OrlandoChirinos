@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -95,7 +96,7 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
                 model = location.image,
                 contentDescription = "Image from storage",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth(0.25f)
+                modifier = Modifier.fillMaxWidth(0.25f).fillMaxHeight(0.25f)
             )
 
             Box(modifier = Modifier.fillMaxWidth(0.80f)) {

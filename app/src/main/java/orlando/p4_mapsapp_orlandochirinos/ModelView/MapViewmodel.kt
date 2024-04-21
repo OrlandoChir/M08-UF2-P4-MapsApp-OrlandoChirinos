@@ -221,7 +221,6 @@ class MapViewmodel : ViewModel() {
                 Log.i("IMAGE UPLOAD", "Image uplodaded successfully")
                 storage.downloadUrl.addOnSuccessListener { uri ->
                     Log.i("IMAGEN" , uri.toString() )
-
                     //Hacer cositas to wapas, nene
                     storeImageUri(uri)
                 }

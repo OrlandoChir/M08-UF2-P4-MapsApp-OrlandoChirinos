@@ -5,6 +5,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -68,13 +69,29 @@ fun GalleryScreen(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             // Verificar si uri es nulo
-            if (uri != null) { mapViewmodel.setImageUriF(uri)
-                bitmap =
-                    if (Build.VERSION.SDK_INT < 28) { MediaStore.Images.Media.getBitmap(context.contentResolver, uri) }
-                    else {
-                        val source = uri.let { ImageDecoder.createSource(context.contentResolver, it) }
-                        ImageDecoder.decodeBitmap(source)
+            if (uri != null) {
+                val contentResolver = context.contentResolver
+                val mime = contentResolver.getType(uri) // Obtener el tipo MIME de la URI
+
+                // Verificar si el tipo MIME es de una imagen
+                if (mime?.startsWith("image/") == true) {
+                    // Verificar si el tipo de archivo es JPEG, PNG o JPG
+                    if (mime.endsWith("jpeg") || mime.endsWith("png") || mime.endsWith("jpg")) {
+                        mapViewmodel.setImageUriF(uri)
+                        bitmap =
+                            if (Build.VERSION.SDK_INT < 28) {
+                                MediaStore.Images.Media.getBitmap(contentResolver, uri) }
+                            else {
+                                val source = ImageDecoder.createSource(contentResolver, uri)
+                                ImageDecoder.decodeBitmap(source) }
                     }
+                    else {
+                        // El archivo seleccionado no es de un formato admitido
+                        Toast.makeText(context, "Formato de imagen no admitido", Toast.LENGTH_SHORT).show() }
+                }
+                else {
+                    // El archivo seleccionado no es una imagen
+                    Toast.makeText(context, "Selecciona una imagen", Toast.LENGTH_SHORT).show() }
             }
         }
     )
@@ -106,8 +123,9 @@ fun GalleryScreen(
         Button(onClick = {
             if (mapViewmodel.imageUriFirebase != null) {
                 mapViewmodel.uploadImage(mapViewmodel.imageUriFirebase!!)
-                navigationController.navigate(Routes.MapScreen.route) }
-        })
+                navigationController.navigate(Routes.MapScreen.route)
+            }
+        } )
         { Text(text = "Upload Image") }
 
         Button(onClick = { navigationController.navigate(Routes.MapScreen.route) }) {

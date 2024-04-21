@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -25,6 +27,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -77,7 +81,7 @@ fun MarkerListScreen(mapViewmodel: MapViewmodel, navigationController: NavHostCo
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationController: NavHostController) {
-    Card( border = BorderStroke(2.dp, Color.Black),
+    Card(border = BorderStroke(2.dp, Color.Black),
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 5.dp)
@@ -90,14 +94,18 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
     )
     {
         Row {
-            //TENGO IMAGEN QUE MOSTRAR.
 
-            GlideImage(
-                model = location.image,
-                contentDescription = "Image from storage",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth(0.25f).fillMaxHeight(0.25f)
-            )
+            Box(
+                modifier = Modifier
+                    .size(100.dp) // Tamaño fijo para la imagen
+                    .aspectRatio(1f) // Relación de aspecto 1:1
+            ) {
+                GlideImage(
+                    model = location.image,
+                    contentDescription = "Image from storage",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize() )
+            }
 
             Box(modifier = Modifier.fillMaxWidth(0.80f)) {
                 Column(modifier = Modifier.padding(start = 5.dp, bottom = 10.dp)) {
@@ -108,25 +116,23 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
                         modifier = Modifier.padding(top = 5.dp)
                     )
                     Text(text = "Descripción: ${location.snippet}\n" +
-                                "Etiqueta: ${location.tag}" )
+                                "Etiqueta: ${location.tag}")
                 }
             }
-            Column( modifier = Modifier.align(CenterVertically) ) {
-                Icon(
-                    modifier = Modifier
-                        .size(30.dp)
-                        .clickable { } ,
+            Column(modifier = Modifier.align(CenterVertically)) {
+                Icon(modifier = Modifier
+                    .size(30.dp)
+                    .clickable { },
                     imageVector = Icons.Filled.Edit, contentDescription = "EDIT" )
 
                 Spacer(modifier = Modifier.size(10.dp))
 
-                Icon(
-                    modifier = Modifier
-                        .size(30.dp)
-                        .clickable {
-                            location.ubicationId?.let { mapViewmodel.deleteUbication(it) }
-                            filterMarker(mapViewmodel)
-                                   } ,
+                Icon(modifier = Modifier
+                    .size(30.dp)
+                    .clickable {
+                        location.ubicationId?.let { mapViewmodel.deleteUbication(it) }
+                        filterMarker(mapViewmodel)
+                               },
                     imageVector = Icons.Filled.DeleteForever, contentDescription = "DELETE" )
             }
         }

@@ -88,7 +88,7 @@ fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostControl
                     tryLogin(userEmail,userPassword,mapViewmodel)
                 }) {
 
-                Text(text = "Login", fontSize = 15.sp)
+                Text(text = "Login", fontSize = 15.sp, color = Color.White)
             }
 
             Spacer(modifier = Modifier.fillMaxHeight(0.02f))
@@ -105,7 +105,7 @@ fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostControl
                 }
             ) {
 
-                Text(text = "Register", fontSize = 15.sp)
+                Text(text = "Register", fontSize = 15.sp, color = Color.White)
             }
         }
 

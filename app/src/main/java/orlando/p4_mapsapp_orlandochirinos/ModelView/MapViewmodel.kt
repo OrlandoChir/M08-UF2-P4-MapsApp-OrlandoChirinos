@@ -238,9 +238,11 @@ class MapViewmodel : ViewModel() {
     private val _goToNext = MutableLiveData<Boolean>()
     val goToNext: LiveData<Boolean> = _goToNext
 
-    private val _registrationError = MutableLiveData<String>()
-    val registrationError: LiveData<String> = _registrationError
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String> = _errorMessage
 
+    var registerError by mutableStateOf(false)
+    fun showError(){this.registerError = !this.registerError}
 
     private val _userId = MutableLiveData<String>()
     private val userId : MutableLiveData<String> = _userId
@@ -255,35 +257,42 @@ class MapViewmodel : ViewModel() {
                 else {
                     val exception = task.exception
                     if (exception is FirebaseAuthUserCollisionException) {
-                        _registrationError.value = "Mail is currently registered"
-                        _goToNext.value = false}
-                    else {  _registrationError.value = "User creation error: ${exception?.message}"
-                            _goToNext.value = false}
-
+                        _errorMessage.value = "Mail is currently registered"
+                        _goToNext.value = false
+                        showError()
+                    }
+                    else {  _errorMessage.value = "User creation error - ${exception?.message}"
+                            _goToNext.value = false
+                            showError()
+                    }
                     _goToNext.value = false
                 }
             }
     }
 
-    fun loginUser(email: String?, password: String?){
-        auth.signInWithEmailAndPassword(email!!,password!!)
+    fun loginUser(email: String?, password: String?) {
+        auth.signInWithEmailAndPassword(email!!, password!!)
             .addOnCompleteListener { task ->
-                if (task.isSuccessful){
+                if (task.isSuccessful) {
                     _userId.value = task.result.user?.uid
                     _loggedUser.value = task.result.user?.email?.split("@")?.get(0)
                     _goToNext.value = true
-                }
-                else {
+                } else {
                     _goToNext.value = false
-                    Log.d("Error","Error signing in: ${task.result}")
+                    _errorMessage.value = task.exception?.message ?: "Error desconocido al iniciar sesión"
+                    showError()
+                    Log.d("Error", "Error signing in: ${task.exception}")
                 }
+                // No propagues la excepción fuera de este bloque
                 //modifyProcessing()
             }
     }
 
+
     fun signOut(){
         _userId.value = ""
         _loggedUser.value = ""
+        _goToNext.value = false
         auth.signOut()
     }
 

@@ -34,6 +34,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
 import orlando.p4_mapsapp_orlandochirinos.Models.tryAddUser
+import orlando.p4_mapsapp_orlandochirinos.Models.tryLogin
 import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,12 +42,10 @@ import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostController) {
 
     val goToNext by mapViewmodel.goToNext.observeAsState(false)
-    val error by mapViewmodel.registrationError.observeAsState("")
+    val error by mapViewmodel.errorMessage.observeAsState("")
 
     var userEmail by rememberSaveable { mutableStateOf("") }
     var userPassword by rememberSaveable { mutableStateOf("") }
-    var show by rememberSaveable { mutableStateOf(false) }
-
 
     Box( modifier = Modifier.fillMaxSize() ){
         Column(modifier = Modifier
@@ -85,7 +84,9 @@ fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostControl
                     .align(CenterHorizontally),
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(Color.Blue),
-                onClick = { /*TODO*/ }) {
+                onClick = {
+                    tryLogin(userEmail,userPassword,mapViewmodel)
+                }) {
 
                 Text(text = "Login", fontSize = 15.sp)
             }
@@ -113,7 +114,8 @@ fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostControl
         navigationController.navigate(Routes.MapScreen.route)
         mapViewmodel.screenSelect("map")
     }
-    if (show)  { ErrorDialog(show,error){show = false} }
+    if (mapViewmodel.registerError){
+        ErrorDialog(mapViewmodel.registerError,error) { mapViewmodel.showError()} }
 
 }
 

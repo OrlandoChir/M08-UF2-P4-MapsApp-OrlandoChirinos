@@ -52,9 +52,19 @@ fun filterMarker(mapViewmodel: MapViewmodel) {
 ///////////////////////////////////AUTH: REGISTER AND LOGIN/////////////////////////////////////////
 
 fun tryAddUser(userEmail: String, userPassword: String, mapViewmodel: MapViewmodel) {
-    if ( (userEmail.isNotBlank() && userEmail.endsWith("@gmail.com")) &&
-        (userPassword.length > 6) ){
-        mapViewmodel.registerUser(userEmail,userPassword)
+    val mailNoSpace = userEmail.trim()
+    val passwordNoSpace = userPassword.trim()
+    if ( (mailNoSpace.isNotBlank() && mailNoSpace.endsWith("@gmail.com")) &&
+        (passwordNoSpace.length > 6) ){
+        mapViewmodel.registerUser(mailNoSpace,passwordNoSpace)
+    }
+}
+fun tryLogin(userEmail: String, userPassword: String, mapViewmodel: MapViewmodel) {
+    val mailNoSpace = userEmail.trim()
+    val passwordNoSpace = userPassword.trim()
+    if ( (mailNoSpace.isNotBlank() && mailNoSpace.endsWith("@gmail.com")) &&
+        (passwordNoSpace.length > 6) ){
+        mapViewmodel.loginUser(mailNoSpace,passwordNoSpace)
     }
 }
 

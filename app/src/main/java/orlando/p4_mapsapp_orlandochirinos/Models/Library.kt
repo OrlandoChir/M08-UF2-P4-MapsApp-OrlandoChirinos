@@ -24,8 +24,9 @@ fun tryAddNewLocation(
 
         mapViewModel.repository.addUbication(
             Ubicacion(
-                ubicationId = mapViewModel.nameOfPlace ,
-                ubicationName  = mapViewModel.nameOfPlace,
+                ubicationId = mapViewModel.nameOfPlace,
+                ubicationName = mapViewModel.nameOfPlace,
+                markerOwner = mapViewModel.userId.value.toString(),
                 snippet = mapViewModel.description,
                 latitud = selectedLocation.latitude,
                 longitud = selectedLocation.longitude,
@@ -44,9 +45,9 @@ fun openAppSettings(activity: Activity){
     activity.startActivity(intent)
 }
 
-fun filterMarker(mapViewmodel: MapViewmodel) {
-    if (mapViewmodel.tagSelected != "") { mapViewmodel.getUbicationsFiltered(mapViewmodel.tagSelected) }
-    else { mapViewmodel.getAllUbications() }
+fun filterMarker(mapViewmodel: MapViewmodel, userId: String) {
+    if (mapViewmodel.tagSelected != "") { mapViewmodel.getUbicationsFiltered(mapViewmodel.tagSelected, userId) }
+    else { mapViewmodel.getAllUbications(userId) }
 }
 
 ///////////////////////////////////AUTH: REGISTER AND LOGIN/////////////////////////////////////////

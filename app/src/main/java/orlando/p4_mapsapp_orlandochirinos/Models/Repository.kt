@@ -21,6 +21,7 @@ class Repository {
             .add(
                 hashMapOf(
                     "ubicationName" to ubicacion.ubicationName,
+                    "ubicationOwner" to ubicacion.markerOwner,
                     "snippet" to ubicacion.snippet,
                     "latitud" to ubicacion.latitud,
                     "longitud" to ubicacion.longitud,

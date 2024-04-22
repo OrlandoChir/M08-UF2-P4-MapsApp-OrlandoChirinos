@@ -134,8 +134,8 @@ class MapViewmodel : ViewModel() {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //SQL
     //SELECT ALL
-    fun getAllUbications(){
-        repository.getAllUbications().addSnapshotListener{ value, error ->
+    fun getAllUbications(userId: String){
+        repository.getAllUbications().whereEqualTo("ubicationOwner",userId).addSnapshotListener{ value, error ->
             if (error != null){
                 Log.e("Firestore error",error.message.toString() )
                 return@addSnapshotListener
@@ -153,9 +153,11 @@ class MapViewmodel : ViewModel() {
     }
 
     //SELECT WHERE
-    fun getUbicationsFiltered(tagValue:String){
+    fun getUbicationsFiltered(tagValue: String, userId: String){
         //FILTRO
-         repository.getAllUbications().whereEqualTo("tag",tagValue).addSnapshotListener{ value, error ->
+         repository.getAllUbications()
+             .whereEqualTo("tag",tagValue)
+             .whereEqualTo("ubicationOwner",userId).addSnapshotListener{ value, error ->
             if (error != null){
                 Log.e("Firestore error",error.message.toString() )
                 return@addSnapshotListener
@@ -199,14 +201,10 @@ class MapViewmodel : ViewModel() {
     }
 
     //UPDATE
-    fun deleteUbication(intUbicationId: String){
-        repository.deleteUbication(intUbicationId)
-    }
+    fun deleteUbication(intUbicationId: String){ repository.deleteUbication(intUbicationId) }
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-
-
     var imageUriFirebase by mutableStateOf<Uri?>( null )
         private set
 
@@ -248,13 +246,23 @@ class MapViewmodel : ViewModel() {
     private val _userId = MutableLiveData<String>()
     val userId : MutableLiveData<String> = _userId
 
+    private val _userMail = MutableLiveData<String>()
+    val userMail : MutableLiveData<String> = _userMail
+
+
+
     private val _loggedUser = MutableLiveData<String>()
     val loggedUser : MutableLiveData<String> = _loggedUser
 
     fun registerUser(email: String, password: String){
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                if (task.isSuccessful) { _goToNext.value = true }
+                if (task.isSuccessful) {
+                    _userMail.value = email
+                    _goToNext.value = true
+                    _userId.value = task.result.user?.uid
+                    _loggedUser.value = task.result.user?.email?.split("@")?.get(0)
+                }
                 else {
                     val exception = task.exception
                     if (exception is FirebaseAuthUserCollisionException) {
@@ -276,6 +284,7 @@ class MapViewmodel : ViewModel() {
         auth.signInWithEmailAndPassword(email!!, password!!)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    _userMail.value = email!!
                     _userId.value = task.result.user?.uid
                     _loggedUser.value = task.result.user?.email?.split("@")?.get(0)
                     _goToNext.value = true
@@ -292,6 +301,7 @@ class MapViewmodel : ViewModel() {
 
 
     fun signOut() {
+        _userMail.value = ""
         _userId.value = ""
         _loggedUser.value = ""
         _goToNext.value = false

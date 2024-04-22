@@ -71,9 +71,7 @@ fun MenuLateral(
 ) {
     val scope = rememberCoroutineScope()
     val state: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val userId by mapViewModel.userId.observeAsState("")
     val loggedUser by mapViewModel.loggedUser.observeAsState("")
-
 
     ModalNavigationDrawer(
         drawerState = state, gesturesEnabled = false,

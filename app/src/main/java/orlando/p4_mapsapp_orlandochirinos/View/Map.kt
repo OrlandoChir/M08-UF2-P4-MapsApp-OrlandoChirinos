@@ -39,9 +39,10 @@ fun MapScreen(
 fun MapGoogle(mapViewModel: MapViewmodel,navigationController: NavHostController,cameraViewmodel: CameraViewmodel){
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
+    val userId by mapViewModel.userId.observeAsState("")
     val availableLocations: List<Ubicacion> by mapViewModel.firestoreAvailableLocations.observeAsState(listOf())
 
-    filterMarker(mapViewModel)
+    filterMarker(mapViewModel,userId)
 
     Column(modifier = Modifier
         .fillMaxSize()

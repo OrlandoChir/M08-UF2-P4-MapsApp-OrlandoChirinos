@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,8 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -49,6 +46,8 @@ import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 @Composable
 fun MarkerListScreen(mapViewmodel: MapViewmodel, navigationController: NavHostController) {
     val availableLocations: List<Ubicacion> by mapViewmodel.firestoreAvailableLocations.observeAsState(listOf())
+    val userId by mapViewmodel.userId.observeAsState("")
+    val loggedUser by mapViewmodel.loggedUser.observeAsState("")
 
     Box(modifier = Modifier.padding(5.dp) ) {
         Column {
@@ -66,12 +65,12 @@ fun MarkerListScreen(mapViewmodel: MapViewmodel, navigationController: NavHostCo
 
             Spacer(modifier = Modifier.size(10.dp))
 
-            if (mapViewmodel.tagSelected != "") { mapViewmodel.getUbicationsFiltered(mapViewmodel.tagSelected) }
-            else { mapViewmodel.getAllUbications() }
+            if (mapViewmodel.tagSelected != "") { mapViewmodel.getUbicationsFiltered(mapViewmodel.tagSelected,userId) }
+            else { mapViewmodel.getAllUbications(userId) }
 
             LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                 items(availableLocations) { location ->
-                    LocationItem(location, mapViewmodel, navigationController)
+                    LocationItem(location, mapViewmodel, navigationController,userId)
                 }
             }
         }
@@ -80,7 +79,12 @@ fun MarkerListScreen(mapViewmodel: MapViewmodel, navigationController: NavHostCo
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationController: NavHostController) {
+fun LocationItem(
+    location: Ubicacion,
+    mapViewmodel: MapViewmodel,
+    navigationController: NavHostController,
+    userId: String
+) {
     Card(border = BorderStroke(2.dp, Color.Black),
         modifier = Modifier
             .fillMaxWidth()
@@ -131,7 +135,7 @@ fun LocationItem(location: Ubicacion, mapViewmodel: MapViewmodel, navigationCont
                     .size(30.dp)
                     .clickable {
                         location.ubicationId?.let { mapViewmodel.deleteUbication(it) }
-                        filterMarker(mapViewmodel)
+                        filterMarker(mapViewmodel,userId)
                                },
                     imageVector = Icons.Filled.DeleteForever, contentDescription = "DELETE" )
             }

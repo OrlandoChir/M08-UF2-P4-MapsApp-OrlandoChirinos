@@ -50,21 +50,6 @@ fun GalleryScreen(
     var bitmap by remember { mutableStateOf(img) }
     var uriGet by remember { mutableStateOf<Uri?>(null ) }
 
-/*    // Lanzador para obtener la imagen desde la galería
-    val launchImage = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri ->
-            // Cargar la imagen desde la URI obtenida
-            bitmap =
-                if (Build.VERSION.SDK_INT < 28) {
-                    MediaStore.Images.Media.getBitmap(context.contentResolver, uri) }
-                else {
-                val source = ImageDecoder.createSource(context.contentResolver, uri!!)
-                ImageDecoder.decodeBitmap(source)
-            }
-        }
-    )*/
-
     val launchImage = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
@@ -133,49 +118,3 @@ fun GalleryScreen(
         }
     }
 }
-
-/*
-@Composable
-fun GalleryScreen(
-    mapViewmodel: MapViewmodel,
-    navigationController: NavHostController,
-    cameraViewmodel: CameraViewmodel,
-) {
-    val context = LocalContext.current
-    val img : Bitmap? = ContextCompat.getDrawable(context, R.drawable.mapa)?.toBitmap()
-    var bitmap by remember { mutableStateOf(img) }
-    val launchImage = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult ={
-         bitmap =
-             if (Build.VERSION.SDK_INT < 28) { MediaStore.Images.Media.getBitmap(context.contentResolver,it) }
-             else {
-             val source =
-                 it?.let { it1 -> ImageDecoder.createSource(context.contentResolver, it1) }
-             source?.let { it1-> ImageDecoder.decodeBitmap(it1) }!!
-             }
-        }
-    )
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-
-        Button(onClick = { launchImage.launch("image/*") }
-        ) { Text(text = "OPEN GALLERY") }
-
-        Image(
-            bitmap = bitmap!!.asImageBitmap(), contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .clip(CircleShape)
-                .background(Color.Cyan)
-                .border(width = 1.dp, color = Color.White, shape = CircleShape)
-        )
-    }
-}
-*/
-
- */

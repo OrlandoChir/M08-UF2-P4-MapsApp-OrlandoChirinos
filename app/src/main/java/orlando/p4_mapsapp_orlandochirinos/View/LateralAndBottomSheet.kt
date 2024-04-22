@@ -40,12 +40,14 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -67,9 +69,11 @@ fun MenuLateral(
     navigationController: NavHostController,
     cameraViewmodel: CameraViewmodel
 ) {
-
     val scope = rememberCoroutineScope()
     val state: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val userId by mapViewModel.userId.observeAsState("")
+    val loggedUser by mapViewModel.loggedUser.observeAsState("")
+
 
     ModalNavigationDrawer(
         drawerState = state, gesturesEnabled = false,
@@ -77,9 +81,14 @@ fun MenuLateral(
             ModalDrawerSheet {
                 Row(modifier = Modifier.fillMaxWidth(),verticalAlignment = Alignment.CenterVertically) {
 
-                    Text(text = "MENU DE NAVEGACIÓN", modifier = Modifier
-                        .weight(1f)
-                        .padding(16.dp) )
+                    Column(modifier = Modifier.fillMaxHeight(0.1f).align(CenterVertically)) {
+                        Text(text = "MENU DE NAVEGACIÓN", modifier = Modifier
+                            .padding(10.dp) )
+
+                        Text(text = "Usuario: $loggedUser", modifier = Modifier
+                        //    .weight(1f)
+                            .padding(10.dp) )
+                    }
 
                     Spacer(modifier = Modifier.weight(0.2f))
 
@@ -101,7 +110,7 @@ fun MenuLateral(
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(Color.Magenta),
                         onClick = { mapViewModel.clearTag() })
-                    { Text(text = "CLEAR TAGS") }
+                    { Text(text = "CLEAR TAGS",color = Color.White) }
 
                     Box(modifier = Modifier.fillMaxWidth(0.7f) ) {
                         SelectCategories(mapViewModel = mapViewModel)
@@ -116,7 +125,7 @@ fun MenuLateral(
                             scope.launch { state.close() }
                             /*navigationController.navigate(Routes.MarkerListScreen.route)*/ })
                     {
-                        Text(text = "MIS MARCADORES")
+                        Text(text = "MIS MARCADORES",color = Color.White)
                     }
 
                     Button(
@@ -126,7 +135,7 @@ fun MenuLateral(
                         onClick = {
                             mapViewModel.screenSelect(mapViewModel.screenList[1])
                             scope.launch { state.close() }}) {
-                        Text(text = "MAPA")
+                        Text(text = "MAPA",color = Color.White)
                     }
 
                     Button(
@@ -134,10 +143,11 @@ fun MenuLateral(
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(Color.Magenta),
                         onClick = {
-                            mapViewModel.signOut()
                             mapViewModel.screenSelect(mapViewModel.screenList[0])
-                            navigationController.navigate(Routes.LoginScreen.route) }) {
-                        Text(text = "CERRAR SESIÓN")
+                            navigationController.navigate(Routes.LoginScreen.route)
+                            mapViewModel.signOut()
+                             }) {
+                        Text(text = "CERRAR SESIÓN",color = Color.White)
                     }
                 }
             }
@@ -226,7 +236,9 @@ fun Bottom(
                         model = mapViewModel.imageUri,
                         contentDescription = "Image preview",
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.size(100.dp).align(CenterHorizontally)
+                        modifier = Modifier
+                            .size(100.dp)
+                            .align(CenterHorizontally)
                     )
                     Spacer(modifier = Modifier.fillMaxHeight(0.02f))
                 }

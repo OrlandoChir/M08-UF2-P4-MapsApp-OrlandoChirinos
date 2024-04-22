@@ -6,25 +6,24 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.firestore.FirebaseFirestore
 import orlando.p4_mapsapp_orlandochirinos.ModelView.CameraViewmodel
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
 import orlando.p4_mapsapp_orlandochirinos.ui.theme.P4MapsAppOrlandoChirinosTheme
 import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navigationController = rememberNavController()
             val mapViewmodel : MapViewmodel = MapViewmodel()
             val cameraViewmodel : CameraViewmodel = CameraViewmodel()
+
             P4MapsAppOrlandoChirinosTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -47,15 +46,9 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 /*
 @Preview(showBackground = true)
 @Composable

@@ -25,7 +25,9 @@ import java.util.Locale
 class MapViewmodel : ViewModel() {
 
     //private val database = FirebaseFirestore.getInstance()
-    private val auth = FirebaseAuth.getInstance() //Autenticacion
+    private val auth = FirebaseAuth.getInstance() //AutenticacionÇ
+
+    private val defaultUri = "https://firebasestorage.googleapis.com/v0/b/itbmapitadatabase.appspot.com/o/images%2Fno_image.jpg?alt=media&token=d6e92b4b-2c56-48ac-b65d-a14d3ac4ceb6"
 
     var repository : Repository = Repository()
 
@@ -244,10 +246,10 @@ class MapViewmodel : ViewModel() {
     fun showError(){this.registerError = !this.registerError}
 
     private val _userId = MutableLiveData<String>()
-    private val userId : MutableLiveData<String> = _userId
+    val userId : MutableLiveData<String> = _userId
 
     private val _loggedUser = MutableLiveData<String>()
-    private val loggedUser : MutableLiveData<String> = _loggedUser
+    val loggedUser : MutableLiveData<String> = _loggedUser
 
     fun registerUser(email: String, password: String){
         auth.createUserWithEmailAndPassword(email, password)
@@ -256,13 +258,14 @@ class MapViewmodel : ViewModel() {
                 else {
                     val exception = task.exception
                     if (exception is FirebaseAuthUserCollisionException) {
-                        _errorMessage.value = "Mail is currently registered"
+                        _errorMessage.value = "Correo ya registrado"
                         _goToNext.value = false
                         showError()
                     }
-                    else {  _errorMessage.value = "User creation error - ${exception?.message}"
-                            _goToNext.value = false
-                            showError()
+                    else {
+                        _errorMessage.value = "Error al crear usuario: ${exception?.message}"
+                        _goToNext.value = false
+                        showError()
                     }
                     _goToNext.value = false
                 }
@@ -278,7 +281,7 @@ class MapViewmodel : ViewModel() {
                     _goToNext.value = true
                 } else {
                     _goToNext.value = false
-                    _errorMessage.value = task.exception?.message ?: "Error desconocido al iniciar sesión"
+                    _errorMessage.value = "Usuario o contraseñas incorrectos."
                     showError()
                     Log.d("Error", "Error signing in: ${task.exception}")
                 }
@@ -288,7 +291,7 @@ class MapViewmodel : ViewModel() {
     }
 
 
-    fun signOut(){
+    fun signOut() {
         _userId.value = ""
         _loggedUser.value = ""
         _goToNext.value = false

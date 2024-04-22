@@ -1,5 +1,7 @@
 package orlando.p4_mapsapp_orlandochirinos.View
 
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,6 +46,7 @@ fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostControl
 
     val goToNext by mapViewmodel.goToNext.observeAsState(false)
     val error by mapViewmodel.errorMessage.observeAsState("")
+    val context = LocalContext.current
 
     var userEmail by rememberSaveable { mutableStateOf("") }
     var userPassword by rememberSaveable { mutableStateOf("") }
@@ -108,8 +112,18 @@ fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostControl
                 Text(text = "Register", fontSize = 15.sp, color = Color.White)
             }
         }
-
     }
+
+    BackHandler(enabled = true) {
+        // Este bloque de código se ejecutará cada vez que se presione el botón de retroceso
+
+        // Si deseas evitar que la navegación retroceda, puedes verificar una condición, por ejemplo:
+        if (!goToNext) {
+            // No hagas nada o muestra un mensaje de advertencia, dependiendo de tu caso
+            Toast.makeText(context, "Error: No se ha iniciado sesión", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     if (goToNext) {
         navigationController.navigate(Routes.MapScreen.route)
         mapViewmodel.screenSelect("map")
@@ -136,36 +150,3 @@ fun ErrorDialog(show: Boolean, errorMessage: String, onDismiss: () -> Unit) {
     }
 }
 
-
-/*
-            Image(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.25f)
-                    .clickable { /*TODO*/
-                        mapViewmodel.screenSelect("map")
-                        navigationController.navigate(Routes.MapScreen.route)
-                               },
-
-                painter = painterResource(id = R.drawable.loginicon),
-                contentDescription = "Login")
-
-            Spacer(modifier = Modifier.fillMaxHeight(0.05f))
-
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth(0.7f).fillMaxHeight(0.1f)
-                    .align(CenterHorizontally),
-                shape = RectangleShape,
-                colors = ButtonDefaults.buttonColors(Color.DarkGray),
-                onClick = { /*TODO*/ }) {
-
-                Text(text = "REGISTER", fontSize = 20.sp)
-            }
- */
-
-/*
-@Preview(showBackground = true)
-@Composable
-fun LoginPreview() {
-    P4MapsAppOrlandoChirinosTheme {
-        LoginScreen(navigationController)
-    }
-}*/

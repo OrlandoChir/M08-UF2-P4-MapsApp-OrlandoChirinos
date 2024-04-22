@@ -79,7 +79,7 @@ fun MenuLateral(
             ModalDrawerSheet {
                 Row(modifier = Modifier.fillMaxWidth(),verticalAlignment = Alignment.CenterVertically) {
 
-                    Column(modifier = Modifier.fillMaxHeight(0.1f).align(CenterVertically)) {
+                    Column(modifier = Modifier.fillMaxHeight(0.15f).align(CenterVertically)) {
                         Text(text = "MENU DE NAVEGACIÓN", modifier = Modifier
                             .padding(10.dp) )
 

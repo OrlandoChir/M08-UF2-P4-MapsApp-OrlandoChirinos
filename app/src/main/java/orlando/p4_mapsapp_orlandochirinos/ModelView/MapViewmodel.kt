@@ -301,6 +301,8 @@ class MapViewmodel : ViewModel() {
 
 
     fun signOut() {
+        clearModal()
+        clearTag()
         _userMail.value = ""
         _userId.value = ""
         _loggedUser.value = ""

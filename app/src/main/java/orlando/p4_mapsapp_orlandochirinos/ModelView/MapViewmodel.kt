@@ -124,6 +124,8 @@ class MapViewmodel : ViewModel() {
         private set
     fun changePosition(newPosition : LatLng){ this.positionToSee = newPosition }
 
+
+
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //SQL
     //SELECT ALL
@@ -296,7 +298,7 @@ class MapViewmodel : ViewModel() {
         _goToNext.value = false
         auth.signOut()
     }
-
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 }
     /* var closeNav : Boolean by mutableStateOf(true)
        fun closeNavigationMenu(){ this.closeNav = !this.closeNav }*/

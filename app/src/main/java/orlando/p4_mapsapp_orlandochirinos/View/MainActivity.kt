@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
                         composable(Routes.GalleryScreen.route) { GalleryScreen(mapViewmodel, navigationController, cameraViewmodel,) }
                         composable(Routes.PermissionDeclinedScreen.route) { PermissionDeclinedScreen() }
                         composable(Routes.MarkerListScreen.route) { MarkerListScreen(mapViewmodel,navigationController) }
-                        composable(Routes.MarkerDetailsScreen.route) { MarkerDetailsScreen(mapViewmodel,navigationController) }
+                        composable(Routes.MarkerDetailsScreen.route) { MarkerDetailsScreen(mapViewmodel,navigationController,cameraViewmodel) }
                         composable(Routes.RegisterScreen.route) { RegisterScreen(mapViewmodel,navigationController) }
                     }
                 }

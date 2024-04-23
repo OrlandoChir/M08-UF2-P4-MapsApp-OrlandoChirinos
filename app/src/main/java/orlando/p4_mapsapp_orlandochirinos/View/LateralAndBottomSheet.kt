@@ -152,7 +152,6 @@ fun MenuLateral(
         } ) {
         ScreenAdmin(mapViewModel, state,navigationController,cameraViewmodel)
     }
-    //if (mapViewModel.closeNav) { scope.launch { state.close() } }
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -136,13 +136,3 @@ fun RegisterScreen(mapViewmodel: MapViewmodel, navigationController: NavHostCont
     if (mapViewmodel.registerError){
         ErrorDialog(mapViewmodel.registerError,error) { mapViewmodel.showError()} }
 }
-
-/*
-@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
-@Composable
-fun Preview() {
-    P4MapsAppOrlandoChirinosTheme {
-        RegisterScreen(mapViewmodel, navigationController)
-    }
-}
-*/

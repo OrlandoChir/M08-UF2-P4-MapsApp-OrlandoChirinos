@@ -85,7 +85,7 @@ fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostControl
 
             Button(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(0.8f)
                     .fillMaxHeight(0.08f)
                     .align(CenterHorizontally),
                 shape = CircleShape,

@@ -36,7 +36,6 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
-import orlando.p4_mapsapp_orlandochirinos.Manifest
 import orlando.p4_mapsapp_orlandochirinos.ModelView.CameraViewmodel
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
 import orlando.p4_mapsapp_orlandochirinos.Models.Ubicacion

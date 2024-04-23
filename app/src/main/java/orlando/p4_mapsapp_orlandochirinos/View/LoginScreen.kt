@@ -86,7 +86,7 @@ fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostControl
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.07f)
+                    .fillMaxHeight(0.08f)
                     .align(CenterHorizontally),
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(Color.Blue),
@@ -99,7 +99,7 @@ fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostControl
             Button(
                 modifier = Modifier
                     .fillMaxWidth(0.5f)
-                    .fillMaxHeight(0.07f)
+                    .fillMaxHeight(0.085f)
                     .align(CenterHorizontally),
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(Color.DarkGray),

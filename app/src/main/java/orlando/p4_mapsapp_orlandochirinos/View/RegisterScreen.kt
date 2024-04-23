@@ -99,7 +99,7 @@ fun RegisterScreen(mapViewmodel: MapViewmodel, navigationController: NavHostCont
         Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.1f)
+                .fillMaxHeight(0.15f)
                 .align(Alignment.CenterHorizontally),
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(Color.Blue),
@@ -113,7 +113,7 @@ fun RegisterScreen(mapViewmodel: MapViewmodel, navigationController: NavHostCont
         Button(
             modifier = Modifier
                 .fillMaxWidth(0.5f)
-                .fillMaxHeight(0.12f),
+                .fillMaxHeight(0.15f),
             colors = ButtonDefaults.buttonColors(Color.DarkGray),
             onClick = {
                 if (mapViewmodel.loginPasswd == confirmPassword) {
@@ -136,7 +136,6 @@ fun RegisterScreen(mapViewmodel: MapViewmodel, navigationController: NavHostCont
     if (mapViewmodel.registerError){
         ErrorDialog(mapViewmodel.registerError,error) { mapViewmodel.showError()} }
 }
-
 
 /*
 @androidx.compose.ui.tooling.preview.Preview(showBackground = true)

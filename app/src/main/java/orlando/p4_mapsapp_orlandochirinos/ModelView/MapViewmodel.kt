@@ -33,8 +33,7 @@ class MapViewmodel : ViewModel() {
 
     var description by mutableStateOf("")
 
-    val defaultBitmap: Bitmap =
-        Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+    val defaultBitmap: Bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
 
     val tagList = listOf<String>("Favoritos", "Restaurantes", "Parques", "Casas")
 
@@ -97,6 +96,9 @@ class MapViewmodel : ViewModel() {
 
     private val _ubicationName = MutableStateFlow("")
     val ubicationName: StateFlow<String> = _ubicationName
+
+    private val _ubicationOwner = MutableStateFlow("")
+    val ubicationOwner: StateFlow<String> = _ubicationOwner
 
     private val _snippet = MutableStateFlow("")
     val snippet: StateFlow<String> = _snippet
@@ -179,6 +181,7 @@ class MapViewmodel : ViewModel() {
                 }
                 _actualUbication.value = ubication
                 _ubicationName.value = _actualUbication.value!!.ubicationName
+                _ubicationOwner.value = _actualUbication.value!!.markerOwner
                 _snippet.value = _actualUbication.value!!.ubicationName
                 _latitud.value = _actualUbication.value!!.latitud
                 _longitud.value = _actualUbication.value!!.longitud
@@ -193,8 +196,6 @@ class MapViewmodel : ViewModel() {
 
     //UPDATE
     fun deleteUbication(intUbicationId: String){ repository.deleteUbication(intUbicationId) }
-
-
     ///////////////////////////////////////////////////////////////////////////////////////////////
     var imageUriFirebase by mutableStateOf<Uri?>( null )
         private set

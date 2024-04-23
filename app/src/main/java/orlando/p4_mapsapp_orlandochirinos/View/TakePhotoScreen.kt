@@ -89,30 +89,8 @@ fun TakePhotoScreen(mapViewmodel: MapViewmodel,
             { Icon(modifier = Modifier.size(50.dp),imageVector = Icons.Default.PhotoCamera, contentDescription = "Take Photo") }
         }
     }
-   // if (galleryOpen){GalleryScreen(mapViewmodel,navigationController,cameraViewmodel)}
 }
 
-
-/*private fun takePhoto(
-    context: Context,
-    controller: LifecycleCameraController,
-    mapViewmodel: MapViewmodel,
-    param: (Any) -> Unit,
-) {
-    controller.takePicture(ContextCompat.getMainExecutor(context),
-        object : ImageCapture.OnImageCapturedCallback() {
-            override fun onCaptureSuccess(image: ImageProxy) {
-                super.onCaptureSuccess(image)
-                mapViewmodel.storeCapturedURI(image.toBitmap())
-            }
-
-            override fun onError(exception: ImageCaptureException) {
-                super.onError(exception)
-                Log.e("Camera", "Error taken photo", exception)
-            }
-        }
-    )
-}*/
 
 private fun takePhoto(
     context: Context,

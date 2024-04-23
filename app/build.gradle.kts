@@ -70,6 +70,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation ("com.google.firebase:firebase-storage-ktx")
     implementation ("com.firebaseui:firebase-ui-auth:7.2.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.28.0")
+
     //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
     // = = = = = = = = = = = GUGULMAP IMPLEMENTATIONS = = = = = = = = = = =

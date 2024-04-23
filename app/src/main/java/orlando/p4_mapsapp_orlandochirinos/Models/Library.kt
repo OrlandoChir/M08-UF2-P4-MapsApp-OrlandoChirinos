@@ -58,6 +58,7 @@ fun tryAddUser(userEmail: String, userPassword: String, mapViewmodel: MapViewmod
     if ( (mailNoSpace.isNotBlank() && mailNoSpace.endsWith("@gmail.com")) &&
         (passwordNoSpace.length > 6) ){
         mapViewmodel.registerUser(mailNoSpace,passwordNoSpace)
+        mapViewmodel.clearMailPasswd()
     }
 }
 fun tryLogin(userEmail: String, userPassword: String, mapViewmodel: MapViewmodel) {
@@ -66,6 +67,7 @@ fun tryLogin(userEmail: String, userPassword: String, mapViewmodel: MapViewmodel
     if ( (mailNoSpace.isNotBlank() && mailNoSpace.endsWith("@gmail.com")) &&
         (passwordNoSpace.length > 6) ){
         mapViewmodel.loginUser(mailNoSpace,passwordNoSpace)
+        mapViewmodel.clearMailPasswd()
     }
 }
 

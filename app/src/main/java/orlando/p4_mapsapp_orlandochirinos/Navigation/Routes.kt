@@ -8,6 +8,7 @@ sealed class Routes(val route: String) {
     object AddNewLocationScreen: Routes("addnewlocation_screen")
     object EditLocationScreen: Routes("editlocation_screen")
     object MarkerDetailsScreen: Routes("markerdetails_screen")
+    object RegisterScreen: Routes("register_screen")
     object CameraScreen: Routes("camera_screen")
     object GalleryScreen: Routes("gallery_screen")
     object TakePhotoScreen: Routes("takephoto_screen")

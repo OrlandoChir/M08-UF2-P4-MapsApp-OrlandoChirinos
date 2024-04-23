@@ -27,8 +27,6 @@ class MapViewmodel : ViewModel() {
     //private val database = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance() //AutenticacionÇ
 
-    private val defaultUri = "https://firebasestorage.googleapis.com/v0/b/itbmapitadatabase.appspot.com/o/images%2Fno_image.jpg?alt=media&token=d6e92b4b-2c56-48ac-b65d-a14d3ac4ceb6"
-
     var repository : Repository = Repository()
 
     var nameOfPlace by mutableStateOf("")
@@ -55,7 +53,6 @@ class MapViewmodel : ViewModel() {
 
     fun storeImageUri(intImageUri : Uri) { this.imageUri = intImageUri.toString()  }
 
-
     var currentScreen by mutableStateOf("")
         private set
     fun screenSelect(screenValue: String) { this.currentScreen = screenValue }
@@ -64,6 +61,16 @@ class MapViewmodel : ViewModel() {
 
     private val _firestoreAvailableLocations = MutableLiveData<List<Ubicacion>>()
     val firestoreAvailableLocations: LiveData<List<Ubicacion>> = _firestoreAvailableLocations
+
+    var loginMail by mutableStateOf("")
+        private set
+    fun setMail(pMail : String){this.loginMail = pMail}
+
+    var loginPasswd by mutableStateOf("")
+        private set
+    fun setPasswd(pPasswd : String){this.loginPasswd = pPasswd}
+
+    fun clearMailPasswd(){this.loginMail = "" ; this.loginPasswd = ""}
 
     fun updateAvailableLocations(newLocations: List<Ubicacion>) {
         _firestoreAvailableLocations.value = newLocations
@@ -74,22 +81,6 @@ class MapViewmodel : ViewModel() {
         this.description = ""
         this.imageUriFirebase = null
     }
-
-    /*    var availableLocations2 : MutableList<Ubicacion> by mutableStateOf( mutableListOf(
-            Ubicacion(
-                ubicationId = "null",
-                ubicationName = "ITB",
-                snippet = "dadad",
-                latitud = 41.4534265,
-                longitud = 2.1837151,
-                tag = "Favoritos",
-                image = "null" )
-            )
-        )
-            private set*/
-
-/*    fun addLocation( newUbication : Ubicacion ){ this.firestoreAvailableLocations.add(newUbication) }
-    fun getAllLocations(): LiveData<List<Ubicacion>> { return this.firestoreAvailableLocations }*/
 
     var bottomSheet : Boolean by  mutableStateOf(false)
         private set
@@ -231,7 +222,6 @@ class MapViewmodel : ViewModel() {
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
-
     /////////////////////////////  AUTENTICACION DE USUARIOS  /////////////////////////////////////
 
     private val _goToNext = MutableLiveData<Boolean>()
@@ -248,8 +238,6 @@ class MapViewmodel : ViewModel() {
 
     private val _userMail = MutableLiveData<String>()
     val userMail : MutableLiveData<String> = _userMail
-
-
 
     private val _loggedUser = MutableLiveData<String>()
     val loggedUser : MutableLiveData<String> = _loggedUser
@@ -294,8 +282,6 @@ class MapViewmodel : ViewModel() {
                     showError()
                     Log.d("Error", "Error signing in: ${task.exception}")
                 }
-                // No propagues la excepción fuera de este bloque
-                //modifyProcessing()
             }
     }
 

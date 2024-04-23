@@ -47,10 +47,7 @@ fun TakePhotoScreen(mapViewmodel: MapViewmodel,
                     navigationController: NavHostController,
                     cameraViewmodel: CameraViewmodel )
 {
-
-    var galleryOpen by rememberSaveable {
-        mutableStateOf(false)
-    }
+    var galleryOpen by rememberSaveable { mutableStateOf(false) }
 
     val context = LocalContext.current
     val controller = remember { LifecycleCameraController(context).apply { CameraController.IMAGE_CAPTURE } }

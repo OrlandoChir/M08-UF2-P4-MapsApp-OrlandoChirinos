@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -47,11 +48,11 @@ fun GalleryScreen(
 ) {
     val context = LocalContext.current
     val img : Bitmap?
-    if (mapViewmodel.imageBitmap == null) { img = ContextCompat.getDrawable(context, R.drawable.mapa)?.toBitmap() }
+    if (mapViewmodel.imageBitmap == null ||
+        mapViewmodel.imageBitmap == mapViewmodel.defaultBitmap) { img = ContextCompat.getDrawable(context, R.drawable.mapa)?.toBitmap() }
     else { img = mapViewmodel.imageBitmap }
 
     var bitmap by rememberSaveable { mutableStateOf(img) }
-    var uriGet by rememberSaveable { mutableStateOf<Uri?>(null ) }
 
     val launchImage = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
@@ -84,7 +85,7 @@ fun GalleryScreen(
         }
     )
 
-    //mapViewmodel.storeImageBitmap(bitmap)
+    mapViewmodel.storeImageBitmap(bitmap)
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -113,8 +114,7 @@ fun GalleryScreen(
         Button(onClick = {
             if (mapViewmodel.imageUriFirebase != null) {
                 mapViewmodel.uploadImage(mapViewmodel.imageUriFirebase!!)
-                navigationController.navigate(Routes.MapScreen.route)
-            }
+                navigationController.navigate(Routes.MapScreen.route) }
         } )
         { Text(text = "Upload Image") }
 
@@ -122,4 +122,6 @@ fun GalleryScreen(
             Text(text = "GO BACK")
         }
     }
+    BackHandler(enabled = true) {
+        Toast.makeText(context, "Usa el botón GO BACK", Toast.LENGTH_SHORT).show() }
 }

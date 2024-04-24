@@ -1,5 +1,7 @@
 package orlando.p4_mapsapp_orlandochirinos.View
 
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -47,7 +50,7 @@ import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 fun MarkerListScreen(mapViewmodel: MapViewmodel, navigationController: NavHostController) {
     val availableLocations: List<Ubicacion> by mapViewmodel.firestoreAvailableLocations.observeAsState(listOf())
     val userId by mapViewmodel.userId.observeAsState("")
-    val loggedUser by mapViewmodel.loggedUser.observeAsState("")
+    val context = LocalContext.current
 
     Box(modifier = Modifier.padding(5.dp) ) {
         Column {
@@ -74,6 +77,7 @@ fun MarkerListScreen(mapViewmodel: MapViewmodel, navigationController: NavHostCo
                 }
             }
         }
+        BackHandler(enabled = true) {  }
     }
 }
 
@@ -90,7 +94,6 @@ fun LocationItem(
             .fillMaxWidth()
             .padding(top = 5.dp)
             .clickable {
-                //  navigationController.navigate(Routes.MapScreen.spawnOnPosition(location.position))
                 mapViewmodel.screenSelect(mapViewmodel.screenList[1])
                 mapViewmodel.changePosition(LatLng(location.latitud, location.longitud))
                 navigationController.navigate(Routes.MapScreen.route)
@@ -119,7 +122,7 @@ fun LocationItem(
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(top = 5.dp)
                     )
-                    Text(text = "Descripción: ${location.snippet}\n" +
+                    Text(text = "Desc: ${location.snippet}\n" +
                                 "Etiqueta: ${location.tag}")
                 }
             }
@@ -141,4 +144,5 @@ fun LocationItem(
             }
         }
     }
+
 }

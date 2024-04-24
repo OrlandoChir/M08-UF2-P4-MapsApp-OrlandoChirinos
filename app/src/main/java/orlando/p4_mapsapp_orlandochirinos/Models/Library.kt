@@ -70,24 +70,3 @@ fun tryLogin(userEmail: String, userPassword: String, mapViewmodel: MapViewmodel
         mapViewmodel.clearMailPasswd()
     }
 }
-
-
-object BitmapToUriConverter {
-
-    fun getImageUri(context: Context, bitmap: Bitmap): Uri {
-        // Guardar el bitmap en el almacenamiento externo
-        val filename = "imagen_temporal.png"
-        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), filename)
-        try {
-            val fos = FileOutputStream(file)
-            bitmap.compress(CompressFormat.PNG, 100, fos)
-            fos.flush()
-            fos.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
-        // Devolver la Uri del archivo guardado
-        return Uri.fromFile(file)
-    }
-}

@@ -73,16 +73,6 @@ fun MapGoogle(mapViewModel: MapViewmodel,navigationController: NavHostController
                 )
             }
         }
-    /////////////////////////////////////////////////////////////////////////////////////////
-
-/*        val context = LocalContext.current
-        val fusedLocationProviderClient =
-            remember { LocationServices.getFusedLocationProviderClient(context) }
-        val lastKnownLocation by remember { mutableStateOf<Ubicacion?>(null) }
-        val deviceLatLng by remember { mutableStateOf(LatLng(mapViewModel.positionToSee.latitude, mapViewModel.positionToSee.longitude)) }
-        val localResult = fusedLocationProviderClient.getCurrentLocation(100,null)
-   */
-
     }
 
     if (mapViewModel.bottomSheet) { Bottom(mapViewModel,navigationController,cameraViewmodel) }

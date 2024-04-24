@@ -93,7 +93,6 @@ fun TakePhotoScreen(mapViewmodel: MapViewmodel,
                     //HACER ALGO CON LA FOTICO (no se el que, sigo el tutorial)
                     mapViewmodel.storeImageBitmap(photo)
                 }
-               // navigationController.navigate(Routes.GalleryScreen.route)
             } )
             { Icon(modifier = Modifier.size(50.dp),imageVector = Icons.Default.PhotoCamera, contentDescription = "Take Photo") }
         }
@@ -141,22 +140,6 @@ private fun getOutputDirectory(context: Context): File {
     }
     return if (mediaDir != null && mediaDir.exists())
         mediaDir else context.filesDir
-}
-
-
-fun uriToBitmap(context: Context, uri: Uri): Bitmap? {
-    return try {
-        val contentResolver: ContentResolver = context.contentResolver
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            MediaStore.Images.Media.getBitmap(contentResolver, uri) }
-        else {
-            val source = ImageDecoder.createSource(contentResolver, uri)
-            ImageDecoder.decodeBitmap(source)
-        }
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
-    }
 }
 
 @Composable

@@ -3,6 +3,8 @@ package orlando.p4_mapsapp_orlandochirinos.View
 import android.Manifest
 import android.app.Activity
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -61,8 +63,6 @@ fun CameraScreen(mapViewmodel: MapViewmodel,
                     navigationController.navigate(Routes.TakePhotoScreen.route)
                      } },
                 imageVector = Icons.Filled.CameraAlt, contentDescription = "CAMERA" )
-/*           } ) { Text(text = "TAKE PHOTO") }
-        }*/
     if (showPermissionDenied) { PermissionDeclinedScreen() }
 
 }

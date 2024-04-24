@@ -25,9 +25,7 @@ import java.util.Locale
 class MapViewmodel : ViewModel() {
 
     //private val database = FirebaseFirestore.getInstance()
-    private val auth = FirebaseAuth.getInstance() //AutenticacionÇ
-
-    val defaultUri : String = "https://firebasestorage.googleapis.com/v0/b/itbmapitadatabase.appspot.com/o/images%2Fno_image.jpg?alt=media&token=d6e92b4b-2c56-48ac-b65d-a14d3ac4ceb6"
+    private val auth = FirebaseAuth.getInstance() //Autenticacion
 
     var repository : Repository = Repository()
 
@@ -47,19 +45,12 @@ class MapViewmodel : ViewModel() {
     var imageBitmap by mutableStateOf( this.defaultBitmap )
         private set
 
-    var photoTaken by mutableStateOf(true)
-        private set
-
     fun storeImageBitmap(bitmap : Bitmap?) { this.imageBitmap =  bitmap  }
     fun clearImageAndUri(){
         this.imageUriFirebase = null
         this.imageBitmap = defaultBitmap
     }
 
-    private val _photoLoaded = MutableLiveData<Boolean>()
-    val photoloaded : LiveData<Boolean> = _photoLoaded
-
-    fun photoLoadedConfirm(pConfirmation : Boolean){ _photoLoaded.value = pConfirmation }
     var imageUri by mutableStateOf<String?>( null )
         private set
 
@@ -87,10 +78,6 @@ class MapViewmodel : ViewModel() {
 
     fun clearMailPasswd(){this.loginMail = "" ; this.loginPasswd = "" ; this.loginPasswdConfirm = ""}
 
-    fun updateAvailableLocations(newLocations: List<Ubicacion>) {
-        _firestoreAvailableLocations.value = newLocations
-    }
-
     fun clearModal(){
         this.nameOfPlace = ""
         this.description = ""
@@ -107,26 +94,6 @@ class MapViewmodel : ViewModel() {
     fun onMapLongClick(coordinates: LatLng) { _selectedPosition.value = coordinates }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    private val _actualUbication = MutableStateFlow<Ubicacion?>(null)
-    val actualUbication: StateFlow<Ubicacion?> = _actualUbication
-
-    private val _ubicationName = MutableStateFlow("")
-    val ubicationName: StateFlow<String> = _ubicationName
-
-    private val _ubicationOwner = MutableStateFlow("")
-    val ubicationOwner: StateFlow<String> = _ubicationOwner
-
-    private val _snippet = MutableStateFlow("")
-    val snippet: StateFlow<String> = _snippet
-
-    private val _latitud = MutableStateFlow(0.0)
-    val latitud: StateFlow<Double> = _latitud
-
-    private val _longitud = MutableStateFlow(0.0)
-    val longitud: StateFlow<Double> = _longitud
-
-    private val _tag = MutableStateFlow("")
-    val tag: StateFlow<String> = _tag
 
     private val _image = MutableStateFlow<String?>(null)
     val image: StateFlow<String?> = _image
@@ -139,8 +106,6 @@ class MapViewmodel : ViewModel() {
 
         private set
     fun changePosition(newPosition : LatLng){ this.positionToSee = newPosition }
-
-
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //SQL
@@ -185,34 +150,7 @@ class MapViewmodel : ViewModel() {
         }
     }
 
-    //SELECT x FROM
-    fun getUbication(intUbicationId: String){
-        repository.getUbication(intUbicationId).addSnapshotListener{ value, error ->
-            if (error != null){
-                Log.w("UbicationRepository","Listen failed",error)
-                return@addSnapshotListener
-            }
-            if ( value != null && value.exists() ){
-                val ubication = value.toObject(Ubicacion::class.java)
-                if (ubication != null) {
-                    ubication.ubicationId = intUbicationId
-                }
-                _actualUbication.value = ubication
-                _ubicationName.value = _actualUbication.value!!.ubicationName
-                _ubicationOwner.value = _actualUbication.value!!.markerOwner
-                _snippet.value = _actualUbication.value!!.ubicationName
-                _latitud.value = _actualUbication.value!!.latitud
-                _longitud.value = _actualUbication.value!!.longitud
-                _tag.value = _actualUbication.value!!.tag
-                _image.value = _actualUbication.value!!.image.toString()
-            }
-            else {
-                Log.d("UbicationRepository","Current data: null")
-            }
-        }
-    }
-
-    //UPDATE
+    //DELETE
     fun deleteUbication(intUbicationId: String){ repository.deleteUbication(intUbicationId) }
     ///////////////////////////////////////////////////////////////////////////////////////////////
     var imageUriFirebase by mutableStateOf<Uri?>( null )
@@ -316,7 +254,6 @@ class MapViewmodel : ViewModel() {
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////
 }
-    /* var closeNav : Boolean by mutableStateOf(true)
-       fun closeNavigationMenu(){ this.closeNav = !this.closeNav }*/
+
 
 

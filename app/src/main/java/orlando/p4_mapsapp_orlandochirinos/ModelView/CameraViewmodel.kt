@@ -8,10 +8,6 @@ import androidx.lifecycle.ViewModel
 
 class CameraViewmodel : ViewModel() {
 
-    var cameraOpen by mutableStateOf(false)
-        private set
-    fun openCamera(){ cameraOpen = !cameraOpen }
-
 
     private val _cameraPermissionGranted = MutableLiveData(false)
     val cameraPermissionGranted = _cameraPermissionGranted

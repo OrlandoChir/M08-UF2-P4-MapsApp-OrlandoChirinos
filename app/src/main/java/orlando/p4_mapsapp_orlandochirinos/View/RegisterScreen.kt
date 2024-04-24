@@ -77,7 +77,7 @@ fun RegisterScreen(mapViewmodel: MapViewmodel, navigationController: NavHostCont
         Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.15f)
+                .fillMaxHeight(0.2f)
                 .align(Alignment.CenterHorizontally),
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(Color.Blue),
@@ -91,7 +91,7 @@ fun RegisterScreen(mapViewmodel: MapViewmodel, navigationController: NavHostCont
         Button(
             modifier = Modifier
                 .fillMaxWidth(0.5f)
-                .fillMaxHeight(0.15f),
+                .fillMaxHeight(0.2f),
             colors = ButtonDefaults.buttonColors(Color.DarkGray),
             onClick = {
                 if (mapViewmodel.loginPasswd == mapViewmodel.loginPasswdConfirm) {

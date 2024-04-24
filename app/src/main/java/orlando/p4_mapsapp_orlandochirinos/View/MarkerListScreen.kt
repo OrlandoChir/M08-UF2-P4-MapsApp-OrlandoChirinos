@@ -89,6 +89,7 @@ fun LocationItem(
     navigationController: NavHostController,
     userId: String
 ) {
+    val context = LocalContext.current
     Card(border = BorderStroke(2.dp, Color.Black),
         modifier = Modifier
             .fillMaxWidth()
@@ -129,7 +130,7 @@ fun LocationItem(
             Column(modifier = Modifier.align(CenterVertically)) {
                 Icon(modifier = Modifier
                     .size(30.dp)
-                    .clickable { },
+                    .clickable { Toast.makeText(context, "Función no disponible", Toast.LENGTH_SHORT).show() },
                     imageVector = Icons.Filled.Edit, contentDescription = "EDIT" )
 
                 Spacer(modifier = Modifier.size(10.dp))

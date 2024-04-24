@@ -308,7 +308,7 @@ fun SelectCategories(mapViewModel: MapViewmodel){
         readOnly = true,
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.08f)
+            .fillMaxHeight(0.09f)
             .clickable { expanded = true },
         trailingIcon = {
             Icon(imageVector = Icons.Filled.ArrowDropDown,

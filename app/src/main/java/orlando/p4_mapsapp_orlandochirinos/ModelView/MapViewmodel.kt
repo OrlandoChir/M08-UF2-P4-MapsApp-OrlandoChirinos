@@ -68,8 +68,11 @@ class MapViewmodel : ViewModel() {
     var loginPasswd by mutableStateOf("")
         private set
     fun setPasswd(pPasswd : String){this.loginPasswd = pPasswd}
+    var loginPasswdConfirm by mutableStateOf("")
+        private set
+    fun setPasswdConfirm(pPasswd : String){this.loginPasswdConfirm = pPasswd}
 
-    fun clearMailPasswd(){this.loginMail = "" ; this.loginPasswd = ""}
+    fun clearMailPasswd(){this.loginMail = "" ; this.loginPasswd = "" ; this.loginPasswdConfirm = ""}
 
     fun updateAvailableLocations(newLocations: List<Ubicacion>) {
         _firestoreAvailableLocations.value = newLocations

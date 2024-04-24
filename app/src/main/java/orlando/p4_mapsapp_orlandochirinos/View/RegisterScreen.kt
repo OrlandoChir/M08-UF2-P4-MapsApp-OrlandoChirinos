@@ -21,9 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,7 +38,6 @@ import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
 @Composable
 fun RegisterScreen(mapViewmodel: MapViewmodel, navigationController: NavHostController) {
 
-    var confirmPassword by rememberSaveable { mutableStateOf("") }
     val goToNext by mapViewmodel.goToNext.observeAsState(false)
     val error by mapViewmodel.errorMessage.observeAsState("")
     val context = LocalContext.current
@@ -70,29 +66,11 @@ fun RegisterScreen(mapViewmodel: MapViewmodel, navigationController: NavHostCont
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        //User password
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = mapViewmodel.loginPasswd,
-            onValueChange = { mapViewmodel.setPasswd(it) },
-            label = { Text("Password") },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.Magenta,
-                unfocusedBorderColor = Color.Black )
-        )
+        PasswordField(mapViewmodel = mapViewmodel,1)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        //User password
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = confirmPassword,
-            onValueChange = { confirmPassword = it },
-            label = { Text("Confirm Password") },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.Magenta,
-                unfocusedBorderColor = Color.Black )
-        )
+        PasswordField(mapViewmodel = mapViewmodel,2)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -104,7 +82,7 @@ fun RegisterScreen(mapViewmodel: MapViewmodel, navigationController: NavHostCont
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(Color.Blue),
             onClick = {
-                mapViewmodel.clearMailPasswd() ; confirmPassword = ""
+                mapViewmodel.clearMailPasswd()
                 navigationController.navigate(Routes.LoginScreen.route) } )
         { Text(text = "Back to login screen", fontSize = 15.sp, color = Color.White) }
 
@@ -116,11 +94,11 @@ fun RegisterScreen(mapViewmodel: MapViewmodel, navigationController: NavHostCont
                 .fillMaxHeight(0.15f),
             colors = ButtonDefaults.buttonColors(Color.DarkGray),
             onClick = {
-                if (mapViewmodel.loginPasswd == confirmPassword) {
+                if (mapViewmodel.loginPasswd == mapViewmodel.loginPasswdConfirm) {
                     tryAddUser(mapViewmodel.loginMail,mapViewmodel.loginPasswd,mapViewmodel)
-                    confirmPassword = "" }
+                    mapViewmodel.clearMailPasswd() }
                 else {
-                    confirmPassword = ""
+                    mapViewmodel.clearMailPasswd()
                     Toast.makeText(context, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show() } }
         ) {Text(text = "Register", fontSize = 15.sp, color = Color.White) }
     }

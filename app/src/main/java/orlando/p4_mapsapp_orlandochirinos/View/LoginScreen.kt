@@ -14,15 +14,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -30,6 +38,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -60,10 +70,12 @@ fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostControl
 
             //User email
             OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 value = mapViewmodel.loginMail,
                 onValueChange = { mapViewmodel.setMail(it) },
                 label = { Text("Email") },
+                maxLines = 1,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color.Magenta,
                     unfocusedBorderColor = Color.Black )
@@ -71,15 +83,7 @@ fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostControl
 
             Spacer(modifier = Modifier.fillMaxHeight(0.02f))
 
-            //User password
-            OutlinedTextField(
-                value = mapViewmodel.loginPasswd,
-                onValueChange = { mapViewmodel.setPasswd(it) },
-                label = { Text("Password") },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Magenta,
-                    unfocusedBorderColor = Color.Black )
-            )
+            PasswordField(mapViewmodel, 1)
 
             Spacer(modifier = Modifier.fillMaxHeight(0.02f))
 
@@ -121,6 +125,41 @@ fun LoginScreen(mapViewmodel: MapViewmodel, navigationController: NavHostControl
         ErrorDialog(mapViewmodel.registerError,error) { mapViewmodel.showError()} }
 
 }
+
+
+@Composable
+fun PasswordField(mapViewmodel: MapViewmodel, fase: Int) {
+    var passwordVisibility by remember { mutableStateOf(false) }
+
+    //User password
+    OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
+        value = if (fase == 1){ mapViewmodel.loginPasswd }
+                else { mapViewmodel.loginPasswdConfirm },
+        onValueChange = { if (fase == 1) { mapViewmodel.setPasswd(it) }
+                          else mapViewmodel.setPasswdConfirm(it) },
+        label = { if (fase == 1) { Text("Password") }
+                  else { Text(text = "Confirm Password") }
+                },
+        maxLines = 1,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        trailingIcon = {
+            val image = if (passwordVisibility) { Icons.Filled.VisibilityOff }
+            else { Icons.Filled.Visibility }
+            IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
+                Icon(imageVector = image, contentDescription = "Password visibility")
+            }
+                       },
+        visualTransformation =
+             if (passwordVisibility) { VisualTransformation.None }
+             else { PasswordVisualTransformation() },
+
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = Color.Magenta,
+            unfocusedBorderColor = Color.Black )
+    )
+}
+
 
 @Composable
 fun ErrorDialog(show: Boolean, errorMessage: String, onDismiss: () -> Unit) {

@@ -89,7 +89,7 @@ fun TakePhotoScreen(mapViewmodel: MapViewmodel,
 
             //HACER LA FOTICO
             IconButton(modifier = Modifier.size(60.dp),onClick = {
-                takePhoto(context,controller,mapViewmodel) { photo,uri ->
+                takePhoto(context,controller,mapViewmodel,navigationController) { photo,uri ->
                     //HACER ALGO CON LA FOTICO (no se el que, sigo el tutorial)
                     mapViewmodel.storeImageBitmap(photo)
                 }
@@ -100,11 +100,12 @@ fun TakePhotoScreen(mapViewmodel: MapViewmodel,
     }
 }
 
-
+//Modificaciones gracias a chat gipiti, pero la base es mia
 private fun takePhoto(
     context: Context,
     controller: LifecycleCameraController,
     mapViewmodel: MapViewmodel,
+    navigationController: NavHostController,
     onPhotoTaken: (Bitmap, Uri) -> Unit
 ) {
     val outputDirectory = getOutputDirectory(context)
@@ -117,17 +118,13 @@ private fun takePhoto(
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                 val savedUri = Uri.fromFile(photoFile)
                 val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
-                onPhotoTaken(bitmap, savedUri)
 
-                val imageUriString = savedUri.toString()
-                val imageUri = Uri.parse(imageUriString)
-                mapViewmodel.setImageUriF(imageUri)
+                // Guardar la imagen en el ViewModel
                 mapViewmodel.storeImageBitmap(bitmap)
+                mapViewmodel.setImageUriF(savedUri)
 
-                Log.d("TakePictureManager","URI IMAGEN: $savedUri")
-                Log.d("TakePictureManager","BITMAP: $bitmap")
-                Log.d("TakePictureManager","Imageuristring: $imageUriString")
-                Log.d("TakePictureManager","IMageUri: $imageUri")
+                // Navegar a la siguiente pantalla después de guardar la imagen
+                navigationController.navigate(Routes.GalleryScreen.route)
             }
 
             override fun onError(exception: ImageCaptureException) {
@@ -136,6 +133,7 @@ private fun takePhoto(
         }
     )
 }
+
 
 private fun getOutputDirectory(context: Context): File {
     val mediaDir = context.externalMediaDirs.firstOrNull()?.let {

@@ -217,7 +217,9 @@ fun Bottom(
     ModalBottomSheet(
         onDismissRequest = { mapViewModel.showBottomSheet()
                              mapViewModel.clearTag()
-                             mapViewModel.clearModal() },
+                             mapViewModel.clearModal()
+                             mapViewModel.clearImageAndUri()
+                           },
         sheetState = sheetState ) {
 
         // Sheet content
@@ -257,6 +259,7 @@ fun Bottom(
                 )
 
                 Spacer(modifier = Modifier.fillMaxHeight(0.03f))
+
                 SelectCategories(mapViewModel)
 
                 CameraScreen( mapViewModel, navigationController, cameraViewmodel )
@@ -279,6 +282,7 @@ fun Bottom(
                                 mapViewModel.selectTag("")
                                 mapViewModel.clearTag()
                                 mapViewModel.clearModal()
+                                mapViewModel.clearImageAndUri()
                             }
                         }
                     }

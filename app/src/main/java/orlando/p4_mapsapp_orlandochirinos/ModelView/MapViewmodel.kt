@@ -27,13 +27,15 @@ class MapViewmodel : ViewModel() {
     //private val database = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance() //AutenticacionÇ
 
+    val defaultUri : String = "https://firebasestorage.googleapis.com/v0/b/itbmapitadatabase.appspot.com/o/images%2Fno_image.jpg?alt=media&token=d6e92b4b-2c56-48ac-b65d-a14d3ac4ceb6"
+
     var repository : Repository = Repository()
 
     var nameOfPlace by mutableStateOf("")
 
     var description by mutableStateOf("")
 
-    val defaultBitmap: Bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+    val defaultBitmap: Bitmap? = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
 
     val tagList = listOf<String>("Favoritos", "Restaurantes", "Parques", "Casas")
 
@@ -45,8 +47,19 @@ class MapViewmodel : ViewModel() {
     var imageBitmap by mutableStateOf( this.defaultBitmap )
         private set
 
-    fun storeImageBitmap(bitmap : Bitmap) { this.imageBitmap =  bitmap  }
+    var photoTaken by mutableStateOf(true)
+        private set
 
+    fun storeImageBitmap(bitmap : Bitmap?) { this.imageBitmap =  bitmap  }
+    fun clearImageAndUri(){
+        this.imageUriFirebase = null
+        this.imageBitmap = defaultBitmap
+    }
+
+    private val _photoLoaded = MutableLiveData<Boolean>()
+    val photoloaded : LiveData<Boolean> = _photoLoaded
+
+    fun photoLoadedConfirm(pConfirmation : Boolean){ _photoLoaded.value = pConfirmation }
     var imageUri by mutableStateOf<String?>( null )
         private set
 

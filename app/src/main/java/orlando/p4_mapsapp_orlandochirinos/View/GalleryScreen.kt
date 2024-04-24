@@ -21,7 +21,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,9 +46,12 @@ fun GalleryScreen(
     cameraViewmodel: CameraViewmodel,
 ) {
     val context = LocalContext.current
-    val img : Bitmap? = ContextCompat.getDrawable(context, R.drawable.mapa)?.toBitmap()
-    var bitmap by remember { mutableStateOf(img) }
-    var uriGet by remember { mutableStateOf<Uri?>(null ) }
+    val img : Bitmap?
+    if (mapViewmodel.imageBitmap == null) { img = ContextCompat.getDrawable(context, R.drawable.mapa)?.toBitmap() }
+    else { img = mapViewmodel.imageBitmap }
+
+    var bitmap by rememberSaveable { mutableStateOf(img) }
+    var uriGet by rememberSaveable { mutableStateOf<Uri?>(null ) }
 
     val launchImage = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
@@ -81,6 +84,8 @@ fun GalleryScreen(
         }
     )
 
+    //mapViewmodel.storeImageBitmap(bitmap)
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -91,9 +96,9 @@ fun GalleryScreen(
             Text(text = "OPEN GALLERY") }
 
         // Utilizamos el operador de elvis (?:) para manejar el posible valor nulo de bitmap
-        if (bitmap != null) {
+        if (mapViewmodel.imageBitmap != null) {
             Image(
-                bitmap = bitmap!!.asImageBitmap(),
+                bitmap = mapViewmodel.imageBitmap!!.asImageBitmap(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

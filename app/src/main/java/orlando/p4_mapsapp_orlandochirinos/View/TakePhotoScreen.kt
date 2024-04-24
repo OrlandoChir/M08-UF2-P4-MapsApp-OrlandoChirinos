@@ -1,12 +1,17 @@
 package orlando.p4_mapsapp_orlandochirinos.View
 
+import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import android.util.Log
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.ImageProxy
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
@@ -40,7 +45,9 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import orlando.p4_mapsapp_orlandochirinos.ModelView.CameraViewmodel
 import orlando.p4_mapsapp_orlandochirinos.ModelView.MapViewmodel
+import orlando.p4_mapsapp_orlandochirinos.R
 import orlando.trivial.orlandochirinos_apilistapp.Navigation.Routes
+import java.io.File
 
 @Composable
 fun TakePhotoScreen(mapViewmodel: MapViewmodel,
@@ -82,9 +89,11 @@ fun TakePhotoScreen(mapViewmodel: MapViewmodel,
 
             //HACER LA FOTICO
             IconButton(modifier = Modifier.size(60.dp),onClick = {
-                takePhoto(context,controller,mapViewmodel) { photo ->
+                takePhoto(context,controller,mapViewmodel) { photo,uri ->
                     //HACER ALGO CON LA FOTICO (no se el que, sigo el tutorial)
-                    mapViewmodel.storeImageBitmap(photo) }
+                    mapViewmodel.storeImageBitmap(photo)
+                }
+               // navigationController.navigate(Routes.GalleryScreen.route)
             } )
             { Icon(modifier = Modifier.size(50.dp),imageVector = Icons.Default.PhotoCamera, contentDescription = "Take Photo") }
         }
@@ -96,22 +105,60 @@ private fun takePhoto(
     context: Context,
     controller: LifecycleCameraController,
     mapViewmodel: MapViewmodel,
-    onPhotoTaken: (Bitmap) -> Unit
-)
-{
-    controller.takePicture(ContextCompat.getMainExecutor(context),
-        object : ImageCapture.OnImageCapturedCallback(){
-            override fun onCaptureSuccess(image: ImageProxy) {
-                super.onCaptureSuccess(image)
-                onPhotoTaken( image.toBitmap() )
+    onPhotoTaken: (Bitmap, Uri) -> Unit
+) {
+    val outputDirectory = getOutputDirectory(context)
+    val photoFile = File(outputDirectory, "${System.currentTimeMillis()}.jpg")
+
+    val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+
+    controller.takePicture(outputOptions, ContextCompat.getMainExecutor(context),
+        object : ImageCapture.OnImageSavedCallback {
+            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                val savedUri = Uri.fromFile(photoFile)
+                val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
+                onPhotoTaken(bitmap, savedUri)
+
+                val imageUriString = savedUri.toString()
+                val imageUri = Uri.parse(imageUriString)
+                mapViewmodel.setImageUriF(imageUri)
+                mapViewmodel.storeImageBitmap(bitmap)
+
+                Log.d("TakePictureManager","URI IMAGEN: $savedUri")
+                Log.d("TakePictureManager","BITMAP: $bitmap")
+                Log.d("TakePictureManager","Imageuristring: $imageUriString")
+                Log.d("TakePictureManager","IMageUri: $imageUri")
             }
 
             override fun onError(exception: ImageCaptureException) {
-                super.onError(exception)
-                Log.e("Camera","Error taken photo",exception)
+                Log.e("Camera", "Error al tomar la foto", exception)
             }
         }
     )
+}
+
+private fun getOutputDirectory(context: Context): File {
+    val mediaDir = context.externalMediaDirs.firstOrNull()?.let {
+        File(it, context.getString(R.string.app_name)).apply { mkdirs() }
+    }
+    return if (mediaDir != null && mediaDir.exists())
+        mediaDir else context.filesDir
+}
+
+
+fun uriToBitmap(context: Context, uri: Uri): Bitmap? {
+    return try {
+        val contentResolver: ContentResolver = context.contentResolver
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            MediaStore.Images.Media.getBitmap(contentResolver, uri) }
+        else {
+            val source = ImageDecoder.createSource(contentResolver, uri)
+            ImageDecoder.decodeBitmap(source)
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
 }
 
 @Composable
